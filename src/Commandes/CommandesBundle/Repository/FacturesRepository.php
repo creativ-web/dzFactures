@@ -133,7 +133,7 @@ class FacturesRepository extends EntityRepository
         ;
         return $qb->getQuery()->getResult();
     }
-    public function search2($etat,$type,$du,$au,$zone,$mot,$user,$table)
+    public function search2($etat,$type,$du,$au,$zone,$mot,$user)
     {
         $qb = $this->createQueryBuilder('u')
             ->Select('u')
@@ -155,7 +155,6 @@ class FacturesRepository extends EntityRepository
             ->setParameter('du', $du)
             ->setParameter('au', $au)
             ->setParameter('zone', $zone)
-            ->setParameter('table', $table)
             ->setParameter('value', '%'.$mot.'%')
 
             ->setParameter('user', $user);
