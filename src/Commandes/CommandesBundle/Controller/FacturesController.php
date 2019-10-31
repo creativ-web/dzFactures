@@ -250,7 +250,7 @@ class FacturesController extends Controller
 
         }else{
 
-            $factures = $em->getRepository('CommandesBundle:Factures')->searchSanstable($mot,$etat,$zone, $type,$du, $au, $user);
+            $factures = $em->getRepository('CommandesBundle:Factures')->findAll();
 
         }
 

@@ -84,12 +84,13 @@ class FacturesRepository extends EntityRepository
 
             ->andWhere(' u.nf LIKE :value')
             ->orWhere(' a.nom LIKE :value')
-            ->andWhere(' u.etat = :etat')
-            ->andWhere('z.id = :zone')
             ->andWhere(' u.type = :type')
+            ->andWhere(' u.etat = :etat')
 
-            ->andWhere('u.datecreation >= :du')
-            ->andWhere('u.datecreation <= :au')
+            ->andWhere('z.id = :zone')
+
+
+
 
             ->andwhere('u.user = :user')
 
@@ -99,8 +100,7 @@ class FacturesRepository extends EntityRepository
             ->setParameter('etat', $etat)
             ->setParameter('zone', $zone)
             ->setParameter('type', $type)
-            ->setParameter('du', $du)
-            ->setParameter('au', $au)
+
             ->setParameter('user', $user);
         ;
         return $qb->getQuery()->getResult();
