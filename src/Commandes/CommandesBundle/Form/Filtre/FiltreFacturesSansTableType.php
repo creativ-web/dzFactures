@@ -77,7 +77,7 @@ class FiltreFacturesSansTableType extends AbstractType
                     'Envoyé' => 'Envoyé',
                     'Impayé' => 'Impayé',
                 ),
-                'data' => "Créé",'required'=>true))
+                'data' => "tous",'required'=>true))
 
             ->add('zone', EntityType::class, array(
                 'class' => 'Commandes\CommandesBundle\Entity\Zonnestocks',
