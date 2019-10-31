@@ -160,7 +160,7 @@ class FacturesController extends Controller
             if($parametres->getParamGestion()->getTablesystem() == 'activer'){
                 $factures = $em->getRepository('CommandesBundle:Factures')->search2($mot,$etat,$zone, $type,$du, $au, $user);
             }else{
-                $factures = $em->getRepository('CommandesBundle:Factures')->search2($mot,$etat,$zone, $type,$du, $au, $user);
+                $factures = $em->getRepository('CommandesBundle:Factures')->searchSanstable($mot,$etat,$zone, $type,$du, $au, $user);
             }
 
 
