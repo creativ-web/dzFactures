@@ -1,0 +1,49 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <style>
+        body{
+            background: white;
+        }
+    </style>
+    <div class="container">
+    <h2>Gestion de stock</h2>
+
+    {{ form_start(form) }}
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form_label(form.nom, "Nom de l'entrepôt ") }} <span class="requis">*</span>
+                {{ form_widget(form.nom,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.nom) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form_label(form.description, "Description") }}
+                {{ form_widget(form.description,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.description) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form_label(form.types, "type") }}
+                {{ form_widget(form.types,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.types) }}
+            </div>
+        </div>
+
+        <hr>
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+
+                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Sauvegarder</button>
+                ou
+                <a href="{{ path('admin_zones_index') }}"> Annuler </a>
+            </div>
+        </div>
+        <br> <br> <br> <br> <br> <br> <br> <br> <br>
+    {{ form_end(form) }}
+
+
+    </div>
+{% endblock %}

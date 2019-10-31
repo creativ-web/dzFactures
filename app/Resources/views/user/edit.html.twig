@@ -1,0 +1,96 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+
+
+    <script type="text/javascript" src="{{ asset('vendors/jquery/dist/jquery.min.js') }}"></script>
+
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+
+
+
+                <div class="title_right">
+                    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                        <div class="input-group">
+
+                    <span class="input-group-btn">
+
+                    </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel" >
+
+
+                        <div class="x_title">
+                            <h2>{{ user.email }} <small>Modification</small></h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+
+                            {{ form_start(edit_form) }}
+
+
+
+                            <div class="col-md-7 col-sm-12 col-xs-12 form-group">
+
+                                {{ form_label(edit_form.email, "Email : ") }}
+                                {{ form_widget(edit_form.email,{'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(edit_form.email) }}
+                                <br>
+                                {{ form_label(edit_form.roles, "role : ") }}
+                                {{ form_widget(edit_form.roles) }}
+                                {{ form_errors(edit_form.roles) }}
+
+                                <br>
+
+                                <a href="{{ path('admin_users_index') }}"><button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color: rgb(156, 156, 156); color: #ffffff;">Annuler</button></a>
+                                <button type="submit" class="btn btn-primary">Sauvgarder</button>
+
+
+
+
+                            </div>
+
+                            <div class="col-md-5 col-sm-12 col-xs-12 form-group">
+
+
+
+
+
+
+
+
+
+                                <!-- price element -->
+                            </div>
+                            {{ form_end(edit_form) }}
+                            {{ form_start(delete_form) }}
+                            <input type="submit" value="Delete">
+                            {{ form_end(delete_form) }}
+
+
+
+
+                            <!-- price element -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+

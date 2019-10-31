@@ -1,0 +1,251 @@
+
+
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+
+
+<style>
+    tbody{
+        text-align: left;
+        text-transform: none;
+    }
+</style>
+
+
+<script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
+
+<div class="container-fluid">
+    <div class="row">
+        <div id="sidebar-nav" class="hidden-print at-scroll-content">
+
+            <a class="btn-glow primary btn-block 1add_new 1add_new_invoice" title="Nouveau contact" href="{{ path('admin_Acheteurs_new') }}">Nouveau contact</a>
+
+
+            <div class="form" id="search_more_div" style="margin-top: 14px;">
+
+                <strong style="font-size: 12px;display:block;margin-bottom:8px;padding-bottom:3px;border-bottom:1px solid #ddd">Rechercher</strong>
+
+
+                {{ form_start(form) }}
+
+                {{ form_label(form.mot, "Mot-clé ou n° ") }}
+                {{ form_widget(form.mot,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.mot) }}
+
+
+                <input style="margin-top: 20px;" type="submit" value="Rechercher" title="Rechercher" class="btn-glow btn-block" onclick="$('#page').remove()">                        {{ form_end(form) }}
+
+
+
+
+            </div> <!-- search_more_div -->
+
+
+
+
+
+
+        </div>
+
+        <main class="col-sm-9 ml-sm-auto col-md-10 pt-3 content" role="main" style="width:79%;">
+
+
+            <section class="row text-center placeholders">
+                <div class="row">
+                    <div class="col-md-4"><h2 style="position: relative; float: left;">Liste des contacts</h2>
+
+
+                    </div>
+                    <div style="padding-top: 20px;"></div>
+                    <div class="btn-group pull-right">
+
+                        <button data-toggle="dropdown" class="btn glow dropdown-toggle" style="margin-left:10px">
+                            <i class="fa fa-cog"></i> <span class="caret"></span>
+                        </button>
+
+
+                        <ul class="dropdown-menu">
+
+                            <li role="presentation" class="dropdown-header">Importer des Contacts depuis un fichier</li>
+
+                            <li><a href="">Importer des Contacts depuis un fichier</a></li>
+
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation" class="dropdown-header">Imprimés</li>
+
+                            <li><a href="">Exporter vers Excel</a></li>
+                            <li><a href="#" onclick="window.print();; return false;">Imprimer</a></li>
+
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation" class="dropdown-header">Affichage</li>
+
+
+                            <li><a onclick="$('#dynamic_columns_modal').modal(); return false;" href="#">Personnaliser l'affichage des colonnes</a></li>
+
+                        </ul>
+
+                    </div>
+
+
+                </div>
+                <br>
+                {% if acheteurs == null %}
+                <div class="row">
+
+
+
+                    <div id="list_table" class="narrower">
+
+
+
+
+
+                        <style type="text/css" media="screen">
+                            .content.scroll-content {
+                                width:auto !important;
+                                float: none;
+                            }
+                        </style>
+
+                        <!-- blank state -->
+                        <div class="blank-state">
+
+                            <div class="center">
+
+                                <p style="    font-size: 13px;">Pour ajouter un premier contact, cliquer sur le bouton situé à gauche</p>
+                                <p style="    font-size: 13px;">Rappelez-vous que lors de la création d'un document, les détails d'un contact que vous renseignez seront mémorisés automatiquement par le système.</p>
+
+                                <a class="btn-glow btn-block btn-lg primary btn-block 1add_new 1add_new_invoice" title="Nouveau reçu" href="{{ path('admin_Acheteurs_new') }}">Nouveu contact</a>
+
+                            </div>
+                        </div>
+                        <!-- end blank state -->
+
+
+                        <p class="text-center">
+
+
+                        </p>
+
+
+                    </div> <!-- list_table -->
+
+                    <script type="text/javascript">
+                        var SUMMATIONS_CACHED_VARIABLES = {
+                            initial_sums: {},
+                            invoice_values: {},
+                            price_keys: [],
+                            original_total_count: 0
+                        };
+                    </script>
+
+
+
+
+                    <script type="text/javascript">
+                        $(function(){
+                            //Firmlet.show_if_checked('#search_more_div', '#search_more');
+                        });
+                    </script>
+
+
+
+
+
+                </div>
+                {% else %}
+                <div id="list_table" class="row">
+
+                    <table id="example2" class="display" cellspacing="0" width="100%" style="text-transform: uppercase;">
+                        <thead>
+                        <tr>
+                            <th>NOM D'USAGE (INTERNE)</th>
+                            <th>CONTACT</th>
+                            <th>NIF</th>
+                            <th>E-MAIL</th>
+                            <th> </th>
+
+                        </tr>
+                        </thead>
+
+
+                        <tbody>
+
+
+                        {% for acheteur in acheteurs %}
+                            <tr style="color:#526273; ">
+
+
+
+
+                                <td>
+                                    <span style="padding-left: 10px;  font-size: 12px;"> <a href="{{ path('admin_Acheteurs_show', { 'id': acheteur.id }) }}" style="color: #526273;">{{ acheteur.nom }} </a></span>
+                                </td>
+                                <td>{{ acheteur.nom }}</td>
+                                <td>{{ acheteur.nif }} </td>
+                                <td> {{ acheteur.email }}</td>
+
+                                <td>
+                                    <div class="btn-group pull-right">
+                                        <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                            <i class="fa fa-cog"></i> <i class="icon-cog"></i> <span class="caret"></span>
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+                                            <li><a title="Afficher" class="cms_show" href="{{ path('admin_Acheteurs_show', { 'id': acheteur.id }) }}">Afficher</a></li>
+
+
+                                            <li><a class="cms_edit" href="{{ path('admin_Acheteurs_edit', { 'id': acheteur.id }) }}">Modifier</a></li>
+                                            <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_Acheteurs_delete', { 'id': acheteur.id }) }}">Effacer</a></li>
+                                        </ul>
+                                    </div>
+
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+                {% endif %}
+            </section>
+
+
+
+        </main>
+    </div>
+</div>
+
+<script>
+    $('#date').hide();
+
+    $("#periode").change(function() {
+
+        if ($('#option_searchs_periode').val() == 'more') {
+            $('#periode').hide();
+            $('#date').show();
+
+
+        }
+    });
+
+    $(".delete").click(function(){
+        if (!confirm("Êtes-vous sûr de vouloir effacer ce document?")){
+            return false;
+        }
+    });
+</script>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+

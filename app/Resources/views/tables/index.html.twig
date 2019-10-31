@@ -1,0 +1,245 @@
+
+
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+    <style>
+        tbody{
+            text-align: left;
+            text-transform: none;
+        }
+    </style>
+
+
+    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+                <div id="sidebar-nav" class="hidden-print at-scroll-content">
+
+                    <a class="btn-glow  primary btn-block 1add_new 1add_new_invoice" title="Nouvelle facture" href="{{ path('admin_tables_new') }}">Nouvelle table</a>
+
+
+                    <div class="form" id="search_more_div" style="margin-top: 14px;">
+
+                        <strong style="font-size: 12px;display:block;margin-bottom:8px;padding-bottom:3px;border-bottom:1px solid #ddd">Rechercher</strong>
+
+                        {{ form_start(form) }}
+
+                        {{ form_label(form.mot, "Mot-clé ou n° ") }}
+                        {{ form_widget(form.mot,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.mot) }}
+
+                        {{ form_label(form.zone, "Entrepôt") }}
+                        {{ form_widget(form.zone,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.zone) }}
+
+                        {{ form_label(form.type, "Type de document ") }}
+                        {{ form_widget(form.type,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.type) }}
+                        <div id="periode">
+                            {{ form_label(form.nature, "Nature") }}
+                            {{ form_widget(form.nature,{'attr': {'class': 'form-control periode'}}) }}
+                            {{ form_errors(form.nature) }}
+                        </div>
+
+                        <input style="margin-top: 20px;" type="submit" value="Rechercher" title="Rechercher" class="btn-glow btn-block" onclick="$('#page').remove()">                        {{ form_end(form) }}
+
+                    </div> <!-- search_more_div -->
+
+
+                </div>
+            </nav>
+
+        <main class="col-sm-9 ml-sm-auto col-md-10 pt-3 content" role="main" style="width:79%;">
+
+
+                <section class="row text-center placeholders">
+                    <div class="row">
+                        <div class="col-md-4"><h2 style="position: relative; float: left;">Liste des tables</h2>
+
+
+                        </div>
+                        <div style="padding-top: 20px;"></div>
+                        <div class="btn-group pull-right">
+
+                            <button data-toggle="dropdown" class="btn glow dropdown-toggle" style="margin-left:10px">
+                                <i class="fa fa-cog"></i> <span class="caret"></span>
+                            </button>
+
+
+                            <ul class="dropdown-menu">
+
+                                <li role="presentation" class="dropdown-header">Importer des Produits depuis un fichier</li>
+
+                                <li><a href="/imports/new?kind=flexible_product_import">Importer des Produits depuis un fichier</a></li>
+
+                                <li role="presentation" class="divider"></li>
+                                <li role="presentation" class="dropdown-header">Imprimés</li>
+
+                                <li><a href="http://contact182.vosfactures.fr/products.xls">Exporter vers Excel</a></li>
+                                <li><a href="#" onclick="window.print();; return false;">Imprimer</a></li>
+
+                                <li role="presentation" class="divider"></li>
+                                <li role="presentation" class="dropdown-header">Affichage</li>
+
+
+                                <li><a onclick="$('#dynamic_columns_modal').modal(); return false;" href="#">Personnaliser l'affichage des colonnes</a></li>
+
+                            </ul>
+
+                        </div>
+
+
+                    </div>
+                    <br>
+                    {% if tables == null %}
+                    <div class="row">
+
+
+
+                        <div id="list_table" class="narrower">
+
+
+
+
+
+                            <style type="text/css" media="screen">
+                                .content.scroll-content {
+                                    width:auto !important;
+                                    float: none;
+                                }
+                            </style>
+
+                            <!-- blank state -->
+                            <div class="blank-state">
+
+                                <div class="center">
+
+                                    <p style="    font-size: 13px;">Afin d'ajouter une table, cliquer sur le bouton situé à gauche de l'écran</p>
+
+                                    <a class="btn-glow btn-block btn-lg primary btn-block 1add_new 1add_new_invoice" title="Nouveau produit" href="{{ path('admin_tables_new') }}">Nouvelle table</a>
+
+                                </div>
+                            </div>
+                            <!-- end blank state -->
+
+
+                            <p class="text-center">
+
+
+                            </p>
+
+
+                        </div> <!-- list_table -->
+
+                        <script type="text/javascript">
+                            var SUMMATIONS_CACHED_VARIABLES = {
+                                initial_sums: {},
+                                invoice_values: {},
+                                price_keys: [],
+                                original_total_count: 0
+                            };
+                        </script>
+
+
+
+
+                        <script type="text/javascript">
+                            $(function(){
+                                //Firmlet.show_if_checked('#search_more_div', '#search_more');
+                            });
+                        </script>
+
+
+
+
+
+                    </div>
+                    {% else %}
+                    <div id="list_table" class="row">
+
+                        <table id="example2" class="display" cellspacing="0" width="100%" style="text-transform: uppercase;">
+                            <thead>
+                            <tr>
+                                <th>NOM</th>
+                                <th>DISPONIBILITÉ</th>
+                                <th></th>
+
+                            </tr>
+                            </thead>
+
+
+                            <tbody>
+
+
+                            {% for table in tables %}
+                                <tr style="color:#526273; ">
+
+
+
+
+                                    <td>
+
+                                        <span style="padding-left: 10px;  font-size: 12px;"> <a href="{{ path('admin_tables_show', { 'id': table.id }) }}" style="color: #526273;">{{ table.nom }}</a></span>
+                                    </td>
+
+
+
+
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                            <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                                <i class="fa fa-cog"></i> <i class="icon-cog"></i> <span class="caret"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu">
+                                                <li><a title="Afficher" class="cms_show" href="{{ path('admin_tables_show', { 'id': table.id }) }}">Afficher</a></li>
+
+
+                                                <li><a class="cms_edit" href="{{ path('admin_tables_edit', { 'id': table.id }) }}">Modifier</a></li>
+                                                <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="cms_delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_tables_delete', { 'id': table.id }) }}">Effacer</a></li>
+                                            </ul>
+                                        </div>
+
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </section>
+
+
+
+            </main>
+        </div>
+    </div>
+
+    <script>
+        $('#date').hide();
+
+        $("#periode").change(function() {
+
+            if ($('#option_searchs_periode').val() == 'more') {
+                $('#periode').hide();
+                $('#date').show();
+
+
+            }
+        });
+    </script>
+    {% endif %}
+{% endblock %}
+
+
+
+
+
+
+
+

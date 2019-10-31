@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        body{
+            background: white;
+        }
+    </style>
+    <h1>Bc</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ bc.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ bc.type }}</td>
+            </tr>
+            <tr>
+                <th>Nf</th>
+                <td>{{ bc.nf }}</td>
+            </tr>
+            <tr>
+                <th>Datecreation</th>
+                <td>{% if bc.datecreation %}{{ bc.datecreation|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Lieu</th>
+                <td>{{ bc.lieu }}</td>
+            </tr>
+            <tr>
+                <th>Additionnelle</th>
+                <td>{{ bc.additionnelle }}</td>
+            </tr>
+            <tr>
+                <th>Dateadd</th>
+                <td>{% if bc.dateadd %}{{ bc.dateadd|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Moderegle</th>
+                <td>{{ bc.moderegle }}</td>
+            </tr>
+            <tr>
+                <th>Dateregle</th>
+                <td>{{ bc.dateregle }}</td>
+            </tr>
+            <tr>
+                <th>Objet</th>
+                <td>{{ bc.objet }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ bc.etat }}</td>
+            </tr>
+            <tr>
+                <th>Montantpaye</th>
+                <td>{{ bc.montantpaye }}</td>
+            </tr>
+            <tr>
+                <th>Paiementrecu</th>
+                <td>{% if bc.paiementrecu %}{{ bc.paiementrecu|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Dateenvois</th>
+                <td>{% if bc.dateenvois %}{{ bc.dateenvois|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Nc</th>
+                <td>{{ bc.nc }}</td>
+            </tr>
+            <tr>
+                <th>Nomvendeur</th>
+                <td>{{ bc.nomvendeur }}</td>
+            </tr>
+            <tr>
+                <th>Informations</th>
+                <td>{{ bc.informations }}</td>
+            </tr>
+            <tr>
+                <th>Editerpar</th>
+                <td>{{ bc.editerpar }}</td>
+            </tr>
+            <tr>
+                <th>Expedierpar</th>
+                <td>{{ bc.expedierpar }}</td>
+            </tr>
+            <tr>
+                <th>Receptionnerpar</th>
+                <td>{{ bc.receptionnerpar }}</td>
+            </tr>
+            <tr>
+                <th>Ncommande</th>
+                <td>{{ bc.ncommande }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_bcs_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('admin_bcs_edit', { 'id': bc.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

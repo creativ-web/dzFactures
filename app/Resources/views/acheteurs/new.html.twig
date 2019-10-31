@@ -1,0 +1,265 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h2>Nouveau contact</h2>
+
+        {{ form_start(form) }}
+        <div class="row _company">
+            <div class="col-sm-4 required">
+
+                {{ form_label(form.nom, "Nom de la compagnie ") }} <span class="requis">*</span>
+                {{ form_widget(form.nom,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.nom) }}
+            </div>
+            <div class="col-sm-2">
+                <label for="client_tax_no_kind">&nbsp;</label>
+
+                {{ form_widget(form.nrcselect,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.nrcselect) }}
+            </div>
+            <div class="col-sm-3">
+                <label for="client_tax_no_kind">&nbsp;</label>
+
+                {{ form_widget(form.nif,{'attr': {'class': 'form-control acheteur_nif'}}) }}
+                {{ form_errors(form.nif) }}
+                {{ form_widget(form.nrc,{'attr': {'class': 'form-control acheteur_nrc'}}) }}
+                {{ form_errors(form.nrc) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1">
+                {{ form_label(form.civilite, "Civilité ") }}
+                {{ form_widget(form.civilite,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.civilite) }}
+            </div>
+            <div class="col-sm-2">
+                {{ form_label(form.prenom, "Prénom ") }}
+                {{ form_widget(form.prenom,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.prenom) }}
+            </div>
+            <div class="col-sm-2">
+                {{ form_label(form.famille, "Nom de famille ") }}
+                {{ form_widget(form.famille,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.famille) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                {{ form_label(form.adresse, "N° et nom de rue ") }}
+                {{ form_widget(form.adresse,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.adresse) }}
+            </div>
+            <div class="col-sm-2">
+                {{ form_label(form.codepostal, "Code postal") }}
+                {{ form_widget(form.codepostal,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.codepostal) }}
+            </div>
+            <div class="col-sm-2">
+                {{ form_label(form.ville, "Ville") }}
+                {{ form_widget(form.ville,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.ville) }}
+            </div>
+            <div class="col-sm-2">
+                {{ form_label(form.pays, "Pays") }}
+                {{ form_widget(form.pays,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.pays) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-9">
+                {{ form_label(form.adressesupp, "Adresse de livraison") }}
+                {{ form_widget(form.adressesupp,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.adressesupp) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                {{ form_label(form.telephone, "Téléphone") }}
+                {{ form_widget(form.telephone,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.telephone) }}
+            </div>
+            <div class="col-sm-2">
+                {{ form_label(form.telmobile, " Tel. portable") }}
+                {{ form_widget(form.telmobile,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.telmobile) }}
+            </div>
+            <div class="col-sm-3">
+                {{ form_label(form.email, "Email") }}
+                {{ form_widget(form.email,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.email) }}
+            </div>
+            <div class="col-sm-2">
+                {{ form_label(form.fax, "Fax") }}
+                {{ form_widget(form.fax,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.fax) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-9">
+                {{ form_label(form.description, "Description additionnelle") }}
+                {{ form_widget(form.description,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.description) }}
+            </div>
+        </div>
+        <br><br><br>
+
+        <div class="row">
+
+            <div class="panel-group col-sm-12 new-accordion" id="accordion">
+
+                <div class="panel panel-default panel-sm">
+
+                    <div class="panel-heading">
+
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="panel-title collapsed" style="display:block" onclick="change_more_options('Plus d\'options', 'Moins d\'options');">
+                            <i id="more_options_icon1" class="icon-chevron-down"></i>
+                            <span id="more_options_link1">Plus d'options</span>
+                        </a>
+
+                    </div> <!-- panel-heading -->
+
+                    <div id="collapseOne" class="more_options panel-collapse collapse" style="height: 0px;">
+
+                        <div class="panel-body">
+
+
+                            <div class="row">
+                                <div class="col-sm-4 required">
+                                    {{ form_label(form.nomusage, "Nom d'usage") }}
+                                    {{ form_widget(form.nomusage,{'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.nomusage) }}
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="client_kind">Type</label>
+                                    {{ form_label(form.type, "Type") }}
+                                    {{ form_widget(form.type,{'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.type) }}
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    {{ form_label(form.cb, "Domiciliation bancaire") }}
+                                    {{ form_widget(form.cb,{'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.cb) }}
+                                </div>
+                                <div class="col-sm-5">
+                                    {{ form_label(form.ncb, "Numéro de compte") }}
+                                    {{ form_widget(form.ncb,{'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.ncb) }}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    {{ form_label(form.reduction, "Réduction par défaut (%)") }}
+                                    {{ form_widget(form.reduction,{'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.reduction) }}
+                                </div>
+                                <div class="col-sm-2">
+                                    {{ form_label(form.taxe, "Taux de taxe par défaut (%)") }}
+                                    {{ form_widget(form.taxe,{'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.taxe) }}
+                                </div>
+                                <div class="col-sm-2">
+                                    {{ form_label(form.limitereglement, "Date limite de règlement par défaut") }}
+                                    {{ form_widget(form.limitereglement,{'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.limitereglement) }}
+                                </div>
+                                <div class="col-sm-3">
+
+                                    {{ form_label(form.modereglement, "Mode de règlement par défaut") }}
+                                    {{ form_widget(form.modereglement,{'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.modereglement) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    {{ form_label(form.siteweb, "Site internet") }}
+                                    {{ form_widget(form.siteweb,{'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.siteweb) }}
+                                </div>
+                                <div class="col-sm-3">
+                                    {{ form_label(form.immatriculation, "Numéro d'immatriculation") }}
+                                    {{ form_widget(form.immatriculation,{'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.immatriculation) }}
+                                </div>
+                                <div class="col-sm-3">
+                                    <br>
+
+                                    {{ form_widget(form.relances,{'attr': {'class': ''}}) }}
+                                    {{ form_errors(form.relances) }}
+                                    {{ form_label(form.relances, "Ne pas envoyer de relances automatique") }}
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    {{ form_label(form.personne, "Personne à contacter") }}
+                                    {{ form_widget(form.personne,{'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.personne) }}
+                                </div>
+                                <div class="col-sm-3">
+                                    {{ form_label(form.codeclient, "Réf/code client") }}
+                                    {{ form_widget(form.codeclient,{'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.codeclient) }}
+                                </div>
+                            </div>
+                            <div id="limited" class="not_service">
+
+                            <!-- if -->
+                            <br>
+
+                            <div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div> <!-- panel-body -->
+
+                </div> <!-- collapseOne -->
+
+            </div> <!-- panel -->
+
+
+        </div>
+            </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+
+                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Sauvegarder</button>
+                ou
+                <a href="{{ path('admin_Acheteurs_index') }}"> Annuler </a>
+            </div>
+        </div>
+
+        <br> <br> <br> <br> <br> <br> <br> <br> <br>
+        {{ form_end(form) }}
+
+
+    </div>
+    <script type="text/javascript" src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js') }}"></script>
+
+    <script>
+        $('.acheteur_nif').hide();
+        $('.acheteur_nrcselect').on('change', function() {
+            if(this.value == 'NIF'){
+                $('.acheteur_nrc').hide();
+                $('.acheteur_nif').show();
+
+            }
+            if(this.value == 'NRC'){
+                $('.acheteur_nrc').show();
+                $('.acheteur_nif').hide();
+
+            }
+        });
+    </script>
+{% endblock %}

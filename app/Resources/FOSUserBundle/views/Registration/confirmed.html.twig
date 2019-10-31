@@ -1,0 +1,28 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+    {% block fos_user_content %}
+<div>
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+
+    <div class="login_wrapper">
+        <div class="animate form login_form">
+            <section class="login_content">
+
+                    <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
+                    <a style="color: #4bae51;" href="{{ path('commandes_homepage') }}">accéder à l'application</a>
+
+
+            </section>
+        </div>
+
+        <div id="register" class="animate form registration_form">
+            <section class="login_content">
+
+            </section>
+        </div>
+    </div>
+</div>
+
+    {% endblock fos_user_content %}

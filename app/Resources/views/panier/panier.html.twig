@@ -1,0 +1,256 @@
+
+
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+    <div class="container">
+        {{ form_start(formFacture) }}
+        <div class="row">
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+
+                {{ form_label(formFacture.type, "Type ") }} <span class="requis">*</span>
+                {{ form_widget(formFacture.type,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formFacture.type) }}
+            </div>
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+
+                {{ form_label(formFacture.nf, "N° ") }} <span class="requis">*</span>
+                {{ form_widget(formFacture.nf,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formFacture.nf) }}
+            </div>
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+
+                {{ form_label(formFacture.datecreation, "Date de création ") }} <span class="requis">*</span>
+                {{ form_widget(formFacture.datecreation,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formFacture.datecreation) }}
+            </div>
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+
+                {{ form_label(formFacture.lieu, "Lieu de création ") }}
+                {{ form_widget(formFacture.lieu,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formFacture.lieu) }}
+            </div>
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+
+                {{ form_label(formFacture.additionnelle, "Date additionnelle ") }}
+                {{ form_widget(formFacture.additionnelle,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formFacture.additionnelle) }}
+            </div>
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+
+                {{ form_label(formFacture.datead, " ") }}
+                {{ form_widget(formFacture.datead,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formFacture.datead) }}
+            </div>
+
+        </div>
+        <hr>
+        {{ form_end(formFacture) }}
+        <br>
+
+        {{ form_start(formVendeur) }}
+        <div class="row">
+            <div class="col-md-5 col-sm-12 col-xs-12 ">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                <h2>Vendeur</h2>
+                {{ form_label(formVendeur.user, "responsable de vente ") }}
+                {{ form_widget(formVendeur.user,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formVendeur.user) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                {{ form_label(formVendeur.nom, "Nom") }} <span class="requis">*</span>
+                {{ form_widget(formVendeur.nom,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formVendeur.nom) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                {{ form_label(formVendeur.nifselect, " ") }}
+                {{ form_widget(formVendeur.nifselect,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formVendeur.nifselect) }}
+            </div>
+            <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                {{ form_label(formVendeur.nif, " ") }}
+                {{ form_widget(formVendeur.nif,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formVendeur.nif) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                {{ form_label(formVendeur.adresse, "N° et nom de rue") }}
+                {{ form_widget(formVendeur.adresse,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formVendeur.adresse) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                {{ form_label(formVendeur.codepostal, "Code postal") }}
+                {{ form_widget(formVendeur.codepostal,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formVendeur.codepostal) }}
+            </div>
+            <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                {{ form_label(formVendeur.ville, "Ville") }}
+                {{ form_widget(formVendeur.ville,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formVendeur.ville) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                {{ form_label(formVendeur.email, "Adresse email") }}
+                {{ form_widget(formVendeur.email,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formVendeur.email) }}
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                {{ form_label(formVendeur.siteweb, " Site internet") }}
+                {{ form_widget(formVendeur.siteweb,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formVendeur.siteweb) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                {{ form_label(formVendeur.fax, "Fax") }}
+                {{ form_widget(formVendeur.fax,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formVendeur.fax) }}
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                {{ form_label(formVendeur.telephone, " Téléphone") }}
+                {{ form_widget(formVendeur.telephone,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formVendeur.telephone) }}
+            </div>
+        </div>
+        {{ form_end(formVendeur) }}
+        </div>
+            <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+            </div>
+                <div class="col-md-5 col-sm-12 col-xs-12 form-group">
+                    {{ form_start(formProfessionnel) }}
+                    <h2>Acheteur</h2>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(formProfessionnel.nom, "Nom") }} <span class="requis">*</span>
+                            {{ form_widget(formProfessionnel.nom,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formProfessionnel.nom) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(formProfessionnel.nifselect, " ") }}
+                            {{ form_widget(formProfessionnel.nifselect,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formProfessionnel.nifselect) }}
+                        </div>
+                        <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(formProfessionnel.nif, " ") }}
+                            {{ form_widget(formProfessionnel.nif,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formProfessionnel.nif) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(formProfessionnel.adresse, "N° et nom de rue") }} <span class="requis">*</span>
+                            {{ form_widget(formProfessionnel.adresse,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formProfessionnel.adresse) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(formProfessionnel.codepostal, "Code postal") }}
+                            {{ form_widget(formProfessionnel.codepostal,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formProfessionnel.codepostal) }}
+                        </div>
+                        <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(formProfessionnel.ville, "Ville") }}
+                            {{ form_widget(formProfessionnel.ville,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formProfessionnel.ville) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(formProfessionnel.email, "Adresse email") }}
+                            {{ form_widget(formProfessionnel.email,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formProfessionnel.email) }}
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(formProfessionnel.siteweb, " Site internet") }}
+                            {{ form_widget(formProfessionnel.siteweb,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formProfessionnel.siteweb) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(formProfessionnel.fax, "Fax") }}
+                            {{ form_widget(formProfessionnel.fax,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formProfessionnel.fax) }}
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(formProfessionnel.telephone, " Téléphone") }}
+                            {{ form_widget(formProfessionnel.telephone,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formProfessionnel.telephone) }}
+                        </div>
+                    </div>
+                    {{ form_end(formProfessionnel) }}
+                </div>
+        </div>
+<hr>
+        <br>
+        {{ form_start(formPanier) }}
+        <div class="row">
+
+                <div class="col-md-5 col-sm-12 col-xs-12 form-group">
+                    nom
+                    {{ form_label(formPanier.name, " ") }}
+                    {{ form_widget(formPanier.name,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formPanier.name) }}
+                </div>
+                <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                    Réf
+                    {{ form_label(formPanier.reference, " ") }}
+                    {{ form_widget(formPanier.reference,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formPanier.reference) }}
+                </div>
+                <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                    Qté
+                    {{ form_label(formPanier.qte, " ") }}
+                    {{ form_widget(formPanier.qte,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formPanier.qte) }}
+                </div>
+                <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                    PU HT
+                    {{ form_label(formPanier.prixVente, " ") }}
+                    {{ form_widget(formPanier.prixVente,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formPanier.prixVente) }}
+                </div>
+                <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                    TVA
+                    {{ form_label(formPanier.tva, " ") }}
+                    {{ form_widget(formPanier.tva,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formPanier.tva) }}
+                </div>
+                <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                    TOTAL HT
+                    {{ form_label(formPanier.totalHT, " ") }}
+                    {{ form_widget(formPanier.totalHT,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formPanier.totalHT) }}
+                </div>
+                <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                    TOTAL TTC
+                    {{ form_label(formPanier.totalTTC, " ") }}
+                    {{ form_widget(formPanier.totalTTC,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formPanier.totalTTC) }}
+                </div>
+            </div>
+    </div>
+
+    {{ form_end(formPanier) }}
+
+{% endblock %}
+
+
+
+
+
+
+
+

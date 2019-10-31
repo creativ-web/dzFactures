@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Bcs list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Nf</th>
+                <th>Datecreation</th>
+                <th>Lieu</th>
+                <th>Additionnelle</th>
+                <th>Dateadd</th>
+                <th>Moderegle</th>
+                <th>Dateregle</th>
+                <th>Objet</th>
+                <th>Etat</th>
+                <th>Montantpaye</th>
+                <th>Paiementrecu</th>
+                <th>Dateenvois</th>
+                <th>Nc</th>
+                <th>Nomvendeur</th>
+                <th>Informations</th>
+                <th>Editerpar</th>
+                <th>Expedierpar</th>
+                <th>Receptionnerpar</th>
+                <th>Ncommande</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bc in bcs %}
+            <tr>
+                <td><a href="{{ path('admin_bcs_show', { 'id': bc.id }) }}">{{ bc.id }}</a></td>
+                <td>{{ bc.type }}</td>
+                <td>{{ bc.nf }}</td>
+                <td>{% if bc.datecreation %}{{ bc.datecreation|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ bc.lieu }}</td>
+                <td>{{ bc.additionnelle }}</td>
+                <td>{% if bc.dateadd %}{{ bc.dateadd|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ bc.moderegle }}</td>
+                <td>{{ bc.dateregle }}</td>
+                <td>{{ bc.objet }}</td>
+                <td>{{ bc.etat }}</td>
+                <td>{{ bc.montantpaye }}</td>
+                <td>{% if bc.paiementrecu %}{{ bc.paiementrecu|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if bc.dateenvois %}{{ bc.dateenvois|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ bc.nc }}</td>
+                <td>{{ bc.nomvendeur }}</td>
+                <td>{{ bc.informations }}</td>
+                <td>{{ bc.editerpar }}</td>
+                <td>{{ bc.expedierpar }}</td>
+                <td>{{ bc.receptionnerpar }}</td>
+                <td>{{ bc.ncommande }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_bcs_show', { 'id': bc.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_bcs_edit', { 'id': bc.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_bcs_new') }}">Create a new bc</a>
+        </li>
+    </ul>
+{% endblock %}

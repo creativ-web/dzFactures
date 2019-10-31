@@ -1,0 +1,102 @@
+
+
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+    <div class="container">
+
+
+
+        <div class="row">
+            <div class="col-md-4" style="    margin-top: -25px;"><h1 style="position: relative; float: left;">État du stock</h1>
+
+
+            </div>
+            <div class="col-md-2 ht"></div>
+            <div class="col-md-2 ttc"></div>
+            <div class="col-md-2 tva"></div>
+        </div>
+        <br>
+        <table id="example" class="display" cellspacing="0" width="100%" style="text-transform: uppercase;">
+            <thead>
+            <tr>
+                <th>#CODE</th>
+                <th>NOM</th>
+                <th>RÉFÉRENCE</th>
+                <th>FAMILLE</th>
+                <th>FOURNISSEUR</th>
+                <th> H.T</th>
+                <th>T.T.C</th>
+                <th>TVA</th>
+                <th>STOCK</th>
+                <th>QTE</th>
+                <th>DATE D'ENTRER</th>
+                <th>ACTION</th>
+            </tr>
+            </thead>
+
+
+            <tbody>
+
+            {% set TTC = 0 %}
+            {% set Tva = 0 %}
+            {% set qte = 0 %}
+            {% for stock in stocks %}
+                {% set Tva =  stock.Tva.valeur /100 * stock.prixHT %}
+                {% set TTC = stock.prixHT + Tva  %}
+
+                <tr>
+
+                    <td>{{ stock.barcode }}</td>
+                    <td>{{ stock.name }} </td>
+                    <td>{{ stock.reference }}</td>
+                    <td>
+                        {% if stock.familles.name is defined %}
+                            {{ stock.familles.name }}
+                            {% else %}
+
+                       {% endif %}
+                    </td>
+                    <td>{{ stock.fournisseurs }}</td>
+                    <td>{{ stock.prixHT }}</td>
+                    <td> {{ TTC }} </td>
+                    <td>{{ Tva }}</td>
+                    <td>{{ stock.zonnestocks }}</td>
+                    <td>
+                        {% if stock.qte >= stock.qtealert  %}
+                            <button class="btn btn-success btn-xs" style="background-color: #1abb9c;">{{ stock.qte }}  en stock</button>
+                        {% else %}
+                            <button class="btn btn-warning btn-xs">non disponible</button>
+                        {% endif %}
+
+
+                    </td>
+                    <td>{{ stock.datentrer|date("d/m/Y")  }}</td>
+                    <td>
+                        <li role="presentation" class="dropdown" style="list-style: none;"> <a style="text-decoration: none;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <i class="fa fa-cog" aria-hidden="true" style="color: #333;"> <span class="caret"></span></i> </a> <ul class="dropdown-menu">
+                                <li><a href="{{ path('admin_produits_show', { 'id': stock.id }) }}">Afficher</a></li>
+                                <li><a href="{{ path('admin_produits_edit', { 'id': stock.id }) }}">Modifier</a></li>
+                            </ul> </li>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+
+
+
+
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+

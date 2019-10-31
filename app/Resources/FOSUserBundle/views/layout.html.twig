@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <title> e-Business</title>
+    <!-- Style core CSS -->
+    <link rel="stylesheet"  href="{{ asset('css/select2.css') }}" />
+    <link rel="stylesheet"  href="{{ asset('datatables/css/jquery.dataTables_themeroller.css') }}" />
+    <link rel="stylesheet"  href="{{ asset('css/core.css') }}" />
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link rel="stylesheet"  href="{{ asset('css/ie10-viewport-bug-workaround.css') }}" />
+    <!-- Custom styles for this template -->
+
+
+
+</head>
+
+
+<style>
+
+    body {
+        font-family: arial, sans-serif,tahoma;
+        background-color: #f7f7f7;
+        position: relative;
+        margin: 0px;
+        padding: 0px;
+        font-size: 12px;
+    }
+
+    .btn-glow.primary {
+        border-color: #2480c2;
+        color: #fff;
+        text-shadow: rgba(0,0,0,0.35) 0 1px 0;
+        background: #54b3ff;
+        background: -moz-linear-gradient(top, #54b3ff 0%, #0078d9 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #54b3ff), color-stop(100%, #0078d9));
+        background: -webkit-linear-gradient(top, #54b3ff 0%, #0078d9 100%);
+        background: linear-gradient(#54b3ff, #0078d9);
+        background: -o-linear-gradient(top, #54b3ff 0%, #0078d9 100%);
+        background: -ms-linear-gradient(top, #54b3ff 0%, #0078d9 100%);
+    }
+    .btn-glow {
+        font-size: 13px;
+        border-radius: 4px;
+        color: #333;
+        padding: 5px 10px;
+        text-align: center;
+        box-shadow: 0px 1px 0px 0px rgba(255,255,255,0.2) inset, 0px 1px 0px 0px #ccc;
+        display: inline-block;
+        border: 1px solid #e5e5e5;
+        vertical-align: middle;
+        cursor: pointer;
+        background: #ffffff;
+        background: -moz-linear-gradient(top, #fff 0%, #eef0f1 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #eef0f1));
+        background: -webkit-linear-gradient(top, #fff 0%, #eef0f1 100%);
+        background: -o-linear-gradient(top, #fff 0%, #eef0f1 100%);
+        background: -ms-linear-gradient(top, #fff 0%, #eef0f1 100%);
+        background: linear-gradient(to bottom, #fff 0%, #eef0f1 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#eef0f1',GradientType=0 );
+    }
+    .btn-glow.primary:hover {
+        background: #389beb;
+        background: -moz-linear-gradient(top, #389beb 0%, #0078d9 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #389beb), color-stop(100%, #0078d9));
+        background: -webkit-linear-gradient(top, #389beb 0%, #0078d9 100%);
+        background: linear-gradient(#389beb, #0078d9);
+        background: -o-linear-gradient(top, #389beb 0%, #0078d9 100%);
+        background: -ms-linear-gradient(top, #389beb 0%, #0078d9 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='rgb(56, 155, 235)', endColorstr='#0078d9',GradientType=0 );
+    }
+    .login-wrapper .box .login {
+        text-transform: uppercase;
+        font-size: 13px;
+        padding: 8px 30px;
+    }
+    .login-wrapper {
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+    }
+
+    .login-wrapper .box {
+        margin: 0 auto;
+        padding: 35px 0 30px;
+        float: none;
+        width: 400px;
+        border-radius: 2px;
+        background: #fff none repeat scroll 0 0;
+        border: 1px solid #e7eaec;
+        box-shadow: -6px 14px 39px -1px rgba(0,0,0,0.19);
+    }
+    .login-wrapper select.form-control, .login-wrapper .box input[type="text"], .login-wrapper .box input[type="password"] {
+        font-size: 15px;
+        height: 40px;
+        margin-bottom: 18px;
+        border-color: #b2bfc7;
+        padding-left: 12px;
+
+    }
+    ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+     font-style: italic;
+    }
+    ::-moz-placeholder { /* Firefox 19+ */
+        font-style: italic;
+    }
+    :-ms-input-placeholder { /* IE 10+ */
+        font-style: italic;
+    }
+    :-moz-placeholder { /* Firefox 18- */
+        font-style: italic;
+    }
+    .login-wrapper .box .content-wrap .help-block, .login-wrapper .box .content-wrap h6, .login-wrapper .box .content-wrap label {
+        text-align: left;
+        display: block;
+        color: #626262;
+    }
+
+    label {
+
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    .login-wrapper .box .content-wrap {
+        width: 82%;
+        margin: 0 auto;
+    }
+    .login-wrapper .box .content-wrap .help-block, .login-wrapper .box .content-wrap h6, .login-wrapper .box .content-wrap label {
+        text-align: left;
+        display: block;
+        color: #626262;
+    }
+    .login-wrapper .box h6 {
+        text-transform: uppercase;
+        margin: 0 0 30px 0;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .login-wrapper .box .remember label {
+        float: left;
+        color: #4a576a;
+        font-size: 13px;
+        font-weight: normal;
+
+    }
+    .login-wrapper .logo {
+        margin-bottom: 25px;
+        position: relative;
+        left: -2px;
+    }
+    .login-wrapper .box .remember input[type="checkbox"] {
+        float: left;
+        margin-right: 8px;
+    }
+    a {
+        color: #428bca;
+        text-decoration: none;
+    }
+    html.main_html body, body {
+        padding-top: 49px;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .form-control {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.428571429;
+        color: #555555;
+        vertical-align: middle;
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+        -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+    .login-wrapper .box .remember {
+        display: block;
+        overflow: hidden;
+        margin-bottom: 20px;
+        margin-top: -8px;
+    }
+    input, button, select, textarea {
+        font-family: Tahoma, Geneva, sans-serif;
+    }
+
+</style>
+
+
+<body class="login">
+
+<div class="login-wrapper" style="top: 20px;">
+
+
+
+    <a href=""><br>
+        <img src="{{ asset('image/logo.svg') }}" class="logo" width="318px" height="59px" alt="- Pour créer et gérer facilement vos factures et devis en ligne">
+    </a>
+
+
+
+
+                {% block fos_user_content %}
+                {% endblock fos_user_content %}
+
+
+
+
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,178 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+
+
+
+        <div class="row">
+            <div class="col-md-4" style="    margin-top: -25px;"><h1 style="position: relative; float: left;">Revenus / Facture</h1>
+            <span style=" margin-top: 23px; margin-left: 8px;position: absolute;color: #58b758;">
+                <a style="color:#58b758; " href="{{ path('admin_factures_new') }}">Nouvelle facture</a>
+
+            </span>
+
+            </div>
+            <div class="col-md-2 ht"></div>
+            <div class="col-md-2 ttc"></div>
+            <div class="col-md-2 tva"></div>
+        </div>
+        <br>
+
+        <div id="list_table" class="row">
+
+            <table id="example2" class="display" cellspacing="0" width="100%" style="text-transform: uppercase;">
+                <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>DOCUMENTS DE GESTION DE STOCK</th>
+                    <th>TOTAL HT</th>
+                    <th>MONTANT TTC</th>
+                    <th>CLIENT</th>
+                    <th>DATE DE CRÉATION</th>
+                    <th>PAIEMENT REÇU LE</th>
+                    <th>PRODUIT</th>
+                    <th>ETAT</th>
+                    <th>FACTURÉ</th>
+                    <th> </th>
+
+                </tr>
+                </thead>
+
+
+                <tbody>
+
+                {% for facture in factures %}
+                    <tr>
+                        <td>{{ facture.id }}</td>
+                        <td></td>
+                        <td>
+                            {% set sumHT = 0 %}
+                            {% for facture in facture.ventes %}
+                                {% set sumHT = sumHT + facture.totalHT %}
+                            {% endfor %}
+
+                            {{ sumHT}} DA
+                        </td>
+                        <td>
+                            {% set sumTTC = 0 %}
+                            {% for facture in facture.ventes %}
+                                {% set sumTTC = sumTTC + facture.totalTTC %}
+                            {% endfor %}
+
+                            {{ sumTTC }} DA
+                        </td>
+                        <td>{{ facture.acheteur.nom }}</td>
+                        <td>{{ facture.datecreation|date("d/m/Y") }}</td>
+                        <td>{{ facture.datecreation|date("d/m/Y") }}</td>
+                        <td>
+                            {% for facture in facture.ventes %}
+                               {{ facture.produits.name }},
+                            {% endfor %}
+                        </td>
+                        <td>
+
+
+
+
+
+                                <div class="btn-group" style="    height: 20px; ">
+                   {% if facture.etat == 'Créé' %}
+
+			<span data-toggle="dropdown" class="colored_select badge status-issued" style="background-position: -100px 0;" data-original-title="" title="">
+
+				<i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+				<span class="">{{ facture.etat }}</span>
+
+				<span class="caret"></span>
+			</span>
+
+                       {% elseif facture.etat =='Payé' %}
+
+                           <span data-toggle="dropdown" class="colored_select badge2 status-issued" style="background-position: -100px 0;" data-original-title="" title="">
+
+				<i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+				<span class="">{{ facture.etat }}</span>
+
+				<span class="caret"></span>
+			</span>
+                   {% elseif facture.etat =='Payé en partie' %}
+                       {% set pourcentage = facture.montantpaye*100/ sumTTC %}
+
+                       <div class="progress">
+                           <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                                aria-valuemin="0" aria-valuemax="100" style="width:{{ pourcentage|round(1, 'floor')  }}%">
+                           </div>
+
+                       </div>
+                       <span class="enparti" >{{ facture.etat }}</span>
+
+                   {% endif %}
+
+                                    <ul id="" class="dropdown-menu pull-right hidden-print" role="menu">
+
+                                        <li>
+                                            <a href="#" onclick="change_invoice_status('17701215', 'issued', 'issued', 'Créé');; return false;">Créé</a>
+                                        </li>
+
+
+                                        <li>
+                                            <a href="#" onclick="change_invoice_status('17701215', 'paid', 'paid', 'Payé');; return false;">Payé</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" onclick="$('#myModal').modal();$('#partial_payment_invoice_id').val(17701215);$('#partial_payment_price').val();$('#partial_payment_price').focus();; return false;">Payé en partie</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" onclick="change_invoice_status('17701215', 'sent', 'sent', 'Envoyé');; return false;">Envoyé</a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+
+
+
+                        </td>
+                        <td></td>
+                        <td>
+                            <div class="btn-group pull-right">
+                                <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                    <i class="fa fa-cog"></i> <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a title="Afficher" class="cms_show" href="{{ path('admin_factures_show', { 'id': facture.id }) }}">Afficher</a></li>
+
+
+                                    <li><a class="cms_edit" href="{{ path('admin_factures_edit', { 'id': facture.id }) }}">Modifier</a></li>
+                                    <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="cms_delete " data-remote="true" rel="nofollow" data-method="delete" href="/products/9969583">Effacer</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_factures_new') }}">Create a new facture</a>
+        </li>
+    </ul>
+{% endblock %}

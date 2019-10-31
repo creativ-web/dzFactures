@@ -1,0 +1,1156 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <title> e-Business</title>
+    <!-- Style core CSS -->
+    <link rel="stylesheet"  href="{{ asset('css/select2.css') }}" />
+    <link rel="stylesheet"  href="{{ asset('datatables/css/jquery.dataTables_themeroller.css') }}" />
+    <link rel="stylesheet"  href="{{ asset('css/core.css') }}" />
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link rel="stylesheet"  href="{{ asset('css/ie10-viewport-bug-workaround.css') }}" />
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet"  href="{{ asset('css/custom.css') }}" />
+    <link rel="stylesheet"  href="{{ asset('css/normalize.css') }}" />
+    <link rel="stylesheet"  href="{{ asset('css/main.css') }}" />
+    <link rel="stylesheet"  href="{{ asset('css/jquery.steps.css') }}" />
+    <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}">
+
+    <style>
+        .dropdown-menu > li > a {
+            font-size: 13px;
+        }
+        .bottom-info-menu li .glyphicon, .bottom-info-menu li>a i {
+            display: block;
+            float: right;
+            text-align: center;
+            width: 20px;
+        }
+        ul>li.bottom-menu-info.social {
+            border-top: 1px solid #ddd;
+            background-color: #fff;
+            padding: 10px 15px;
+        }
+        ul > li.bottom-menu-info.social > a {
+            background-color: rgb(255, 255, 255);
+            clear: none;
+            display: block;
+            float: left;
+            font-size: 1.2em;
+            color: rgb(115, 115, 115);
+            margin: 0px 14px 0px 0px;
+            padding: 0px;
+        }
+        ul.dropdown-menu.bottom-info-menu>li:hover a, ul.dropdown-menu.bottom-info-menu>li a:focus, ul.dropdown-menu.bottom-info-menu>li a:hover {
+            background-image: none !important;
+            background-color: #f1f1f1 !important;
+            background: #f1f1f1 !important;
+            color: #000 !important;
+        }
+        .blank-state .center {
+            margin: 0 auto;
+            text-align: center;
+            width: 42%;
+        }
+        .blank-state .center a {
+            margin-top: 30px;
+        }
+        .btn-glow.btn-lg {
+            font-size: 14px;
+            padding: 12px;
+        }
+        .blank-state {
+            border-top: 1px solid #edeff1;
+            padding-top: 40px;
+            box-shadow: 0px 4px 9px -6px rgba(0,0,0,0.12) inset;
+            margin-bottom: 100px;
+        }
+        body{
+            padding-top: 0;
+        }
+    </style>
+</head>
+{% block body %}
+
+    <style type="text/css">
+        body{
+            background: white;
+        }
+        @media all{
+            .invoice_outline {
+                margin-left: 0.75cm;
+                margin-right: 0.75cm;
+                min-height: 20cm;
+                margin-bottom: 0in;
+            }
+
+            /* FONTS */
+            .invoice_outline *:not(.fa) {
+                font-family: 'arial';
+                font-size: 13px;
+                line-height: 17px;
+            }
+
+
+
+            .seller_buyer .vert_align_top > strong {display:none;}
+            .seller_buyer td {vertical-align: top;}
+
+            p {
+                margin-bottom: 0px;
+                margin-top: 0px;
+            }
+
+            /* ------------------------------------------------- */
+
+            /* INVOICE HEADER CONTAINER */
+            #invoice_header {
+                clear: both;
+                display: table;
+                width: 100%;
+                text-align: left;
+                height: 3.5cm;
+                max-height: 2.5cm;
+                line-height: 1.4em;
+            }
+            /* headers */
+            #invoice_header span { }
+
+            /* INVOICE'S DATA (NUMBER, DATE ETC) */
+            #info {
+                display: table-cell;
+                width: 55%;
+                text-align: left;
+            }
+
+            #document_id {
+                margin-bottom: 6px;
+            }
+            #document_id span {
+                font-weight: bold;
+                font-size: 1.25em;
+            }
+            /* DOCUMENT TYPE */
+            #document_type {}
+            /* DOCUMENT NUMBER */
+            #document_number {}
+            /* BOTH ABOVE */
+            #info p:first-of-type {}
+
+
+
+
+            /* LOGO */
+            #logo {
+                display: table-cell;
+                width: 55%;
+                vertical-align: top;
+                text-align: center;
+                height: auto;
+            }
+            #logo_place {
+                display: block;
+                position: relative;
+                width: 100% !important;
+                max-width:8.4cm;
+                max-height: 3.5cm;
+                height: auto;
+            }
+            /* LOGO IMAGE ONLY */
+            #logo img {
+                display:block;
+                position:relative;
+                width:auto;
+                max-width:7.4cm;
+                max-height: 3.5cm;
+            }
+
+
+            /* ------------------------------------------------- */
+
+
+            /* ROW WITH SELLER AND BUYER IDENTIFICATION DATA */
+            #invoice_traders {
+                clear: both;
+                display: table;
+                width: 100%;
+                text-align: left;
+                width:100%;
+                margin-bottom: 1em;
+                line-height: 1.4em;
+            }
+            /* labels */
+            #invoice_traders span {}
+
+            /* SELLER'S IDENTIFICATION DATA */
+            #seller {
+                display: table-cell;
+                width: 55%;
+                padding-right: 2cm;
+            }
+
+            /* BUYER'S IDENTIFICATION DATA */
+            #buyer {
+                display: table-cell;
+                width: 45%;
+                padding-right: 1.5cm;
+                height: 3.25cm;
+                min-height: 3.25cm
+            }
+
+            #buyer p:first-of-type, #seller p:first-of-type {
+
+            }
+
+            #invoice_traders .header {
+                display: table-cell;
+                font-weight: bold;
+            }
+
+
+            /* ------------------------------------------------- */
+
+
+            /* TITLE */
+            #title {
+                clear: both;
+                width: 100%;
+                display: block;
+                text-align: left;
+                font-weight: bold;
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
+
+
+            /* ------------------------------------------------- */
+
+
+            /* TABLE WITH PRODUCTS */
+            th.width0,
+            td.width0{width:1%;}
+            th.width1,
+            td.width1{width:2%;}
+            th.width2,
+            td.width2{width:5%;}
+            th.width3,
+            td.width3{width:7%;}
+            th.width4,
+            td.width4{width:25%;}
+
+            .main_inv_table th, .advanced_header_titles th {
+                background-color: #DDDDDD;
+                border-bottom: 1px solid #DDDDDD;
+                border-right: 1px solid #FFFFFF;
+                color: #000000;
+                vertical-align: middle;
+            }
+
+            .main_inv_table th:first-of-type, #rel_adv_table th:first-of-type {border-left: 1px solid #DDDDDD;}
+            .main_inv_table th:last-of-type, #rel_adv_table th:last-of-type {border-right: 1px solid #DDDDDD;}
+            table.main_inv_table .no_border td {border:0;}
+            table.main_inv_table td {
+                border:1px solid #DDDDDD;
+                vertical-align: top;
+            }
+
+            .main_inv_table td,
+            .main_inv_table th,
+            #positions_summary td {
+                padding:2px 5px;
+            }
+
+
+            /* ------------------------------------------------- */
+
+
+            /* TABLE WOTH TOTALS */
+            table.to_right{width:100%;}
+            table.to_right th{text-align:right;}
+            table.to_right td{width:15%;text-align:right;}
+            .totals_inv_table td, .totals_inv_table th {padding:1px 5px;}
+            .totals_inv_table {
+                margin-top: 0.5em;
+            }
+
+
+            /* ------------------------------------------------- */
+
+
+            /* TABLE WITH RELATED ADVANCES */
+            .advanced_header, .advanced_header_titles th {
+                padding-top: 3px !important;
+                padding-bottom: 1px !important;
+            }
+            .advanced_header {
+                white-space: nowrap;
+            }
+            #related_advances_title_row {display:none;}
+            #related_advances_title_inside {display: inline !important;}
+
+
+
+            /* ------------------------------------------------- */
+
+
+            /* TEXTS UNDER TOTALS */
+            #summary {
+                clear: both;
+                width: 100%;
+                display: block;
+                text-align: left;
+                line-height: 1.4em;
+            }
+
+            #to_pay {
+                font-size: 1em;
+                font-weight: bold;
+            }
+            #to_pay_amount {
+                font-size: 1.25em;
+            }
+
+
+            /* ------------------------------------------------- */
+
+
+            /* SIGNATURES AT THE END */
+            #invoice_signatures {
+                clear: both;
+                display: table;
+                width: 100%;
+            }
+            #invoice_signatures p {margin: 0px;}
+            #invoice_signatures > div > p:first-of-type {margin-top: 1.5em;}
+
+            /* headers */
+            #invoice_signatures span {font-weight: bold;}
+
+            /* SELLER */
+            #seller_sign {
+                display: table-cell;
+                width: 50%;
+                text-align: center;
+            }
+
+            /* BUYER */
+            #buyer_sign {
+                display: table-cell;
+                width: 50%;
+                text-align: center;
+            }
+
+            #custom_img {
+                max-width: 50%;
+            }
+
+
+            /* ------------------------------------------------- */
+
+
+            /* ONLINE PAYMANT BUTTON */
+            .payment_button {display:block;float:right;text-align:right;height:43px;width:190px;z-index:999;}
+            .payment_button img {display:block;float:right;text-align:right;width:190px;height:43px;z-index:999;}
+
+
+            /* ------------------------------------------------- */
+
+
+            /* HELPERS */
+            .text_center {text-align:center;}
+            .text_left {text-align:left;}
+            .text_right {text-align:right;}
+            .number,
+            .digit {white-space:nowrap;text-align:right;}
+            .nowrap, .no_wrap {white-space:nowrap;}
+            .nowrap-lines {white-space: pre;}
+            .hidden {display:none;}
+            .full_width, .full-width {width:100%;}
+            .half_width {width:50%;}
+            .no_border {border:0;}
+            .no-page-break, .nobreak {
+                page-break-inside: avoid !important;
+            }
+
+
+
+            #rel_adv_table {
+                width: 100%;
+                margin-top: 0.35em;
+            }
+            #rel_adv_table th {
+                border-right: 1px solid #FFFFFF;
+            }
+            #rel_adv_table th:last-of-type {
+                border-right: 1px solid #DDDDDD;
+            }
+            #realted_invoices {
+                background-color: transparent;
+                border: 0px !important;
+            }
+
+            #exchange_currency,
+            #exchange_currency td {
+                width: 100%;
+            }
+
+
+
+            /* footer preview only - DO NOT CHANGE - changes don't work in print */
+            #company_info_footer {
+                border:0;
+                padding:0;
+                margin:0;
+                vertical-align:bottom;
+                padding-top:15px;
+                padding-left:0px;
+                padding-right:0px;
+            }
+            #company_info_footer .small_text.text_center {
+                width:100%;
+                padding-left: 22%;
+                padding-right: 22%;
+            }
+            #company_info_footer .small_text.text_center span {
+                max-width: 407px;
+                display: block;
+                overflow: hidden;
+                height: 50px !important;
+                line-height: 11.3px !important;
+                font-family: arial,sans-serif,tahoma !important;
+                font-size:9.85px !important;
+                letter-spacing: normal !important;
+            }
+
+            #corrected_content {
+                width: 100%;
+                margin-top: 6pt;
+                margin-bottom: 12pt;
+            }
+
+            #corrected_content th,
+            #corrected_content td {
+                width: 50%;
+                vertical-align: top;
+                text-align: left;
+            }
+
+            #corrected_content th {
+                text-align: center;
+            }
+
+            /* EXTRA NOTES ON EXTRA PAGE */
+            #extra_page {
+                clear: both;
+                display: block;
+                text-align: left;
+            }
+
+            #name_col,
+            .name_col.related_advance {
+                text-align: left;
+            }
+
+            /* ------------------------------------------------- */
+            /* payments list */
+            #invoice_payments {
+                text-align: left;
+                margin-top: 0.5em;
+            }
+
+            #invoice_payments_title {
+                width: 100%;
+                box-sizing: border-box;
+                border: 1px solid #DDDDDD;
+                text-align: left !important;
+                background-color: #DDDDDD;
+                padding: 3px 5px 1px 5px;
+                font-weight: bold;
+            }
+
+            #invoice_payments_list {
+                box-sizing: border-box;
+                width: 100%;
+                display: block;
+                border-top: 0px;
+            }
+
+            .invoice_payments_payment {
+                display: block;
+                box-sizing: border-box;
+                width: 100%;
+                border-bottom: 1px solid #DDDDDD;
+                border-left: 1px solid #DDDDDD;
+                border-right: 1px solid #DDDDDD;
+                padding: 2px 5px;
+            }
+
+            .invoice_payments_payment > div {
+                display: inline-block;
+            }
+
+            .invoice_payments_provider::before {
+                content: '- ';
+            }
+
+
+        }
+
+        @page {
+            size: A4;
+            margin: 0.5cm;
+            margin-bottom: 0cm;
+        }
+
+        @media screen {
+            .invoice_preview.invoice {
+                width:210mm;
+                padding: 0px;
+                padding-top: 0.5cm;
+                border: solid 1px;
+                background-color: white;
+                box-shadow: rgba(0, 0, 0, 0.75) 1px 3px 5px 0px;
+                font-size: 110%;
+                min-width: 700px;
+
+                border-width: 1px;
+                border-style: solid;
+                border-color: rgb(221, 221, 221);
+                border-image: initial;
+                padding: 20px 20px 0px;
+                overflow: visible;
+                margin: auto auto 20px;
+            }
+            .invoice_outline {margin-top:0.25in;margin-bottom:0.25in;
+                margin-right:0.75cm;
+                margin-left:0.75cm;
+            }
+        }
+
+
+        @media print{
+            .invoice_outline {
+                margin-top:0.7cm;
+                margin-bottom:0in;
+                margin-right:0.7cm;
+                margin-left:0.7cm;
+                background-color: transparent;
+                background-position: 50% 15cm !important;
+                min-height: 25cm;
+                padding-top: 0px;
+            }
+
+            .invoice_outline *:not(.fa) {
+                font-family: 'arial';
+                font-size: 9.35pt;
+            }
+
+            #buyer a {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            #title {
+                font-size: 9.75pt;
+            }
+
+        }
+
+        section#description_footer {
+            border:0;
+            padding:0;
+            margin:0;
+            vertical-align:bottom;
+            padding-top:15px;
+            padding-left:0px;
+            padding-right:0px;
+            padding-left: 22%;
+            padding-right: 22%;
+            margin-top: 40px;
+        }
+        section#description_footer span {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 407px;
+            display: block;
+            overflow: hidden;
+            line-height: 11.3px !important;
+            font-family: arial,sans-serif,tahoma !important;
+            font-size:9.85px !important;
+            letter-spacing: normal !important;
+            text-align: center;
+        }
+
+        .no-page-break {
+            page-break-before: auto;
+            page-break-inside: avoid !important;
+        }
+
+        /* fix for multipage table printing issue */
+        @media print {
+            table.main_inv_table {border-collapse: collapse;}
+            table.main_inv_table tr { page-break-inside: avoid !important; }
+            table.main_inv_table td { page-break-inside: avoid !important; }
+            table.main_inv_table thead {display: table-header-group !important;}
+
+
+
+
+            .hidden-print, .no-print, .noprint {
+                display: none !important;
+            }
+            .hidden {
+                display: none !important;
+            }
+            .show-print {
+                display: block !important;
+            }
+
+            .pull-right {float: right;}
+
+            a.btn-print {
+                color: #333333 !important;
+                background-color: #FFFFFF !important;
+                border: 1px solid #BEBEBE !important;
+                display: inline-block;
+                padding: 9px 15px 7px 15px!important;
+                margin-bottom: 0;
+                font-size: 9pt !important;
+                font-weight: normal;
+                line-height: 1em !important;
+                text-align: center !important;
+                vertical-align: middle !important;
+                border-radius: 4px !important;
+                white-space: nowrap !important;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                -o-user-select: none;
+                user-select: none;
+                text-decoration: none;
+            }
+            .content.wide-content.incomplete {
+                display: none !important;
+            }
+            #incomplete_safe_print {
+                margin-top: 100pt;
+                width: 100%;
+                text-align: center;
+                font-size: 14pt;
+                font-weight: bold;
+                line-height: 20pt;
+                display: block !important;
+            }
+
+            span.item_description {
+                display: block;
+            }
+
+            .profiler-results,
+            .profiler-popup,
+            .profiler-queries,
+            .profiler-queries-bg {
+                display: none !important;
+            }
+
+            .bilangual table.main_inv_table th {
+                white-space: normal !important;
+            }
+
+
+
+            #HW_frame_cont, li.hw_badge {
+                display: none;
+            }
+
+            #sx_container {
+                display:none;
+            }
+
+            #company_info_footer,
+            section#description_footer span {
+                height: auto;
+                max-height: 50px;
+                padding-top: 0px;
+            }
+
+            section#description_footer {
+                margin-top: 15px;
+            }
+
+        }
+        @media screen {
+            .hidden-screen {
+                display: none !important;
+            }
+            .show-screen {
+                display: block !important;
+            }
+            section#description_footer {
+                width:100%;
+                margin-top: 30px;
+            }
+
+            section#description_footer span {
+                height: 50px !important;
+            }
+
+        }
+
+    </style>
+    <div class="container">
+        <br>
+        <div class="no_print text-center">
+
+            <a class="btn-glow" href="{{ path('proforma_pdf', { 'id': facture.id }) }}">Télécharger en PDF</a>
+            <a class="btn-glow" title="Ajouter rapidement une facture de dépense. Vous pouvez aussi télécharger sous XML ou JSON. " href="http://creativ-dz.com">Importer / ajouter aux dépenses</a>
+            <br><br>
+        </div>
+
+        <div class="_invoice_body" style=" margin-left: 20%;">
+
+
+
+
+            <div class="invoice-responsive">
+
+                <div class="invoice_preview invoice col-sm-12">
+
+                    <div class=" vat"><div class="invoice_outline standard1_droit">
+
+
+
+
+
+                            <section id="invoice_header">
+                                <div id="logo">
+                                    <div id="logo_place">
+                                        {% for logo in logo %}
+                                            <img src="{{ asset('imgProduit/') }}{{ logo.path }}" alt="" width="250" height="">
+
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div id="info">
+                                    <p id="document_id">
+                                        <span id="document_type">Facture Proforma N° </span>
+                                        <span id="document_number">{{ facture.nf }}</span>
+                                    </p>
+                                    <p>
+                                    </p><p id="document_date"><span>Date de création : </span> {{ facture.datecreation|date('d-m-Y') }}</p>
+
+                                    <p id="document_selldate"><span>{{ facture.additionnelle }} :</span> {{ facture.dateadd|date('d-m-Y')  }}</p>
+
+                                    <p></p>
+                                </div>
+
+                            </section>
+
+
+                            <!-- personnalisation: https://github.com/vosfactures/Formats/blob/master/partials/standard1.handlebars -->
+
+
+                            <section id="invoice_traders">
+                                <div style="display:table-row">
+
+
+                                </div>
+                                <div style="display:table-row">
+                                    <div id="seller">
+                                        <div class="box">
+                                            <p id="seller_name">
+
+                                                {{ facture.departements.nom }}
+
+                                            </p>
+                                            <p id="seller_address"> {{ facture.departements.adresse}} {{ facture.departements.codepostal}}, {{ facture.departements.ville}}</p>
+
+
+                                            <p>
+                                                <span id="seller_swift"><span>{{ facture.departements.nifselect}}:</span> {{  facture.departements.nif }}</span>
+                                            </p>
+
+                                            <p id="seller_email"><span>{{ facture.departements.email}} </span> &nbsp;&nbsp; <span class="nowrap">{{ facture.departements.siteweb}} </span></p>
+
+
+                                            <p id="seller_phone"><span><span>T :</span> {{ facture.departements.telephone}}</span> &nbsp;&nbsp; <span class="nowrap"><span>F :</span> {{ facture.departements.fax}}</span></p>
+
+
+
+
+
+                                        </div>
+                                    </div>
+                                    <div id="buyer">
+
+                                        <div class="box">
+                                            <p>
+                                                <a href="/clients/7772190" class="incognito-link"> {{ facture.acheteur.nom}}</a>
+                                            </p>
+
+                                            <p class="buyer_address">{{ facture.acheteur.adresse}}<br>{{ facture.acheteur.codepostal}} {{ facture.acheteur.pays}}, {{ facture.acheteur.ville}}</p>
+                                            <p class="buyer_taxno"><span>{{ facture.acheteur.nifselect}} </span>{{ facture.acheteur.nif}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+
+                            <!-- si vous souhaitez personnaliser le tableau, vous pouvez le remplacer par https://github.com/vosfactures/Formats/blob/master/partials/positions_reductions.handlebars  -->
+                            <table class="main_inv_table full_width" id="pos_table">
+
+                                <thead>
+                                <tr>
+                                    <th class="width1 no_wrap nr_col nr_col" id="nr_col">
+                                        N°
+                                    </th>
+                                    <th class="width4 text_center name_col" id="name_col">
+                                        Désignation
+                                    </th>
+
+                                    <th class="width2 text_center code_col" id="code_col">
+                                        Réf.
+                                    </th>
+
+
+                                    <th class="width2 text_center no_wrap quantity_col" id="quantity_col">
+                                        Qté
+                                    </th>
+
+
+
+                                    <th class="width3 text_center no_wrap price_net_col" id="price_net_col">
+                                        PU HT
+                                    </th>
+                                    <th class="width3 text_center total_price_net_col" id="total_price_net_col">
+                                        Total HT
+                                    </th>
+                                    <th class="width1 text_center no_wrap tax_col" id="tax_col">
+                                        TVA
+                                    </th>
+                                    <th class="width3 text_center tax_value_col" id="tax_value_col">
+                                        Montant TVA
+                                    </th>
+                                    <th class="width3 no_wrap text_center total_price_gross_col" id="total_price_gross_col">
+                                        Total TTC
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% set sumHT = 0 %}
+                                {% set sumTTC = 0 %}
+                                {% set sumTVA = 0 %}
+                                {% for produit in facture.ventes %}
+
+                                    {% set TVA = produit.tva.valeur/100 * produit.totalHT %}
+
+                                    {% set sumHT = sumHT + produit.totalHT %}
+                                    {% set sumTTC = sumTTC + produit.totalTTC %}
+                                    {% set sumTVA = sumTVA + TVA %}
+
+
+                                    <tr>
+                                        <td class="nr_col">
+                                            <a href="/products/9869832" class="incognito-link"> {{ produit.produits.id }}</a>
+                                        </td>
+                                        <td class="name_col">
+                                            <strong>
+                                                <a href="/products/9869832" class="incognito-link"> {{ produit.produits.name }}</a>
+                                            </strong>
+                                            <span id="product_description_1" class="item_description">
+
+									</span>
+                                        </td>
+                                        <td class="code_col">
+                                            {{ produit.reference }}
+                                        </td>
+
+
+                                        <td class="text_right quantity_col">
+                                            {{ produit.qte }}
+                                        </td>
+
+
+                                        <td class="text_right no_wrap number price_net_col">
+                                            {{ produit.puHT }}
+                                        </td>
+                                        <td class="text_right no_wrap number total_price_net_col">
+                                            {{ produit.totalHT }}
+                                        </td>
+
+                                        <td class="text_right no_wrap number tax_col">
+                                            {{ produit.tva }}%
+                                        </td>
+                                        <td class="text_right number no_wrap tax_value_col">
+                                            {{ TVA }}
+                                        </td>
+                                        <td class="text_right no_wrap number total_price_gross_col">
+                                            {{ produit.totalTTC }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+
+                                <tr class="clean no_border summary_row">
+                                    <td class="empty nr_col footer total"></td>
+                                    <td class="empty name_col footer total"></td>
+                                    <td class="empty code_col footer total"></td>
+                                    <td class="empty quantity_col quantity_footer footer total"></td>
+
+
+                                    <td class="empty price_net_col price_gross_col price_gross_col-hide_tax footer total" style="display: none;"></td>
+
+                                    <td class="text_right no_border total footer total">
+                                        <strong>Total:  </strong>
+                                    </td>
+                                    <td class="text_right number total_price_net_col footer total">
+
+
+
+                                        {{ sumHT }}
+
+
+                                    </td>
+                                    <td class="tax_col footer total">&nbsp;</td>
+                                    <td class="text_right number tax_value_col footer total">
+                                        {{ sumTVA }}
+
+                                    </td>
+                                    <td class="width3 text_right number total_price_gross_col footer total">
+                                        {{ sumTTC }}
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+
+                            <div class="clear"></div>
+
+                            <!-- si vous souhaitez personnaliser les totaux, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/totals_with_currency.handlebars  -->
+                            <table class="clean to_right totals_inv_table" style="page-break-inside: avoid !important;">
+                                <tbody><tr>
+                                    <th>
+                                        Total HT
+                                    </th>
+                                    <td class="number">
+                                        {{ sumHT }} DA
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Montant TVA
+                                    </th>
+                                    <td class="number">
+                                        {{ sumTVA }} DA
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Total TTC
+                                    </th>
+                                    <td class="number">
+                                        {{ sumTTC }} DA
+                                    </td>
+                                </tr>
+
+                                </tbody></table>
+
+                            <div class="clear"></div>
+
+
+
+
+
+                            <div class="no-page-break">
+                                <section id="summary">
+
+                                    <p id="to_pay">
+                                        À payer :
+                                        {% set apayer =  sumTTC  -  facture.montantpaye  %}
+
+                                        <span id="to_pay_amount"> {{ apayer|number_format(2, ',', ' ') }}  DA</span>
+                                        <span class="hidden vosfactures3_visible">  TTC
+			</span></p>
+
+
+
+                                    <p>
+                                        <strong>Montant payé :</strong> {{ facture.montantpaye|number_format(2, ',', ' ') }} DA
+                                    </p>
+
+                                    <p><strong>Mode de règlement :</strong> {{ facture.moderegle }}</p>
+
+                                    <p><strong>Date limite de règlement :</strong> {{ facture.dateregle }} </p>
+
+
+
+
+
+
+                                </section>
+
+
+                                <section id="invoice_signatures">
+                                    <div id="seller_sign">
+                                        <p><span>Nom du vendeur</span></p>
+                                        <p>{{ facture.nomvendeur }}</p>
+
+                                    </div>
+                                    <div id="buyer_sign">
+
+                                    </div>
+
+                                </section>
+                                {% if apayer == 0 %}
+                                    <img src="{{ asset('image/paid_mark_fr.jpg') }}">
+                                {% endif %}
+
+                            </div>
+
+
+                        </div><!-- invoie outline -->
+
+
+
+                        <section id="description_footer">
+                            <div id="company_info_footer">
+        	<span>      {{ facture.departements.nom }},
+                {{ facture.departements.adresse }}, {{ facture.departements.ville }},
+
+                {{ facture.departements.codepostal }}
+
+
+
+                <br>
+
+
+
+
+
+</span>
+                            </div>
+                        </section>
+                        <!-- #company_info_footer -->
+
+
+
+
+                    </div>
+
+                </div>
+
+            </div> <!-- invoice-responsive -->
+
+        </div>
+
+
+
+    </div>
+
+    <div class="container">
+        <div class="no_print text-center">
+
+            <a class="btn-glow" href="{{ path('proforma_pdf', { 'id': facture.id }) }}">Télécharger en PDF</a>
+            <a class="btn-glow" title="Ajouter rapidement une facture de dépense. Vous pouvez aussi télécharger sous XML ou JSON. " href="http://creativ-dz.com">Importer / ajouter aux dépenses</a>
+
+        </div>
+    </div>
+
+    <br>
+    <footer class="footer">
+
+        <div class="ct">
+
+
+
+
+
+            <div class="btn-group dropup pull-left">
+                <a href="#" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-info-circle" style="color: #999999;"></i>&nbsp;&nbsp;<span class="text-muted">Aide/Contact</span> &nbsp;&nbsp;
+                </a>
+                <ul class="dropdown-menu drop-up bottom-info-menu" role="menu">
+                    <li><a href="" target="_blank"><i class="fa fa-lightbulb-o" style="float: right;"></i>Base de connaissance&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+
+                    <li><a onclick="return false;" rel="radbox;width=700;height=400" data-href="#" href="#">
+                            <i style="float: right;" class="fa fa-bullhorn"></i>Donnez votre avis</a>
+                    </li>
+
+
+
+                    <li><a href="mailto:info@creativ-dz.com" target="_blank"><i class="fa fa-envelope" style="float: right;"></i> info@creativ-dz.com </a></li>
+                    <li class="divider"></li>
+                    <li class="bottom-menu-info">
+
+                        <a href="tel:+2130541934177">
+
+                            <span class="glyphicon icon-phone fa fa-phone" style="float: right;"></span><strong>+213 (0)541.934.177</strong><br>
+                            <span class="help-block">
+
+							<!-- <strong>Business hours:</strong><br />
+							3:30 a.m. - 11:30 a.m. EST<br />
+							9:30 a.m. - 05:30 p.m. CET -->
+
+
+							</span>
+
+
+                        </a>
+
+                    </li>
+
+                    <li class="bottom-menu-info social">
+
+                        <a href="" target="_blank"><i class="fa fa-facebook-square"></i></a>
+                        <a href="" target="_blank"><i class="fa fa-twitter"></i></a>
+                        <a href="" target="_blank"><i class="fa fa-google-plus"></i></a>
+                        <a href="" target="_blank"><i class="fa fa-github"></i></a>
+
+                        <span style="clear:both;display:block"></span>
+
+                    </li>
+
+                </ul>
+            </div>		 <!-- btn-group -->
+
+
+
+
+
+
+
+
+
+
+            <div class="pull-right  text-right">
+
+                <p class="text-muted credit" style="margin-bottom:30px; font-size:1em">
+
+
+                    <a href="https://creativ-dz.com" target="_blank"> © 2018 Creativ-dz.com</a>
+
+
+
+
+                </p>
+
+            </div>  <!-- pull-left -->
+
+
+        </div>
+    </footer>
+
+
+
+
+
+{% endblock %}
+
+</html>

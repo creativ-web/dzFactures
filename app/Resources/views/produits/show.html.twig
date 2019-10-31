@@ -1,0 +1,447 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <style>
+        body{
+            background-color: white;
+        }
+
+    </style>
+<div class="container">
+    <div class="row">
+
+        <nav class="navbar navbar-default buttons_panel hidden-print" role="navigation" style="z-index:1">
+            <!-- Brand and toggle get grouped for better mobile display -->
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+
+
+
+                <script type="text/javascript">
+                    function sm(name) {
+                        $('.submenu').hide();
+                        $('#' + name).show();
+                        return false;
+                    }
+                </script>
+
+                <ul class="nav navbar-nav">
+
+                    <li>
+                        <a href="{{ path('admin_produits_index') }}"><i class="fa fa-reply"></i><span class="hidden-sm"> &nbsp;&nbsp;Retour</span></a>
+                    </li>
+
+
+                    <li>
+
+                        <a href="{{ path('admin_produits_new') }}"><i class="fa fa-magic"></i> <span>&nbsp;&nbsp;Ajouter un nouveau</span></a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="#"><i class="fa fa-plus"></i> <span>&nbsp;&nbsp;Créer un document de gestion de stock</span></a>
+
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="fa fa-truck"></i> <span>&nbsp;&nbsp;Opérations des entrepôts</span></a>
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="fa fa-tasks"></i> <span>&nbsp;&nbsp;Factures</span></a>
+                    </li>
+
+
+
+                </ul>
+
+
+
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li class="first green">
+
+                        <a href="{{ path('admin_produits_edit', { 'id': produit.id }) }}"><i class="fa fa-edit"></i><span class="hidden-sm"> &nbsp;&nbsp;Modifier</span></a>
+                    </li>
+
+                    <li class="red last">
+
+                        <a data-confirm="Etes vous sûr de vouloir effacer ce produit?" rel="nofollow" data-method="delete" href="#"><i class="fa fa-trash-o"></i><span class="hidden-sm ">&nbsp;&nbsp; Effacer</span></a>
+
+                    </li>
+
+
+
+                </ul>
+
+
+            </div><!-- /.navbar-collapse -->
+
+        </nav>
+
+
+        <div class="col-sm-8 col-sm-offset-2">
+
+
+            <div class="panel panel-default">
+
+                <div class="panel-body product_data">
+                    <!-- header -->
+                    <div class="row header">
+                        <div class="col-xs-10">
+
+                            <div>
+                                <h3 class="product_name" style="font-size: 1.3em; font-weight: bold;">
+                                    {{ produit.name }}        {% if produit.activlot %}
+                                        <i class="fa fa-envelope" style="font-size: 11px;"></i>
+                                    {% endif %}
+                                </h3>
+                            </div>
+
+
+
+                        </div> <!-- col-sm-10 -->
+
+                        <div class="col-xs-2">
+                            {% if produit.images %}
+                                <img class="pull-right"  src="{{ produit.images.path| apply_filter('produit')  }}" >
+                            {% else %}
+                                <img class="pull-right"  src="{{ asset('image/image.jpg') }}" >
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+                    <div class="product_info">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <strong>Référence:</strong>
+                                {{ produit.reference }}
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th class="number">
+                                        PU HT
+                                    </th>
+                                    <th class="number">
+                                        TVA
+                                    </th>
+                                    <th class="number">
+                                        PU TTC
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        Prix de vente
+                                    </td>
+                                    <td class="number">
+                                      {{ produit.puHT }} DA
+                                    </td>
+                                    <td class="number">
+                                        {% if produit.tva %}
+                                            {{ produit.tva.valeur }}%
+
+                                            {% else %}
+                                                0 %
+                                        {% endif %}
+                                    </td>
+                                    <td class="number">
+                                        {{ produit.puTTC }} DA
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Prix d'achat
+                                    </td>
+                                    <td class="number">
+                                        {{ produit.prixHT }} DA
+                                    </td>
+                                    <td class="number">
+                                        {% if produit.tva2 %}
+                                        {{ produit.tva2.valeur }}%
+                                            {% else %}
+                                               0%
+                                        {% endif %}
+                                    </td>
+                                    <td class="number">
+                                        {{ produit.prixTTC }} DA
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {%  if produit.prixHT  %}
+
+                                        {% set margecommerciale =  produit.puHT  -   produit.prixHT   %}
+                                            {% set marge = margecommerciale / produit.prixHT * 100 %}
+                                            {% if produit.puHT == 0 %}
+                                                {% set marque =  margecommerciale /  produit.prixHT * 100 %}
+                                                {% else  %}
+                                                    {% set marque =  margecommerciale /  produit.puHT * 100 %}
+                                                {% endif %}
+
+                                        {% else %}
+
+                                           {% set margecommerciale =  0  %}
+
+                                            {% set marge = 0 %}
+
+                                        {% endif %}
+                                        {% if produit.puHT == 0 %}
+                                            {% set marque =  margecommerciale /  produit.prixHT * 100 %}
+                                        {% else  %}
+                                            {% set marque =  margecommerciale / produit.puHT * 100 %}
+                                        {% endif %}
+                           
+
+
+
+
+
+                                        Taux de marque:
+                                        {%  if produit.prixHT  %}
+                                        {{ marque }} %
+                                        ,
+                                        Taux de marge:
+                                        {{ marge }}%
+                                        {% else %}
+                                             %
+                                            ,
+                                            Taux de marge:
+                                             %
+                                        {% endif %}
+                                    </td>
+                                    <td class="number">
+                                        {%  if produit.prixHT  %}
+                                        {{ margecommerciale }} DA
+                                        {% else %}
+                                          DA
+                                        {% endif %}
+                                    </td>
+                                    <td class="number"></td>
+                                    <td class="number">
+                                        {%  if produit.prixHT  %}
+                                            {{ produit.puTTC - produit.prixTTC }} DA
+                                        {% else %}
+                                            DA
+                                        {% endif %}
+
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div> <!-- table-responsive -->
+
+                    </div> <!-- panel-body -->
+                </div> <!-- panel -->
+
+
+            </div>
+
+        </div> <!-- row -->
+
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                        <h4 style="color: #696d73;font-style: italic; font-size: 18px;">
+                            Quantité disponible:
+
+
+                            {% set Qtea=0 %}
+                            {% set Qtev=0 %}
+
+                            {% for produit in produit.ventes %}
+
+                                {% if produit.type != 'depense' %}
+                                    {% set Qtev = Qtev + produit.qte %}
+                                {% endif %}
+
+                            {% endfor %}
+
+
+
+                            {% for produit in produit.achats %}
+                                {% set  Qtea =+ produit.qte %}
+                            {% endfor %}
+
+
+
+
+
+
+
+                            {% set TotalQte=  Qtea - Qtev    %}
+
+                            {% if produit.unite == 'kg' %}
+
+                                {{TotalQte|number_format(3, '.', ',') }}
+
+                            {% else %}
+
+                                {{TotalQte }}
+                            {% endif %}
+                        </h4>
+
+                        <br>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        Description
+                                    </th>
+                                    <th class="number">
+                                        Quantité
+                                    </th>
+                                    <th>
+                                        Détails
+                                    </th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        Approvisionnement/ventes (avec documents de stock)
+                                    </td>
+                                    <td class="number">
+
+                                    </td>
+                                    <td>
+                                        {% if produit.activlot == 0 %}
+
+
+                                        {% endif %}
+
+                                    </td>
+                                    <td>
+                                        <a class="btn-glow btn-block btn-sm" href="#">Voir&nbsp;<i class="icon-zoom-in"></i></a>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Ventes (sans document de stock)
+                                    </td>
+                                    <td class="number">
+
+
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                    <td>
+                                        <a class="btn-glow btn-block btn-sm" href="#">Voir&nbsp;<i class="icon-zoom-in"></i></a>
+                                    </td>
+                                </tr>
+
+
+
+                                <tr>
+                                    <th>
+                                        Quantité disponible
+                                    </th>
+                                    <th class="number">
+
+                                        {{TotalQte}}
+                                    </th>
+                                    <th colspan="2"></th>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div> <!-- table-responsive -->
+                        <br>
+                        <b>Restriction de quantité (en vente si stock positif)</b>
+                        <br>
+
+                    </div>	<!-- panel-body -->
+                </div> <!-- panel -->
+
+
+                {% if produit.activlot == 1 %}
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h4 style="color: #696d73;font-style: italic; font-size: 18px;">
+                                Lot - le produit est composé de plusieurs articles:
+                            </h4>
+
+                            <strong></strong>
+                            <br>
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">
+                                    <table id="products-table" class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th width="80%">PRODUIT</th>
+                                            <th class="text-right">QUANTITÉ COMPRISE DANS LE LOT</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for produit in produit.lots %}
+                                        <tr>
+                                            <td>
+                                                <a href="{{ path('admin_produits_show', { 'id': produit.produits.id }) }}">{{ produit.produits }}</a>
+                                            </td>
+                                            <td class="number text-right">
+                                                {{ produit.qte }}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>	<!-- panel-body -->
+                    </div>
+                {% endif %}
+
+
+
+
+
+
+
+
+
+                <br>
+                <br>
+
+            </div> <!-- col md-12 -->
+
+        </div>
+
+
+
+
+
+    </div>
+
+    </div>
+{% endblock %}

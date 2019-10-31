@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Departements list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Nifselect</th>
+                <th>Nif</th>
+                <th>Adresse</th>
+                <th>Codepostal</th>
+                <th>Ville</th>
+                <th>Email</th>
+                <th>Siteweb</th>
+                <th>Fax</th>
+                <th>Telephone</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for departement in departements %}
+            <tr>
+                <td><a href="{{ path('admin_departements_show', { 'id': departement.id }) }}">{{ departement.id }}</a></td>
+                <td>{{ departement.nom }}</td>
+                <td>{{ departement.nifselect }}</td>
+                <td>{{ departement.nif }}</td>
+                <td>{{ departement.adresse }}</td>
+                <td>{{ departement.codepostal }}</td>
+                <td>{{ departement.ville }}</td>
+                <td>{{ departement.email }}</td>
+                <td>{{ departement.siteweb }}</td>
+                <td>{{ departement.fax }}</td>
+                <td>{{ departement.telephone }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_departements_show', { 'id': departement.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_departements_edit', { 'id': departement.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_departements_new') }}">Create a new departement</a>
+        </li>
+    </ul>
+{% endblock %}

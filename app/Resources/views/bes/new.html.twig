@@ -1,0 +1,3082 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <style>
+        body{
+            background: white;
+        }
+        .aa{
+            padding: 1.5rem;
+            margin-right: 0;
+            margin-bottom: 0;
+            margin-left: 0;
+            border: solid 1px #dddddd;
+
+        }
+        #1 option[label]{
+            float: left;
+            color: red;
+        }
+        .panel-success>.panel-heading{
+            background: linear-gradient(to bottom, #fff 0%, #f6f6f6 19%, #ededed 100%);
+            border-color: #dddddd;
+            color: #000;
+        }
+        .panel-success {
+            border-color: #dddddd;
+
+        }
+        .panel-title{
+            font-size: 12px;
+        }
+        .forms{
+            margin-bottom: 10px;
+        }
+
+        .fa-close{
+            -webkit-border-radius: 100px;
+            font-size: 1.1em;
+            color: white;
+            border-radius: 100px;
+            line-height: 0.9em;
+            padding: 5px 6px;
+            margin-top: 20px;
+            cursor: pointer;
+            background: linear-gradient(to bottom, #f85032 0%, #f16f5c 19%, #f6290c 55%, #f02f17 71%, #e73827 100%);
+        }
+        .del {
+            position: absolute;
+            float: right;
+            margin-top: 4px;
+            margin-right: -19px;
+            left: 91%;
+        }
+        form .row{
+            margin-bottom: 0;
+        }
+        .main-spinner {
+
+            height: 6px;
+            left: -10px;
+            margin: 0;
+            position: fixed;
+            right: -3px;
+            width: 103%;
+            z-index: 99;
+            top: 38px;
+            max-width: 103%;
+        }
+        .progress {
+            overflow: hidden;
+            height: 18px;
+            margin-bottom: 20px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .progress-bar {
+            float: left;
+            width: 0%;
+            height: 100%;
+            font-size: 12px;
+            color: #ffffff;
+            text-align: center;
+            background-color: #428bca;
+            -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,0.15);
+            box-shadow: inset 0 -1px 0 rgba(0,0,0,0.15);
+            -webkit-transition: width 0.6s ease;
+            transition: width 0.6s ease;
+        }
+        .progress-striped .progress-bar {
+            background-image: linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent);
+            background-size: 40px 40px;
+        }
+        .progress.active .progress-bar, .progress-bar.active {
+            -webkit-animation: progress-bar-stripes 2s linear infinite;
+            -o-animation: progress-bar-stripes 2s linear infinite;
+            animation: progress-bar-stripes 0.2s linear infinite;
+        }
+        textarea.acheteur {
+            height: 32px;
+        }
+        .acheteur_id{
+            display: none;
+        }
+        #seller_tip {
+            margin-right: 5px;
+            padding-right: 20px;
+        }
+        .alert-sm {
+            padding: 2px 5px;
+            display: block;
+            position: relative;
+            margin-bottom: 5px;
+        }
+        .alert-warning {
+            background-color: #fcf8e3;
+            border-color: #fbeed5;
+            color: #c09853;
+        }
+        .alert-sm .close {
+            position: absolute;
+            top: -1px;
+            color: red;
+            right: 3px;
+        }
+        .close:hover, .close:focus {
+            color: #000000;
+            text-decoration: none;
+            cursor: pointer;
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+        }
+        .small-alert {
+            padding: 4px 10px 2px 10px;
+            margin-bottom: 0;
+        }
+        .alert-info {
+            background-color: #d9edf7;
+            border-color: #bce8f1;
+            color: #3a87ad;
+        }
+        .description{
+            margin-top: 10px;
+            margin-bottom: 10px;
+            max-width: 100%;
+            min-height: 5em;
+        }
+        .list-group-item.active>div>.btn-glow, #form1 .list-group-item.active>div>a, #form1 .list-group-item.active>a {
+            font-size: 0.9em;
+            color: #000;
+            text-decoration: none;
+        }
+        .list-group-item.active .pull-right {
+            margin: -2px -8px 0 0;
+        }
+        .pull-right {
+            float: right !important;
+        }
+        #show_discount_button{
+            border-radius: 3px;
+            font-size: 0.9em;
+            margin-right: 5px;
+            color: #000;
+            padding: 2px 7px;
+            text-decoration: none;
+            margin-top: -52px;
+
+        }
+        #details>div, #form1 .row {
+            position: relative;
+        }
+        html .help_sign {
+            background: #fff;
+            border-radius: 10px;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            color: #bbbbbb;
+            font-size: 0.8em;
+            height: 16px;
+            width: 16px;
+            display: inline-block;
+            line-height: 1.2em;
+            padding-top: 2px;
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid #dcdcdc;
+        }
+        .tooltip_templates { display: none; }
+
+        h2 {
+            font-size: 20px;
+            color: #696d73;
+            font-style: italic;
+        }
+        .description {
+             margin-top: 0px;
+            margin-bottom: 10px;
+            max-width: 100%;
+           min-height: 0;
+            height: 34px !important;
+        }
+
+        .panel-body span{
+            font-weight: bold;
+        }
+        .panel-body {
+            padding: 15px;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .del{
+            z-index: 9;
+        }
+    .champ1, .champ2, .champ3, .champ4, .champ5{
+        margin-top: 16px;
+        margin-bottom: 18px;
+    }
+        .btn-glow {
+            font-size: 13px;
+        }
+    </style>
+
+    <div class="container">
+        <div class="form1">
+
+            {{ form_start(form) }}
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2 style="color: #29323d;">Documents de gestion de stock</h2>
+                </div>
+                <div class="col-sm-5">
+
+                    {{ form_label(form.type, "Type ") }} <span class="requis">*</span>
+                    {{ form_widget(form.type,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.type) }}
+                </div>
+                <div class=" col-sm-4 col-xs-6 ">
+
+                    {{ form_label(form.nf, "N° ") }} <span class="requis">*</span>
+
+                    {% for nf in nf %}
+                        {% set id =  nf.id +1   %}
+                        {{ form_widget(form.nf,{'attr': {'class': 'form-control','value':id}}) }}
+                        {{ form_errors(form.nf) }}
+                    {% else %}
+                        {{ form_widget(form.nf,{'attr': {'class': 'form-control','value':1}}) }}
+                        {{ form_errors(form.nf) }}
+                    {% endfor %}
+
+
+
+
+                </div>
+                <div class="col-sm-2 ">
+
+                    {{ form_label(form.dateadd, "Date d'entrée ") }}
+                    {{ form_widget(form.dateadd,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.dateadd) }}
+                </div>
+                <div class="col-sm-4 col-xs-6">
+
+                    {{ form_label(form.zonnestocks, "Entrepôt") }} <span class="requis">*</span>
+                    {{ form_widget(form.zonnestocks,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.zonnestocks) }}
+                </div>
+
+            </div>
+            <hr>
+
+
+
+            <div class="row ">
+
+                <div class="col-md-5 col-sm-12 col-xs-12  ">
+                    <h2>Client </h2>
+
+                    <div class="departement_view " style="">
+                    </div>
+
+                    <div class="departement_form " style=" display: none;">
+                        {% if departements == null %}
+                            <span class="alert alert-warning alert-sm" id="seller_tip" title="Les données indiquées sont mémorisées dans la fiche de votre entreprise (ou &quot;Département&quot;) que vous pourrez compléter ou modifier depuis Paramètres > Compagnies/Départements.">
+					Les données indiquées seront mémorisées dans la fiche de votre entreprise accessible dans Paramètres &gt; Compagnies/Départements.
+					<a href="#" onclick="$('#seller_tip').fadeOut();return false;" class="close" title="Cacher l'indication">x</a>
+				</span>
+                        {% endif %}
+
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                {{ form_widget(form.departements.user,{'attr': {'class': 'form-control departement_user hidden'}}) }}
+                                {{ form_errors(form.departements.user) }}
+
+                                {{ form_label(form.departements.id, " ") }} <span class="requis"> </span>
+                                {{ form_widget(form.departements.id,{'attr': {'class': 'form-control departement_id'}}) }}
+                                {{ form_errors(form.departements.id) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                {{ form_label(form.departements.nom, "Nom") }} <span class="requis">*</span>
+                                {{ form_widget(form.departements.nom,{'attr': {'class': 'form-control departement_nom'}}) }}
+                                {{ form_errors(form.departements.nom) }}
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                                {{ form_label(form.departements.nrcselect, " ") }}
+                                {{ form_widget(form.departements.nrcselect,{'attr': {'class': 'form-control departement_nrcselect'}}) }}
+                                {{ form_errors(form.departements.nrcselect) }}
+                            </div>
+                            <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                                {{ form_label(form.departements.nrc, " ") }}
+                                {{ form_widget(form.departements.nrc,{'attr': {'class': 'form-control departement_nrc'}}) }}
+                                {{ form_errors(form.departements.nrc) }}
+
+                                {{ form_widget(form.departements.nif,{'attr': {'class': 'form-control departement_nif'}}) }}
+                                {{ form_errors(form.departements.nif) }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                {{ form_label(form.departements.adresse, "N° et nom de rue") }}
+                                {{ form_widget(form.departements.adresse,{'attr': {'class': 'form-control departement_adresse'}}) }}
+                                {{ form_errors(form.departements.adresse) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                                {{ form_label(form.departements.codepostal, "Code postal") }}
+                                {{ form_widget(form.departements.codepostal,{'attr': {'class': 'form-control departement_codepostal'}}) }}
+                                {{ form_errors(form.departements.codepostal) }}
+                            </div>
+                            <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                                {{ form_label(form.departements.ville, "Ville") }}
+                                {{ form_widget(form.departements.ville,{'attr': {'class': 'form-control departement_ville'}}) }}
+                                {{ form_errors(form.departements.ville) }}
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+
+                                <button class="btn pull-right btn-link btn-xs dropdown-toggle" type="button" data-toggle="dropdown" id="show_more2" onclick="$('#more2').fadeIn('fast');$('#show_more2').hide();return false;" style="display: block;">
+                                    Plus  <span class="caret"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+                        <div id="more2" class="more" style="display: block;">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                    {{ form_label(form.departements.iban, "IBAN") }}
+                                    {{ form_widget(form.departements.iban,{'attr': {'class': 'form-control departement_iban'}}) }}
+                                    {{ form_errors(form.departements.iban) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                    {{ form_label(form.departements.banque, "Banque") }}
+                                    {{ form_widget(form.departements.banque,{'attr': {'class': 'form-control departement_banque'}}) }}
+                                    {{ form_errors(form.departements.banque) }}
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                    {{ form_label(form.departements.bic, "BIC") }}
+                                    {{ form_widget(form.departements.bic,{'attr': {'class': 'form-control departement_bic'}}) }}
+                                    {{ form_errors(form.departements.bic) }}
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                    {{ form_label(form.departements.email, "Adresse email") }}
+                                    {{ form_widget(form.departements.email,{'attr': {'class': 'form-control departement_email'}}) }}
+                                    {{ form_errors(form.departements.email) }}
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                    {{ form_label(form.departements.siteweb, "Site web") }}
+                                    {{ form_widget(form.departements.siteweb,{'attr': {'class': 'form-control departement_site'}}) }}
+                                    {{ form_errors(form.departements.siteweb) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                    {{ form_label(form.departements.fax, "Fax") }}
+                                    {{ form_widget(form.departements.fax,{'attr': {'class': 'form-control departement_fax'}}) }}
+                                    {{ form_errors(form.departements.fax) }}
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                    {{ form_label(form.departements.telephone, "Téléphone") }}
+                                    {{ form_widget(form.departements.telephone,{'attr': {'class': 'form-control departement_tel'}}) }}
+                                    {{ form_errors(form.departements.telephone) }}
+                                </div>
+                            </div>
+                            <button class="btn pull-right btn-link btn-xs dropdown-toggle" type="button" data-toggle="dropdown" id="show_more2" onclick="$('#more2').hide();$('#show_more2').fadeIn('fast');return false;">
+                                Moins <i class="icon-sort-up"></i>
+                            </button>
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                </div>
+                <div class="col-md-5 col-sm-12 col-xs-12 form-group">
+
+                    <h2>Fournisseur</h2>
+                    {% if acheteursList == null %}
+                        <span class="alert alert-warning alert-sm" id="buyer_tip" title="Une fois le contact ajouté, il suffira de taper une ou deux lettres de son nom (ou de son n° de TVA par ex) pour le sélectionner. ">
+					Après avoir saisi les coordonnées d'un nouveau client ou fournisseur, celui-ci sera ajouté automatiquement à la liste de vos Contacts.
+					<a href="#" onclick="$('#buyer_tip').fadeOut();return false;" class="close" title="Cacher l'indication">x</a>
+				</span>
+                    {% endif %}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="checkbox" style="width: 567px;">
+
+                                {{ form_widget(form.acheteur.type,{'attr': {'class': 'acheteur_type'}}) }}
+                                {{ form_errors(form.acheteur.type) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row particulier" style="display: none;">
+                        <div class="col-sm-2">
+                            {{ form_label(form.acheteur.civilite, "Civilité") }}
+                            {{ form_widget(form.acheteur.civilite,{'attr': {'class': 'form-control acheteur_civilite'}}) }}
+                            {{ form_errors(form.acheteur.civilite) }}
+                        </div>
+                        <div class="col-sm-4">
+                            {{ form_label(form.acheteur.prenom, "Prénom") }}
+                            {{ form_widget(form.acheteur.prenom,{'attr': {'class': 'form-control acheteur_prenom'}}) }}
+                            {{ form_errors(form.acheteur.prenom) }}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ form_label(form.acheteur.famille, "Nom de famille") }}
+                            {{ form_widget(form.acheteur.famille,{'attr': {'class': 'form-control acheteur_famille'}}) }}
+                            {{ form_errors(form.acheteur.famille) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                            {{ form_widget(form.acheteur.user,{'attr': {'class': 'form-control hidden acheteur_user'}}) }}
+                            {{ form_errors(form.acheteur.user) }}
+
+                            {{ form_widget(form.acheteur.id,{'attr': {'class': 'form-control acheteur acheteur_id','autocomplete': 'off'}}) }}
+
+                            {{ form_label(form.acheteur.nom, "Nom") }} <span class="requis nomrequis">*</span>
+                            {{ form_widget(form.acheteur.nom,{'attr': {'class': 'form-control acheteur acheteur_nom','autocomplete': 'off'}}) }}
+                            {{ form_errors(form.acheteur.nom) }}
+                            <div id="acheteur" style="position: relative;z-index: 999;margin-top: 11px;margin-left: -4px;width: 100%; border: none;"></div>
+                            <a style="top: 30px;" class="autocomplete_vendeur" >▼</a>
+                        </div>
+                    </div>
+                    <div class="row nif">
+                        <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+
+                            {{ form_widget(form.acheteur.nrcselect,{'attr': {'class': 'form-control acheteur_nrcselect'}}) }}
+                            {{ form_errors(form.acheteur.nrcselect) }}
+                        </div>
+                        <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+
+                            {{ form_widget(form.acheteur.nrc,{'attr': {'class': 'form-control acheteur_nrc'}}) }}
+                            {{ form_errors(form.acheteur.nrc) }}
+
+                            {{ form_widget(form.acheteur.nif,{'attr': {'class': 'form-control acheteur_nif'}}) }}
+                            {{ form_errors(form.acheteur.nif) }}
+
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(form.acheteur.adresse, "N° et nom de rue") }}
+                            {{ form_widget(form.acheteur.adresse,{'attr': {'class': 'form-control acheteur_adresse'}}) }}
+                            {{ form_errors(form.acheteur.adresse) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(form.acheteur.codepostal, "Code postal") }}
+                            {{ form_widget(form.acheteur.codepostal,{'attr': {'class': 'form-control acheteur_codepostal'}}) }}
+                            {{ form_errors(form.acheteur.codepostal) }}
+                        </div>
+                        <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(form.acheteur.ville, "Ville") }}
+                            {{ form_widget(form.acheteur.ville,{'attr': {'class': 'form-control acheteur_ville'}}) }}
+                            {{ form_errors(form.acheteur.ville) }}
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+
+                            <button class="btn pull-right btn-link btn-xs dropdown-toggle" type="button" data-toggle="dropdown" id="show_more3" onclick="$('#more3').fadeIn('fast');$('#show_more3').hide();return false;" style="display: block;">
+                                Plus  <span class="caret"></span>
+                            </button>
+
+                        </div>
+
+                    </div>
+                    <div id="more3" class="more" style="display: block;">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                {{ form_label(form.acheteur.email, "Adresse email") }}
+                                {{ form_widget(form.acheteur.email,{'attr': {'class': 'form-control acheteur_email'}}) }}
+                                {{ form_errors(form.acheteur.email) }}
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                {{ form_label(form.acheteur.siteweb, " Site internet") }}
+                                {{ form_widget(form.acheteur.siteweb,{'attr': {'class': 'form-control acheteur_site'}}) }}
+                                {{ form_errors(form.acheteur.siteweb) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                {{ form_label(form.acheteur.fax, "Fax") }}
+                                {{ form_widget(form.acheteur.fax,{'attr': {'class': 'form-control acheteur_fax'}}) }}
+                                {{ form_errors(form.acheteur.fax) }}
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                {{ form_label(form.acheteur.telephone, " Téléphone") }}
+                                {{ form_widget(form.acheteur.telephone,{'attr': {'class': 'form-control acheteur_tel'}}) }}
+                                {{ form_errors(form.acheteur.telephone) }}
+                            </div>
+
+                        </div>
+                        <button class="btn pull-right btn-link btn-xs dropdown-toggle" type="button" data-toggle="dropdown" id="show_more2" onclick="$('#more3').hide();$('#show_more3').fadeIn('fast');return false;">
+                            Moins <i class="icon-sort-up"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <hr>
+                <div class="col-sm-4">
+                    {{ form_label(form.editerpar, "Edité par") }}
+                    {{ form_widget(form.editerpar,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.editerpar) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_label(form.expedierpar, "Expédié par") }}
+                    {{ form_widget(form.expedierpar,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.expedierpar) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_label(form.receptionnerpar, "Réceptionné par") }}
+                    {{ form_widget(form.receptionnerpar,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.receptionnerpar) }}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 ">
+                    {{ form_label(form.informations, "Commentaires") }}
+                    {{ form_widget(form.informations,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.informations) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+
+                    {{ form_label(form.datecreation, "Date de création ") }}
+                    {{ form_widget(form.datecreation,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.datecreation) }}
+                </div>
+                <div class="col-sm-2">
+
+                    {{ form_label(form.ncommande, "Numéro de la commande") }}
+                    {{ form_widget(form.ncommande,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.ncommande) }}
+                </div>
+            </div>
+            <br> <br>
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Produits</strong></h3>
+                </div>
+
+
+                <div class="panel-body">
+
+
+                    {% macro tagCollectionItem(achats) %}
+
+
+
+                        <div class="row forms {{ achats.vars.id }}">
+                            <hr>
+                            <div id="change" class="product{{ achats.vars.id }} col-md-4">
+
+                                <span style="font-size: 12px;"> Produit</span> <span style="color: red;">*</span>
+
+                                {{ form_widget(achats.name,{'attr': {'class': 'form-control champ1', 'autocomplete':'off'}}) }}
+                                {{ form_widget(achats.produits,{'attr': {'class': 'form-control produits hidden'}}) }}
+                                {{ form_widget(achats.user,{'attr': {'class': 'form-control produits hidden'}}) }}
+
+                            </div>
+
+
+                            <div class="col-md-1">
+                                <span style="font-size: 12px;"> Référence</span>
+
+                                {{ form_widget(achats.reference,{'attr': {'class': 'form-control REF champ2'}}) }}
+                            </div>
+
+                            <div class="col-md-1">
+                                <span style="font-size: 12px;">Quantité</span> <span style="color: red;">*</span>
+
+                                {{ form_widget(achats.qte,{'attr': {'class': 'form-control QTE champ3','value':1}}) }}
+                            </div>
+                            <div class="col-md-1">
+                                <span style="font-size: 12px;">Unité</span>
+
+                                {{ form_widget(achats.unite,{'attr': {'class': 'form-control unite champ4'}}) }}
+                            </div>
+                            <div class="col-md-1">
+                                <span style="font-size: 12px;"> Taxe % (achat)</span>
+
+                                {{ form_widget(achats.tva2,{'attr': {'class': 'form-control TVA2 champ5'}}) }}
+
+                            </div>
+                            <div class="col-md-1">
+                                <span style="font-size: 12px;"> Prix HT (achat)</span> <span style="color: red;">*</span>
+                                {{ form_widget(achats.prixHT,{'attr': {'class': 'form-control prixHT champ6'}}) }}
+                            </div>
+                            <div class="col-md-1">
+                                <span style="font-size: 12px;"> Prix TTC (achat)</span>
+                                {{ form_widget(achats.prixTTC,{'attr': {'class': 'form-control prixTTC champ7'}}) }}
+                            </div>
+
+                            <div class="col-md-1">
+                                <span style="font-size: 12px;">Total HT (achat)</span>
+                                {{ form_widget(achats.totalHTa,{'attr': {'class': 'form-control totalHTa champ8'}}) }}
+                            </div>
+                            <div class="col-md-1">
+                                <span style="font-size: 12px;">Total TTC (achat)</span>
+                                {{ form_widget(achats.totalTTCa,{'attr': {'class': 'form-control totalTTCa champ9'}}) }}
+                            </div>
+                            <div class="col-md-1 ">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div  class="part2_{{ achats.vars.id }}">
+                                <div class="col-xs-9 col-sm-5">
+                                    <span style="font-size: 12px;">Commentaire</span>
+                                    {{ form_widget(achats.description,{'attr': {'class': 'form-control description','rows':10}}) }}
+                                </div>
+
+                                <div class="col-sm-2"></div>
+
+                                <div class="col-xs-1 visible-xs">
+
+                                </div>
+
+                                <div class="col-xs-3 col-sm-1">
+                                    <span style="font-size: 12px;"> Taxe</span>
+                                    {{ form_widget(achats.tva,{'attr': {'class': 'form-control TVA'}}) }}
+                                </div>
+
+                                <div class="col-xs-6 col-sm-1 required">
+                                    <span style="font-size: 12px;"> Prix HT</span> <span style="color: red;">*</span>
+                                    {{ form_widget(achats.puHT,{'attr': {'class': 'form-control puHT'}}) }}
+                                </div>
+
+                                <div class="col-xs-6 col-sm-1">
+                                    <span style="font-size: 12px;"> Prix TTC</span>
+                                    {{ form_widget(achats.puTTC,{'attr': {'class': 'form-control puTTC'}}) }}
+                                </div>
+
+                                <div class="col-xs-6 col-sm-1">
+                                    <span style="font-size: 12px;">Total HT</span>
+                                    {{ form_widget(achats.totalHT,{'attr': {'class': 'form-control totalHT'}}) }}
+                                </div>
+
+                                <div class="col-xs-6 col-sm-1">
+                                    <span style="font-size: 12px;">Total TTC</span>
+                                    {{ form_widget(achats.totalTTC,{'attr': {'class': 'form-control totalTTC'}}) }}
+                                </div>
+                            </div>
+                            <span></span>
+                            <button class="btn pull-right btn-link btn-xs dropdown-toggle show_part2_{{ achats.vars.id }}" type="button" data-toggle="dropdown" id="show_more2" onclick="$('#more2').fadeIn('fast');$('#show_more2').hide();return false;" style="display: block;">
+                                Prix (vente)  <span class="caret"></span>
+                            </button>
+                            <button id="" class="pull-right btn btn-link btn-xs dropdown-toggle hide_part2_{{ achats.vars.id }}" type="button" data-toggle="dropdown">
+                                Cacher <i class="fa fa-sort-up"></i>
+                            </button>
+                        </div>
+
+
+                    {% endmacro %}
+                    <div class="tags" data-prototype="{{ _self.tagCollectionItem(form.achats.vars.prototype)|e }}">
+                        {% for achats in form.achats %}
+                            {{ _self.tagCollectionItem(achats) }}
+                        {% endfor %}
+
+                    </div>
+
+
+
+
+
+
+                    </div>
+
+
+
+
+                </div>
+
+            <div class="row">
+
+                <div class="invoice_summary col-sm-4 col-sm-offset-8">
+                    <table class="table">
+                        <tbody><tr class="curr_s netto ">
+                            <th>Total HT</th>
+                            <td id="sum_net"> </td>
+                            <td style="width:1%;" class="_curr1">DA</td>
+                            <td>
+                                <div class="dropdown mini_dropdown">
+                                    <a class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                        <li><a href="javascript:show_select_currency();">Changer de devise</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="curr_s ">
+                            <th>Total TVA</th>
+
+                            <td id="sum_tva"> </td>
+                            <td class="_curr1"> DA</td>
+                            <td></td>
+                        </tr>
+
+                        <tr class="curr_s more_discount1 hidden" style="display: none;">
+                            <th class="">Réduction</th>
+                            <td class="" id="sum_discount">0,00</td>
+                            <td class="_curr1"> DA</td>
+                            <td>
+
+                            </td>
+                        </tr>
+
+                        <tr class="curr_s">
+                            <th class="bold">Total TTC</th>
+                            <td id="sum_ttc" class="bold"> </td>
+                            <td class="_curr1">
+                                DA
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+
+                        <tr class="curr_s more_discount1 hidden" >
+                            <th class="bold ">Total TTC après réductions</th>
+                            <td id="sum_after_discount" class="bold "></td>
+                            <td class="_curr1"> DA</td>
+                        </tr>
+
+
+
+                        </tbody></table>
+
+
+
+                </div> <!-- invoice_summary -->
+
+            </div>
+
+            <hr style="border-top: 1px solid #ddd;">
+            <img src="{{ asset('image/ajax-loader-wide.gif') }}" class="loader " >
+            <div class="sauvegarder">
+            <button type="submit" class="btn-glow primary " style="margin-left:5px;"><span class="glyphicon fa fa-plus" aria-hidden="true"></span> Sauvegarder</button> ou <a href="{{ path('admin_bes_index') }}">Annuler</a>
+            </div>
+        </div>
+        {{ form_widget(form.lieu,{'attr': {'class': 'form-control hidden'}}) }}
+        {{ form_widget(form.objet,{'attr': {'class': 'form-control hidden'}}) }}
+        {{ form_widget(form.dateregle,{'attr': {'class': 'form-control hidden'}}) }}
+        {{ form_widget(form.moderegle,{'attr': {'class': 'form-control hidden'}}) }}
+        {{ form_widget(form.etat,{'attr': {'class': 'form-control hidden'}}) }}
+        {{ form_widget(form.montantpaye,{'attr': {'class': 'form-control hidden'}}) }}
+        {{ form_widget(form.nomvendeur,{'attr': {'class': 'form-control hidden'}}) }}
+        {{ form_widget(form.additionnelle,{'attr': {'class': 'form-control hidden'}}) }}
+        {{ form_widget(form.depenses,{'attr': {'class': 'form-control hidden'}}) }}
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+
+
+
+
+    <br> <br> <br>
+
+    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
+    <script>
+        var loader = "{{ asset('image/ajax-loader-wide.gif') }}"; //link to the animated loader-small.gif
+        var ROOT_URL = "{{ url('admin_getAllprods2')}}";
+        var ROOT_URL2 = "{{ url('admin_depenses_getAcheteur')}}";
+        $('.loader').hide();
+
+
+        $("form").submit(function (e) {
+
+            $('.loader').show();
+            $('.sauvegarder').hide();
+        });
+
+    </script>
+
+    <script type="text/javascript">
+
+        $('.acheteur_nom,.autocomplete_vendeur').hover(
+
+            function () {
+                $('.autocomplete_vendeur').css( "color", "#000" );
+            }, function () {
+                $('.autocomplete_vendeur').css( "color", "#ddd" );
+
+            });
+
+
+        $('.acheteur_nif').hide();
+        $('.acheteur_nrcselect').on('change', function() {
+            if(this.value == 'NIF'){
+                $('.acheteur_nrc').hide();
+                $('.acheteur_nif').show();
+
+            }
+            if(this.value == 'NRC'){
+                $('.acheteur_nrc').show();
+                $('.acheteur_nif').hide();
+
+            }
+        });
+        $('.departement_nif').hide();
+        $('.departement_nrcselect').on('change', function() {
+            if(this.value == 'NIF'){
+                $('.departement_nrc').hide();
+                $('.departement_nif').show();
+
+            }
+            if(this.value == 'NRC'){
+                $('.departement_nrc').show();
+                $('.departement_nif').hide();
+
+            }
+        });
+        $('#indicator1').hide();
+        $('#bes_acheteur_type_0').change(function(){
+
+            $('.particulier').hide();
+            $('.selectid').show();
+            $('.nif').show();
+
+        });
+        $('#bes_acheteur_type_1').change(function(){
+
+            $('.particulier').show();
+            $('.selectid').hide();
+            $('.nif').hide();
+
+
+        });
+
+        $('.acheteur_nom').on('keyup', function() { // everytime keyup event
+
+
+            var input = $(this).val(); // We take the input value
+            if ( input.length >= 2 ) { // Minimum characters = 2 (you can change)
+                $('#indicator1').show();// Loader icon apprears in the <div id="match"></div>
+                var data = {input: input}; // We pass input argument in Ajax
+                $.ajax({
+                    type: "POST",
+                    url: ROOT_URL2 , // call the php file ajax/tuto-autocomplete.php (check the routine we defined)
+                    data: data, // Send dataFields var
+                    dataType: 'json', // json method
+                    timeout: 3000,
+                    success: function(response){ // If success
+
+                        $('#acheteur').html(response.acheteur); // Return data (UL list) and insert it in the <div id="match"></div>
+                        $('#matchList li').on('click', function() { // When click on an element in the list
+                            $('.acheteur_nom').val($(this).attr('id')); // Update the field with the new element
+                            $('#acheteur').text(''); // Clear the <div id="match"></div>
+                            $.ajax({
+                                type:'GET',
+                                url: Routing.generate('admin_factures_getacheteur',{acheteur:$(this).attr('value')}),
+                                success: function (data) {
+                                    $('.acheteur_id').val(data.id);
+                                    $('.acheteur_nom').val(data.nom);
+                                    $('.acheteur_nifselect').val(data.nifselect);
+                                    $('.acheteur_nif').val(data.nif);
+                                    $('.acheteur_nrc').val(data.nrc);
+                                    $('.acheteur_adresse').val(data.adresse);
+                                    $('.acheteur_codepostal').val(data.codepostal);
+                                    $('.acheteur_ville').val(data.ville);
+                                    $('.acheteur_email').val(data.email);
+                                    $('.acheteur_site').val(data.siteweb);
+                                    $('.acheteur_fax').val(data.fax);
+                                    $('.acheteur_tel').val(data.telephone);
+                                }
+                            });
+                        });
+                        $('#indicator1').hide();
+                    },
+                    error: function() { // if error
+
+                    }
+                });
+            } else {
+                $('#match').text(''); // If less than 2 characters, clear the <div id="match"></div>
+            }
+
+        });
+
+        $( 'a.autocomplete_vendeur' ).click(function() {
+
+
+            var input = $(this).val(); // We take the input value
+
+            $('#indicator1').show();// Loader icon apprears in the <div id="match"></div>
+            var data = {input: input}; // We pass input argument in Ajax
+            $.ajax({
+                type: "POST",
+                url: ROOT_URL2 , // call the php file ajax/tuto-autocomplete.php (check the routine we defined)
+                data: data, // Send dataFields var
+                dataType: 'json', // json method
+                timeout: 3000,
+                success: function(response){ // If success
+                    $('#acheteur').html(response.acheteur); // Return data (UL list) and insert it in the <div id="match"></div>
+                    $('#matchList li').on('click', function() { // When click on an element in the list
+                        $('.acheteur_nom').val($(this).attr('id')); // Update the field with the new element
+                        $('#acheteur').text(''); // Clear the <div id="match"></div>
+                        $.ajax({
+                            type:'GET',
+                            url: Routing.generate('admin_factures_getacheteur',{acheteur:$(this).attr('value')}),
+                            success: function (data) {
+                                $('#acheteur').show();
+                                $('.acheteur_id').val(data.id);
+                                $('.acheteur_nom').val(data.nom);
+                                $('.acheteur_nifselect').val(data.nifselect);
+                                $('.acheteur_nif').val(data.nif);
+                                $('.acheteur_nrc').val(data.nrc);
+                                $('.acheteur_adresse').val(data.adresse);
+                                $('.acheteur_codepostal').val(data.codepostal);
+                                $('.acheteur_ville').val(data.ville);
+                                $('.acheteur_email').val(data.email);
+                                $('.acheteur_siteweb').val(data.siteweb);
+                                $('.acheteur_fax').val(data.fax);
+                                $('.acheteur_telephone').val(data.telephone);
+
+
+                            }
+                        });
+                    });
+                    $('#indicator1').hide();
+
+                },
+                error: function() { // if error
+
+                }
+            });
+
+        });
+
+    </script>
+
+    <script>
+
+
+
+        var $collectionHolder;
+        // setup an "add a tag" link
+        var $addTagLink = $('<a href="#" class="add_tag_link"><button type="button" class="btn btn-secondary"><i class="fa fa-plus" aria-hidden="true"></i> Produit</button></a>');
+        var $newLinkLi = $('<ul style="position: absolute;margin-top: -15px;"></ul>').append($addTagLink);
+
+
+        var $collectionHolder2;
+        var $addTagLink2 = $('<a href="#" class="add_tag_link2"><button type="button" class="btn btn-secondary"><i class="fa fa-plus" aria-hidden="true"></i>  LIGNE DE TEXTE</button></a>');
+        var $newLinkLi2 = $('<ul style=""></ul>').append($addTagLink2,$addTagLink2);
+
+        jQuery(document).ready(function() {
+
+
+            $('#more2').hide();
+            $('#more3').hide();
+
+            $('#indicator1').show();// Loader icon apprears in the <div id="match"></div>
+            $.ajax({
+                type:'GET',
+                url:Routing.generate('admin_factures_getuser',{user:{{ app.user.id }}}),
+                success: function (data) {
+
+                    $('.departement_id').val(data.id).prop("selected", true);
+                    $('.departement_nom').val(data.nom);
+                    $('.departement_nifselect').val(data.nifselect);
+                    $('.departement_nif').val(data.nif);
+                    $('.departement_nrc').val(data.nrc);
+                    $('.departement_adresse').val(data.adresse);
+                    $('.departement_codepostal').val(data.codepostal);
+                    $('.departement_ville').val(data.ville);
+                    $('.departement_email').val(data.email);
+                    $('.departement_site').val(data.siteweb);
+                    $('.departement_fax').val(data.fax);
+                    $('.departement_tel').val(data.telephone);
+
+
+
+                    if(data.nom){
+                        $('.departement_view').append('<p>'+data.nom+'</p>');
+                        if(data.nrc){
+                            $('.departement_view').append('<p>'+'N° RC: '+ data.nrc +'</p>');
+                        }
+                        if(data.nif){
+                            $('.departement_view').append('<p>'+'NIF: '+ data.nif +'</p>');
+                        }
+
+                        $('.departement_view').append('<p>'+data.adresse+','+ data.codepostal+'</p>' + '<p>'+data.ville+'</p>');
+
+                        $('.departement_view').append('<span class="btn btn-glow btn-xs departement_button ">Modifier</span>');
+
+
+                        $('.departement_button').on('click', function(e) {
+
+                            $('.departement_view').hide();
+                            $('.departement_form').show();
+
+
+                        });
+                    } else {
+
+                        $('.departement_view').hide();
+                        $('.departement_form').show();
+                    }
+                    $('#indicator1').hide();// Loader icon apprears in the <div id="match"></div>
+                },
+                error: function() { // if error
+
+                    $('#indicator1').hide();
+                }
+            });
+
+
+
+
+
+
+            $('.departement_id').change(function(){
+                $('#indicator1').show();// Loader icon apprears in the <div id="match"></div>
+                $('.departement_nom').val('');
+                $('.departement_nifselect').val('');
+                $('.departement_nif').val('');
+                $('.departement_nrc').val('');
+                $('.departement_adresse').val('');
+                $('.departement_codepostal').val('');
+                $('.departement_ville').val('');
+                $('.departement_email').val('');
+                $('.departement_site').val('');
+                $('.departement_fax').val();
+                $('.departement_tel').val('');
+                $.ajax({
+                    type:'GET',
+                    url: Routing.generate('admin_factures_getdep',{dep:$('#factures_departements_id').val()}),
+
+                    success: function (data) {
+                        $('.departement_id').val(data.id).prop("selected", true);
+                        $('.departement_nom').val(data.nom);
+                        $('.departement_nifselect').val(data.nifselect);
+                        $('.departement_nif').val(data.nif);
+                        $('.departement_nrc').val(data.nrc);
+                        $('.departement_adresse').val(data.adresse);
+                        $('.departement_codepostal').val(data.codepostal);
+                        $('.departement_ville').val(data.ville);
+                        $('.departement_email').val(data.email);
+                        $('.departement_site').val(data.siteweb);
+                        $('.departement_fax').val(data.fax);
+                        $('.departement_tel').val(data.telephone);
+
+                        $('#indicator1').hide();// Loader icon apprears in the <div id="match"></div>
+                    }
+                });
+                if($('#bes_departements_id option').val() == null){
+                    $('#indicator1').hide();
+                }
+
+            });
+
+
+
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('.tags');
+            $collectionHolder2 = $('div.lignes');
+
+            $collectionHolder.find('div').each(function() {
+                addTagFormDeleteLink($(this));
+            });
+            $collectionHolder2.find('div').each(function() {
+                addTagFormDeleteLink2($('.lignes'));
+            });
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newLinkLi);
+            $collectionHolder2.append($newLinkLi2);
+
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+            $collectionHolder2.data('index', $collectionHolder2.find(':input').length);
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder, $newLinkLi);
+
+
+
+            });
+            $addTagLink2.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm2($collectionHolder2, $newLinkLi2);
+
+
+            });
+            addTagForm($collectionHolder, $newLinkLi);
+            $('.titlebes_achats_0').show();
+        });
+
+
+
+
+        function addTagForm($collectionHolder, $newLinkLi) {
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormLi = $("<div id='"+index+ "'></div>").append(newForm);
+
+
+            $newLinkLi.before($newFormLi);
+
+            $('#bes_type').change(function () {
+
+                if (  this.value == 'be' ) {
+                    window.location = '{{ path('admin_bes_new') }}';
+                }
+                if (  this.value == 'bl' ) {
+                    window.location = '{{ path('admin_bls_new') }}';
+                }
+                if (  this.value == 'Res' ) {
+                    window.location = '{{ path('admin_reservations_new') }}';
+                }
+
+                if (  this.value == 'bc' ) {
+                    window.location = '{{ path('admin_bcs_new') }}';
+                }
+                if (  this.value == 'pi' ) {
+                    window.location = '{{ path('admin_pis_new') }}';
+                }
+                if (  this.value == 'ci' ) {
+                    window.location = '{{ path('admin_cis_new') }}';
+                }
+                if (  this.value == 'bt' ) {
+                    window.location = '{{ path('admin_bts_new') }}';
+                }
+
+                if (  this.value == 'inv' ) {
+                    window.location = ""
+                }
+                if (  this.value == 'blc' ) {
+                    window.location = "";
+                }
+                if (  this.value == 'bec' ) {
+                    window.location = "";
+                }
+            });
+            $('.reduction').hide();
+            $('.discount2').hide();
+
+            $( '.discount1' ).click(function() {
+                $('.discount1').hide();
+                $('.discount2').show();
+                $('.reduction').show();
+                $("#changehead").attr('class', 'col-md-4');
+                $("#change").attr('class', 'col-md-4');
+
+
+            });
+            $( '.discount2' ).click(function() {
+                $('.discount1').show();
+                $('.discount2').hide();
+                $('.reduction').hide();
+                $("#changehead").attr('class', 'col-md-5');
+                $("#change").attr('class', 'col-md-5');
+
+
+            });
+
+
+
+
+            $('#1 hr').remove();
+
+
+
+            $('.part2_bes_achats_'+index).hide();
+            $('.hide_part2_bes_achats_'+index).hide();
+
+            $('.show_part2_bes_achats_'+index).on('click', function(e) {
+
+                $('.part2_bes_achats_'+index).fadeIn('fast');
+                $('.part2_bes_achats_'+index).show();
+
+                $('.show_part2_bes_achats_'+index).hide();
+                $('.hide_part2_bes_achats_'+index).show();
+
+            });
+
+            $('.hide_part2_bes_achats_'+index).on('click', function(e) {
+
+                $('.part2_bes_achats_'+index).fadeIn('fast');
+                $('.part2_bes_achats_'+index).hide();
+
+                $('.show_part2_bes_achats_'+index).show();
+                $('.hide_part2_bes_achats_'+index).hide();
+
+            });
+
+            $( '#bes_achats_'+index+'_user').val({{ app.user.id }}).prop("selected", true).hide();
+            $('.titlebes_achats_'+index).hide();
+
+            addTagFormDeleteLink($newFormLi);
+            $('.productbes_achats_'+index).append('<a style="position: absolute;z-index: 999;margin-top:-42px;margin-left: 93%;color: #ddd; text-decoration: none; cursor: pointer;" id="autocomplete_arrow'+index+'">'+'▼'+'</a>');
+            $('.productbes_achats_'+index).append('<div id="match'+index+'" style="position: absolute;z-index: 999;margin-top: -8px;margin-left: -4px; width: 100%;"></div>');
+            $('#bes_achats_'+index+'_name,'+'#autocomplete_arrow'+index).hover(
+
+                function () {
+                    $('a#autocomplete_arrow'+index).css( "color", "#000" );
+                }, function () {
+                    $('a#autocomplete_arrow'+index).css( "color", "#ddd" );
+
+                });
+
+
+
+            $('#bes_achats_'+index+'_name').on('keyup', function() { // everytime keyup event
+
+                if($('#bes_achats_'+index+'_reduction').val()){
+                    reductionVal = $('#bes_achats_'+index+'_reduction').val();
+                }else {
+                    reductionVal = 0;
+                }
+                var input = index; // We take the input value
+
+                $('#indicator1').show();// Loader icon apprears in the <div id="match"></div>
+                var data = {input: input}; // We pass input argument in Ajax
+                if($('#bes_achats_'+index+'_qte').val()){
+                    qteVal = $('#bes_achats_'+index+'_qte').val();
+                }else {
+                    qteVal = 1;
+                }
+
+                var input = $(this).val(); // We take the input value
+                if ( input.length >= 2 ) { // Minimum characters = 2 (you can change)
+                    $('#indicator1').show();// Loader icon apprears in the <div id="match"></div>
+                    var data = {input: input}; // We pass input argument in Ajax
+                    $.ajax({
+                        type: "POST",
+                        url: ROOT_URL , // call the php file ajax/tuto-autocomplete.php (check the routine we defined)
+                        data: data, // Send dataFields var
+                        dataType: 'json', // json method
+                        timeout: 3000,
+                        success: function(response){ // If success
+                            $('#match'+index).html(response.countryList); // Return data (UL list) and insert it in the <div id="match"></div>
+                            $('#matchList li').on('click', function() { // When click on an element in the list
+                                $('#bes_achats_'+index+'_name').val($(this).attr('id')); // Update the field with the new element
+                                $('#bes_achats_'+index+'_name').text(''); // Clear the <div id="match"></div>
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: ROOT_URL , // call the php file ajax/tuto-autocomplete.php (check the routine we defined)
+                                    data: data, // Send dataFields var
+                                    dataType: 'json', // json method
+                                    timeout: 3000,
+                                    success: function(response){ // If success
+                                        $('#match'+index).html(response.countryList); // Return data (UL list) and insert it in the <div id="match"></div>
+                                        $('#matchList li').on('click', function() { // When click on an element in the list
+                                            $('#bes_achats_'+index+'_name').val($(this).attr('id')); // Update the field with the new element
+                                            $('#match'+index).text(''); // Clear the <div id="match"></div>
+                                            if($('#bes_achats_'+index+'_reduction').val()){
+                                                reductionVal = $('#bes_achats_'+index+'_reduction').val();
+                                            }else {
+                                                reductionVal = 0;
+                                            }
+
+                                            $.ajax({
+                                                type:'GET',
+                                                url: Routing.generate('admin_depenses_prod',{prod:$(this).attr('value'), qte:$('#bes_achats_'+index+'_qte').val(), tva:$('#bes_achats_'+index+'_tva option:selected').text(), tva2:$('#bes_achats_'+index+'_tva2 option:selected').text(),reduction:reductionVal}),
+                                                success: function (data) {
+
+                                                    var totalHT = data.puAchat * $('#bes_achats_'+index+'_qte').val();
+
+                                                    $('#bes_achats_'+index+'_produits').each(function(){
+
+                                                        $(this).val(data.pid).prop("selected", true);
+
+                                                    });
+
+                                                    $('#bes_achats_'+index+'_reference').each(function(){
+
+                                                        $(this).val(data.reference);
+
+                                                    });
+                                                    $('#bes_achats_'+index+'_unite').each(function(){
+
+                                                        $(this).val(data.unite);
+
+
+                                                    });
+                                                    $('#bes_achats_'+index+'_prixHT').each(function(){
+
+                                                        $(this).val(data.puAchat);
+
+                                                    });
+                                                    $('#bes_achats_'+index+'_puHT').each(function(){
+
+                                                        $(this).val(data.puHT);
+
+                                                    });
+                                                    $('#bes_achats_'+index+'_puTTC').each(function(){
+
+                                                        $(this).val(data.puTTC);
+
+                                                    });
+                                                    $('#bes_achats_'+index+'_prixTTC').each(function(){
+
+                                                        $(this).val(data.puTTCa);
+
+                                                    });
+
+                                                    $('#bes_achats_'+index+'_totalHTa').each(function(){
+
+                                                        $(this).val(data.totalHTa);
+
+
+                                                    });
+                                                    $('#bes_achats_'+index+'_totalHT').each(function(){
+
+                                                        $(this).val(data.totalHT);
+
+
+                                                    });
+                                                    $('#bes_achats_'+index+'_tva2').each(function(){
+
+                                                        $(this).val(data.TVAprod).prop("selected", true);
+
+
+
+                                                    });
+                                                    $('#bes_achats_'+index+'_tva').each(function(){
+
+
+                                                        $(this).val(data.TVA).prop("selected", true);
+
+
+
+                                                    });
+                                                    $('#bes_achats_'+index+'_totalTTCa').each(function(){
+
+                                                        $(this).val(totalHT * $('#bes_achats_'+index+'_tva2 option:selected').text() / 100 + totalHT);
+
+                                                    });
+                                                    $('#bes_achats_'+index+'_totalTTC').each(function(){
+
+                                                        $(this).val(data.TTC);
+
+                                                    });
+                                                    $('#bes_achats_'+index+'_description').each(function(){
+
+                                                        $(this).val(data.description);
+
+                                                    });
+
+
+
+
+
+
+
+                                                    var sum = 0;
+                                                    $(".totalHTa").each(function() {
+                                                        sum += parseFloat(+this.value.replace(/ /g, ''));
+                                                    });
+
+
+                                                    $('#sum_net').text(accounting.formatMoney(sum , "", 2, " ", ","));
+
+
+
+
+                                                    var sumTTC = 0;
+                                                    $(".totalTTCa").each(function() {
+                                                        sumTTC += parseFloat(+this.value.replace(/ /g, ''));
+                                                    });
+                                                    $('#sum_ttc').text(accounting.formatMoney(sumTTC, "", 2, " ", ","));
+
+
+                                                    $('#sum_tva').text(accounting.formatMoney(sumTTC - sum, "", 2, " ", ","));
+
+
+                                                    valReduction = $('#bes_achats_'+index+'_reduction').val() * data.totalHT /100 ;
+
+                                                    $('#bes_achats_'+index+'_totalreduct').val(valReduction + (data.TTC - data.totalHT) /100 * $('#bes_achats_'+index+'_reduction').val());
+
+                                                    puHTreduit = $('#bes_achats_'+index+'_puHTreduit').val() * data.totalHT /100 ;
+
+                                                    $('#bes_achats_'+index+'_puHTreduit').val(data.totalHT - valReduction  );
+
+
+
+                                                    $('#bes_achats_'+index+'_puTTCreduit').val((data.totalHT - valReduction) * ($('#bes_achats_'+index+'_tva option:selected').text()/100) + (data.totalHT - valReduction));
+
+
+                                                    var sumReduction = 0;
+
+                                                    $(".totalReduct").each(function() {
+                                                        sumReduction += parseFloat(+this.value.replace(/ /g, ''));
+                                                    });
+                                                    $('#sum_discount').text(accounting.formatMoney(sumReduction, "", 2, " ", ",") );
+
+
+
+                                                    var sumtotalReduction = 0;
+
+                                                    $('#bes_achats_'+index+'_totalreduct').each(function() {
+                                                        sumtotalReduction += parseFloat(+ sumTTC - sumReduction  );
+                                                    });
+                                                    var sumtotalht = 0;
+                                                    $(".totalhtr").each(function() {
+                                                        sumtotalht += parseFloat(+this.value.replace(/ /g, ''));
+                                                    });
+                                                    var sumtotalttc = 0;
+                                                    $(".totalttcr").each(function() {
+                                                        sumtotalttc += parseFloat(+this.value.replace(/ /g, ''));
+                                                    });
+                                                    $('#sum_after_discount').text(accounting.formatMoney(sumtotalReduction, "", 2, " ", ",") );
+
+                                                    $('#devis_totalHT').val(sumtotalht);
+                                                    $('#devis_totalTTC').val(sumtotalttc);
+                                                    $('#devis_totalReduction').val(sumReduction);
+                                                    $('#indicator1').hide();
+                                                    $('#devis_etat').change(function(){
+
+                                                        if($('#devis_etat').val() == 'Payé'){
+                                                            $('#devis_montantpaye').val(sumTTC)
+                                                        }else {
+                                                            $('#devis_montantpaye').val(null)
+                                                        }
+
+                                                    });
+
+
+
+
+                                                }
+                                            });
+
+                                        });
+                                        $('#indicator1').hide();
+
+                                    },
+                                    error: function() { // if error
+
+                                    }
+                                });
+
+
+
+                            });
+                            $('#indicator1').hide();
+                        },
+                        error: function() { // if error
+
+                        }
+                    });
+                } else {
+                    $('#match'+index).text(''); // If less than 2 characters, clear the <div id="match"></div>
+                }
+
+            });
+            $('#bes_achats_'+index+'_qte').keyup(function(){
+                $('#indicator1').show();
+                if($('#bes_achats_'+index+'_puHT').val()){
+                    puHTVal = $('#bes_achats_'+index+'_puHT').val();
+                }else {
+                    puHTVal = 1;
+                }
+                if($('#bes_achats_'+index+'_prixHT').val()){
+                    prixHTVal = $('#bes_achats_'+index+'_prixHT').val();
+                }else {
+                    prixHTVal = 1;
+                }
+                $.ajax({
+                    type:'GET',
+                    url: Routing.generate('admin_bes_qte',{qte:$(this).val(), pu:puHTVal,pua:prixHTVal, tva:$('#bes_achats_'+index+'_tva option:selected').val(),tva2:$('#bes_achats_'+index+'_tva2 option:selected').val()}),
+                    success: function (data) {
+                        if(prixHTVal == 1){
+
+                        }else {
+                        $('#bes_achats_'+index+'_totalHTa').each(function(){
+
+                            $(this).val(data.totalHTa.toFixed(2));
+
+                        });
+
+                        $('#bes_achats_'+index+'_totalTTCa').each(function(){
+
+                            $(this).val(data.TTC2.toFixed(2));
+
+                        });
+                        }
+                        if(puHTVal == 1){
+
+                        }else {
+                        $('#bes_achats_'+index+'_totalTTC').each(function(){
+
+                            $(this).val(data.TTC.toFixed(2));
+
+                        });
+                        $('#bes_achats_'+index+'_totalHT').each(function(){
+
+                            $(this).val(data.totalHT.toFixed(2));
+
+                        });
+
+                        }
+
+
+                        var sum = 0;
+                        $(".totalHTa").each(function() {
+                            sum += parseInt(+this.value);
+                        });
+                        $('#sum_net').text(sum.toFixed(2));
+
+                        var sumTVA = 0;
+                        $(".TVA2").each(function() {
+                            sumTVA += parseInt(+data.totalTVA2);
+                        });
+                        $('#sum_tva').text(sumTVA.toFixed(2));
+
+                        var sumTTC = 0;
+                        $(".totalTTCa").each(function() {
+                            sumTTC += parseInt(+this.value);
+                        });
+                        $('#sum_ttc').text(sumTTC.toFixed(2));
+
+                        var sumReduction = 0;
+                        $(".REDUCTION").each(function() {
+                            sumReduction += parseFloat(+data.reduction);
+                        });
+                        $('#sum_discount').text(sumReduction.toFixed(2));
+
+                        var sumtotalReduction = 0;
+                        $(".REDUCTION").each(function() {
+                            sumtotalReduction += parseFloat(+data.totalReduction);
+                        });
+                        $('#sum_after_discount').text(sumtotalReduction.toFixed(2));
+                        $('#indicator1').hide();
+                    }
+
+                });
+
+
+
+            });
+
+            $('#bes_achats_'+index+'_prixHT').keyup(function(){
+                $('#indicator1').show();
+                if($('#bes_achats_'+index+'_qte').val()){
+                    qteVal = 1;
+                }else {
+                    qteVal = 1;
+                }
+                if($('#bes_achats_'+index+'_puHT').val()){
+                    puHTVal = 1;
+                }else {
+                    puHTVal = 1;
+                }
+                $.ajax({
+                    type:'GET',
+                    url: Routing.generate('admin_bes_qte',{qte:qteVal, pu:puHTVal,pua:$('#bes_achats_'+index+'_prixHT').val(), tva:$('#bes_achats_'+index+'_tva option:selected').val(),tva2:$('#bes_achats_'+index+'_tva2 option:selected').val()}),
+                    success: function (data) {
+
+                        $('#bes_achats_'+index+'_prixTTC').each(function(){
+
+                            $(this).val(data.TTC2.toFixed(2));
+
+                        });
+
+                        if($('#bes_achats_'+index+'_qte').val()){
+
+                        $('#bes_achats_'+index+'_totalHTa').each(function(){
+
+                            $(this).val(data.totalHTa * $('#bes_achats_'+index+'_qte').val());
+
+                        });
+
+                        $('#bes_achats_'+index+'_totalTTCa').each(function(){
+
+                            $(this).val(data.TTC2.toFixed(2) * $('#bes_achats_'+index+'_qte').val());
+
+                        });
+
+                        }
+
+
+
+                        var sum = 0;
+                        $(".totalHTa").each(function() {
+                            sum += parseInt(+this.value);
+                        });
+                        $('#sum_net').text(sum.toFixed(2));
+
+                        var sumTVA = 0;
+                        $(".TVA2").each(function() {
+                            sumTVA += parseInt(+data.totalTVA2);
+                        });
+                        $('#sum_tva').text(sumTVA.toFixed(2));
+
+                        var sumTTC = 0;
+                        $(".totalTTCa").each(function() {
+                            sumTTC += parseInt(+this.value);
+                        });
+                        $('#sum_ttc').text(sumTTC.toFixed(2));
+
+                        var sumReduction = 0;
+                        $(".REDUCTION").each(function() {
+                            sumReduction += parseFloat(+data.reduction);
+                        });
+                        $('#sum_discount').text(sumReduction.toFixed(2));
+
+                        var sumtotalReduction = 0;
+                        $(".REDUCTION").each(function() {
+                            sumtotalReduction += parseFloat(+data.totalReduction);
+                        });
+                        $('#sum_after_discount').text(sumtotalReduction.toFixed(2));
+                        $('#indicator1').hide();
+                    }
+
+                });
+
+
+
+            });
+            $('#bes_achats_'+index+'_puHT').keyup(function(){
+                $('#indicator1').show();
+                if($('#bes_achats_'+index+'_qte').val()){
+                    qteVal = 1;
+                }else {
+                    qteVal = 1;
+                }
+                if($('#bes_achats_'+index+'_prixHT').val()){
+                    prixHTVal = 1;
+                }else {
+                    prixHTVal = 1;
+                }
+                $.ajax({
+                    type:'GET',
+                    url: Routing.generate('admin_bes_qte',{qte:qteVal, pu:$('#bes_achats_'+index+'_puHT').val(),pua:prixHTVal, tva:$('#bes_achats_'+index+'_tva option:selected').val(),tva2:$('#bes_achats_'+index+'_tva2 option:selected').val()}),
+                    success: function (data) {
+
+                        $('#bes_achats_'+index+'_puTTC').each(function(){
+
+                            $(this).val(data.TTC.toFixed(2));
+
+                        });
+
+                        if($('#bes_achats_'+index+'_qte').val()){
+
+                            $('#bes_achats_'+index+'_totalHT').each(function(){
+
+                                $(this).val(data.totalHT.toFixed(2) * $('#bes_achats_'+index+'_qte').val());
+
+                            });
+
+                            $('#bes_achats_'+index+'_totalTTC').each(function(){
+
+                                $(this).val(data.TTC.toFixed(2) * $('#bes_achats_'+index+'_qte').val());
+
+                            });
+
+                        }
+                        var sum = 0;
+                        $(".totalHTa").each(function() {
+                            sum += parseInt(+this.value);
+                        });
+                        $('#sum_net').text(sum.toFixed(2));
+
+                        var sumTVA = 0;
+                        $(".TVA2").each(function() {
+                            sumTVA += parseInt(+data.totalTVA2);
+                        });
+                        $('#sum_tva').text(sumTVA.toFixed(2));
+
+                        var sumTTC = 0;
+                        $(".totalTTCa").each(function() {
+                            sumTTC += parseInt(+this.value);
+                        });
+                        $('#sum_ttc').text(sumTTC.toFixed(2));
+
+                        var sumReduction = 0;
+                        $(".REDUCTION").each(function() {
+                            sumReduction += parseFloat(+data.reduction);
+                        });
+                        $('#sum_discount').text(sumReduction.toFixed(2));
+
+                        var sumtotalReduction = 0;
+                        $(".REDUCTION").each(function() {
+                            sumtotalReduction += parseFloat(+data.totalReduction);
+                        });
+                        $('#sum_after_discount').text(sumtotalReduction.toFixed(2));
+                        $('#indicator1').hide();
+                    }
+
+                });
+
+
+
+            });
+
+            $('#bes_achats_'+index+'_prixTTC').keyup(function(){
+
+
+
+                var TVA = $('#bes_achats_'+index+'_tva2 option:selected').text() / 100 +1;
+
+
+                $('#bes_achats_'+index+'_prixHT').each(function(){
+                    var TVA = $('#bes_achats_'+index+'_tva2 option:selected').text() / 100 +1;
+
+
+                    var prixht= $('#bes_achats_'+index+'_prixTTC').val() / TVA;
+
+                    $(this).val(prixht.toFixed(2));
+
+                });
+
+                $('#bes_achats_'+index+'_totalHTa').each(function(){
+
+                    var totalHT = $('#bes_achats_'+index+'_prixHT').val() * $('#bes_achats_'+index+'_qte').val();
+                    $(this).val(totalHT.toFixed(2));
+
+                });
+
+                $('#bes_achats_'+index+'_totalTTCa').each(function(){
+
+                    var totalTTC = $('#bes_achats_'+index+'_prixTTC').val() * $('#bes_achats_'+index+'_qte').val();
+                    $(this).val(totalTTC.toFixed(2));
+
+                });
+
+                var sum = 0;
+                $(".totalHTa").each(function() {
+                    sum += parseFloat(+this.value.replace(/ /g, ''));
+                });
+
+
+                $('#sum_net').text(accounting.formatMoney(sum , "", 2, " ", ","));
+
+
+
+                var sumTTC = 0;
+                $(".totalTTCa").each(function() {
+                    sumTTC += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_ttc').text(accounting.formatMoney(sumTTC, "", 2, " ", ","));
+
+
+                $('#sum_tva').text(accounting.formatMoney(sumTTC - sum, "", 2, " ", ","));
+
+
+                valReduction = $('#bes_achats_'+index+'_reduction').val() * totalHT /100 ;
+
+                $('#bes_achats_'+index+'_totalreduct').val(valReduction + (TTC - totalHT) /100 * $('#bes_achats_'+index+'_reduction').val());
+
+                puHTreduit = $('#bes_achats_'+index+'_puHTreduit').val() * totalHT /100 ;
+
+                $('#bes_achats_'+index+'_puHTreduit').val(totalHT - valReduction  );
+
+
+
+                $('#bes_achats_'+index+'_puTTCreduit').val((totalHT - valReduction) * ($('#bes_achats_'+index+'_tva option:selected').text()/100) + (totalHT - valReduction));
+
+
+                var sumReduction = 0;
+
+                $(".totalReduct").each(function() {
+                    sumReduction += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_discount').text(accounting.formatMoney(sumReduction, "", 2, " ", ",") );
+
+
+
+                var sumtotalReduction = 0;
+
+                $('#bes_achats_'+index+'_totalreduct').each(function() {
+                    sumtotalReduction += parseFloat(+ sumTTC - sumReduction  );
+                });
+                var sumtotalht = 0;
+                $(".totalhtr").each(function() {
+                    sumtotalht += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                var sumtotalttc = 0;
+                $(".totalttcr").each(function() {
+                    sumtotalttc += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_after_discount').text(accounting.formatMoney(sumtotalReduction, "", 2, " ", ",") );
+
+                $('#depenses_totalHT').val(sumtotalht);
+                $('#depenses_totalTTC').val(sumtotalttc);
+                $('#depenses_totalReduction').val(sumReduction);
+                $('#indicator1').hide();
+            });
+            $('#bes_achats_'+index+'_puTTC').keyup(function(){
+
+
+
+                var TVA = $('#bes_achats_'+index+'_tva option:selected').text() / 100 +1;
+
+
+                $('#bes_achats_'+index+'_puHT').each(function(){
+                    var TVA = $('#bes_achats_'+index+'_tva option:selected').text() / 100 +1;
+
+
+                    var prixht= $('#bes_achats_'+index+'_puTTC').val() / TVA;
+
+                    $(this).val(prixht.toFixed(2));
+
+                });
+
+                $('#bes_achats_'+index+'_totalHT').each(function(){
+
+                    var totalHT = $('#bes_achats_'+index+'_puHT').val() * $('#bes_achats_'+index+'_qte').val();
+                    $(this).val(totalHT.toFixed(2));
+
+                });
+
+                $('#bes_achats_'+index+'_totalTTC').each(function(){
+
+                    var totalTTC = $('#bes_achats_'+index+'_puTTC').val() * $('#bes_achats_'+index+'_qte').val();
+                    $(this).val(totalTTC.toFixed(2));
+
+                });
+
+                var sum = 0;
+                $(".totalHTa").each(function() {
+                    sum += parseFloat(+this.value.replace(/ /g, ''));
+                });
+
+
+                $('#sum_net').text(accounting.formatMoney(sum , "", 2, " ", ","));
+
+
+
+                var sumTTC = 0;
+                $(".totalTTCa").each(function() {
+                    sumTTC += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_ttc').text(accounting.formatMoney(sumTTC, "", 2, " ", ","));
+
+
+                $('#sum_tva').text(accounting.formatMoney(sumTTC - sum, "", 2, " ", ","));
+
+
+                valReduction = $('#bes_achats_'+index+'_reduction').val() * totalHT /100 ;
+
+                $('#bes_achats_'+index+'_totalreduct').val(valReduction + (TTC - totalHT) /100 * $('#bes_achats_'+index+'_reduction').val());
+
+                puHTreduit = $('#bes_achats_'+index+'_puHTreduit').val() * totalHT /100 ;
+
+                $('#bes_achats_'+index+'_puHTreduit').val(totalHT - valReduction  );
+
+
+
+                $('#bes_achats_'+index+'_puTTCreduit').val((totalHT - valReduction) * ($('#bes_achats_'+index+'_tva option:selected').text()/100) + (totalHT - valReduction));
+
+
+                var sumReduction = 0;
+
+                $(".totalReduct").each(function() {
+                    sumReduction += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_discount').text(accounting.formatMoney(sumReduction, "", 2, " ", ",") );
+
+
+
+                var sumtotalReduction = 0;
+
+                $('#bes_achats_'+index+'_totalreduct').each(function() {
+                    sumtotalReduction += parseFloat(+ sumTTC - sumReduction  );
+                });
+                var sumtotalht = 0;
+                $(".totalhtr").each(function() {
+                    sumtotalht += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                var sumtotalttc = 0;
+                $(".totalttcr").each(function() {
+                    sumtotalttc += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_after_discount').text(accounting.formatMoney(sumtotalReduction, "", 2, " ", ",") );
+
+                $('#depenses_totalHT').val(sumtotalht);
+                $('#depenses_totalTTC').val(sumtotalttc);
+                $('#depenses_totalReduction').val(sumReduction);
+                $('#indicator1').hide();
+            });
+
+            $('#bes_achats_'+index+'_tva2').change(function(){
+                $('#indicator1').show();
+                if($('#bes_achats_'+index+'_qte').val()){
+                    qteVal = 1;
+                }else {
+                    qteVal = 1;
+                }
+                if($('#bes_achats_'+index+'_puHT').val()){
+                    puHTVal = $('#bes_achats_'+index+'_puHT').val();
+                }else {
+                    puHTVal = 1;
+                }
+                if($('#bes_achats_'+index+'_prixHT').val()){
+                    prixHTVal = $('#bes_achats_'+index+'_prixHT').val();
+                }else {
+                    prixHTVal = 1;
+                }
+                $.ajax({
+                    type:'GET',
+                    url: Routing.generate('admin_bes_qte',{qte:qteVal, pu:puHTVal,pua:prixHTVal, tva:$('#bes_achats_'+index+'_tva option:selected').val(),tva2:$('#bes_achats_'+index+'_tva2 option:selected').val()}),
+                    success: function (data) {
+                        if(prixHTVal == 1){
+
+                        }else {
+                            $('#bes_achats_'+index+'_prixTTC').each(function(){
+
+                                $(this).val(data.TTC2);
+
+                            });
+                            if($('#bes_achats_'+index+'_qte').val()) {
+                                $('#bes_achats_' + index + '_totalTTCa').each(function () {
+
+                                    $(this).val(data.TTC2 * $('#bes_achats_' + index + '_qte').val());
+
+                                });
+                            }
+
+                        }
+
+
+                        var sum = 0;
+                        $(".totalHTa").each(function() {
+                            sum += parseInt(+this.value);
+                        });
+                        $('#sum_net').text(sum.toFixed(2));
+
+                        var sumTVA = 0;
+                        $(".TVA2").each(function() {
+                            sumTVA += parseInt(+data.totalTVA2);
+                        });
+                        $('#sum_tva').text(sumTVA.toFixed(2));
+
+                        var sumTTC = 0;
+                        $(".totalTTCa").each(function() {
+                            sumTTC += parseInt(+this.value);
+                        });
+                        $('#sum_ttc').text(sumTTC.toFixed(2));
+
+                        var sumReduction = 0;
+                        $(".REDUCTION").each(function() {
+                            sumReduction += parseFloat(+data.reduction);
+                        });
+                        $('#sum_discount').text(sumReduction.toFixed(2));
+
+                        var sumtotalReduction = 0;
+                        $(".REDUCTION").each(function() {
+                            sumtotalReduction += parseFloat(+data.totalReduction);
+                        });
+                        $('#sum_after_discount').text(sumtotalReduction.toFixed(2));
+                        $('#indicator1').hide();
+                    }
+
+                });
+
+
+
+            });
+            $('#bes_achats_'+index+'_tva').change(function(){
+                $('#indicator1').show();
+                if($('#bes_achats_'+index+'_qte').val()){
+                    qteVal = 1;
+                }else {
+                    qteVal = 1;
+                }
+                if($('#bes_achats_'+index+'_puHT').val()){
+                    puHTVal = $('#bes_achats_'+index+'_puHT').val();
+                }else {
+                    puHTVal = 1;
+                }
+                if($('#bes_achats_'+index+'_prixHT').val()){
+                    prixHTVal = $('#bes_achats_'+index+'_prixHT').val();
+                }else {
+                    prixHTVal = 1;
+                }
+                $.ajax({
+                    type:'GET',
+                    url: Routing.generate('admin_bes_qte',{qte:qteVal, pu:puHTVal,pua:prixHTVal, tva:$('#bes_achats_'+index+'_tva option:selected').val(),tva2:$('#bes_achats_'+index+'_tva2 option:selected').val()}),
+                    success: function (data) {
+                        if(prixHTVal == 1){
+
+                        }else {
+                            $('#bes_achats_'+index+'_puTTC').each(function(){
+
+                                $(this).val(data.TTC);
+
+                            });
+                            if($('#bes_achats_'+index+'_qte').val()) {
+                                $('#bes_achats_' + index + '_totalTTC').each(function () {
+
+                                    $(this).val(data.TTC2 * $('#bes_achats_' + index + '_qte').val());
+
+                                });
+                            }
+
+                        }
+                        if(puHTVal == 1){
+
+                        }else {
+
+                            $('#bes_achats_'+index+'_puTTC').each(function(){
+
+                                $(this).val(data.TTC);
+
+                            });
+
+                            if($('#bes_achats_'+index+'_qte').val()) {
+                                $('#bes_achats_' + index + '_totalTTC').each(function () {
+
+                                    $(this).val(data.TTC * $('#bes_achats_' + index + '_qte').val());
+
+                                });
+                            }
+
+                        }
+
+                        var sum = 0;
+                        $(".totalHTa").each(function() {
+                            sum += parseInt(+this.value);
+                        });
+                        $('#sum_net').text(sum.toFixed(2));
+
+                        var sumTVA = 0;
+                        $(".TVA2").each(function() {
+                            sumTVA += parseInt(+data.totalTVA2);
+                        });
+                        $('#sum_tva').text(sumTVA.toFixed(2));
+
+                        var sumTTC = 0;
+                        $(".totalTTCa").each(function() {
+                            sumTTC += parseInt(+this.value);
+                        });
+                        $('#sum_ttc').text(sumTTC.toFixed(2));
+
+                        var sumReduction = 0;
+                        $(".REDUCTION").each(function() {
+                            sumReduction += parseFloat(+data.reduction);
+                        });
+                        $('#sum_discount').text(sumReduction.toFixed(2));
+
+                        var sumtotalReduction = 0;
+                        $(".REDUCTION").each(function() {
+                            sumtotalReduction += parseFloat(+data.totalReduction);
+                        });
+                        $('#sum_after_discount').text(sumtotalReduction.toFixed(2));
+                        $('#indicator1').hide();
+                    }
+
+                });
+
+
+
+            });
+
+            $('#bes_achats_'+index+'_totalHTa').keyup(function(){
+                $('#indicator1').hide();
+                if($('#bes_achats_'+index+'_reduction').val()){
+                    reductionVal = $('#bes_achats_'+index+'_reduction').val();
+                }else {
+                    reductionVal = 0;
+                }
+
+                var totalHT = $('#bes_achats_'+index+'_totalHTa').val() * $('#bes_achats_'+index+'_qte').val();
+
+                var TVA = $('#bes_achats_'+index+'_tva2 option:selected').text() / 100 ;
+
+                var TTC = totalHT * TVA + totalHT;
+
+                var totalTVA = totalHT * TVA;
+                totalttc = $('#bes_achats_'+index+'_totalTTCa').val();
+                totalht = $('#bes_achats_'+index+'_totalHTa').val();
+                tvaval= ($('#bes_achats_'+index+'_tva2 option:selected').text() / 100)+1;
+
+
+
+                $('#bes_achats_'+index+'_totalTTCa').val( (TTC/$('#bes_achats_'+index+'_qte').val()).toFixed(2) );
+                var ttca = $('#bes_achats_'+index+'_totalTTCa').val() / $('#bes_achats_'+index+'_qte').val();
+                $('#bes_achats_'+index+'_prixTTC').each(function(){
+
+                    $(this).val( ttca.toFixed(2) );
+
+                });
+                if($('#bes_achats_'+index+'_qte').val() >= 1){
+                    $('#bes_achats_'+index+'_prixHT').each(function(){
+
+                        $(this).val($('#bes_achats_'+index+'_totalTTCa').val() / $('#bes_achats_'+index+'_qte').val() );
+
+                    });
+                    $('#bes_achats_'+index+'_prixHT').each(function(){
+                        totalpu = $('#bes_achats_'+index+'_totalHTa').val() / $('#bes_achats_'+index+'_qte').val();
+
+                        $('#bes_achats_'+index+'_prixHT').val(totalpu.toFixed(2));
+
+                    });
+                    $('#bes_achats_'+index+'_totalHTa').each(function(){
+                        totalht =  $(this).val();
+
+                        $(this).val();
+
+                    });
+                    $('#bes_achats_'+index+'_totalTTCa').each(function(){
+
+                        $(this).val();
+
+                    });
+
+                    $('#bes_achats_'+index+'_tva2').each(function(){
+
+                        $(this).attr('value',totalTVA2);
+
+
+                    });
+                    $('#bes_achats_'+index+'_tva2').change(function(){
+
+                        $('#bes_achats_'+index+'_prixHT').val(totalpu.toFixed(2));
+
+
+                    });
+                }else {
+
+
+                    $('#bes_achats_'+index+'_prixHT').each(function(){
+
+                        $(this).val(totalHTa.toFixed(2));
+
+                    });
+                    $('#bes_achats_'+index+'_totalHTa').each(function(){
+
+                        $(this).val(TTCa.toFixed(2));
+
+                    });
+
+                    $('#bes_achats_'+index+'_tva2').each(function(){
+
+                        $(this).attr('value',totalTVA);
+
+
+                    });
+
+                    $('#bes_achats_'+index+'_totalTTCa').each(function(){
+
+                        $(this).val(TTC.toFixed(2));
+
+                    });
+
+                    var ttca = $('#bes_achats_'+index+'_totalTTCa').val() / $('#bes_achats_'+index+'_qte').val();
+                    $('#bes_achats_'+index+'_prixTTC').each(function(){
+
+                        $(this).val( ttca.toFixed(2) );
+
+                    });
+                }
+
+
+                var sum = 0;
+                $(".totalHTa").each(function() {
+                    sum += parseFloat(+this.value.replace(/ /g, ''));
+                });
+
+
+                $('#sum_net').text(accounting.formatMoney(sum , "", 2, " ", ","));
+
+
+
+                var sumTTC = 0;
+                $(".totalTTCa").each(function() {
+                    sumTTC += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_ttc').text(accounting.formatMoney(sumTTC, "", 2, " ", ","));
+
+
+                $('#sum_tva').text(accounting.formatMoney(sumTTC - sum, "", 2, " ", ","));
+
+
+                valReduction = $('#bes_achats_'+index+'_reduction').val() * totalHT /100 ;
+
+                $('#bes_achats_'+index+'_totalreduct').val(valReduction + (TTC - totalHT) /100 * $('#bes_achats_'+index+'_reduction').val());
+
+                puHTreduit = $('#bes_achats_'+index+'_puHTreduit').val() * totalHT /100 ;
+
+                $('#bes_achats_'+index+'_puHTreduit').val(totalHT - valReduction  );
+
+
+
+                $('#bes_achats_'+index+'_puTTCreduit').val((totalHT - valReduction) * ($('#bes_achats_'+index+'_tva option:selected').text()/100) + (totalHT - valReduction));
+
+
+                var sumReduction = 0;
+
+                $(".totalReduct").each(function() {
+                    sumReduction += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_discount').text(accounting.formatMoney(sumReduction, "", 2, " ", ",") );
+
+
+
+                var sumtotalReduction = 0;
+
+                $('#bes_achats_'+index+'_totalreduct').each(function() {
+                    sumtotalReduction += parseFloat(+ sumTTC - sumReduction  );
+                });
+                var sumtotalht = 0;
+                $(".totalhtr").each(function() {
+                    sumtotalht += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                var sumtotalttc = 0;
+                $(".totalttcr").each(function() {
+                    sumtotalttc += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_after_discount').text(accounting.formatMoney(sumtotalReduction, "", 2, " ", ",") );
+
+                $('#depenses_totalHT').val(sumtotalht);
+                $('#depenses_totalTTC').val(sumtotalttc);
+                $('#depenses_totalReduction').val(sumReduction);
+                $('#indicator1').hide();
+
+            });
+            $('#bes_achats_'+index+'_totalTTCa').keyup(function(){
+                $('#indicator1').hide();
+                if($('#bes_achats_'+index+'_reduction').val()){
+                    reductionVal = $('#bes_achats_'+index+'_reduction').val();
+                }else {
+                    reductionVal = 0;
+                }
+                var totalHT = $('#bes_achats_'+index+'_totalHTa').val() * $('#bes_achats_'+index+'_qte').val();
+
+                var TVA = ($('#bes_achats_'+index+'_tva2 option:selected').text() / 100) ;
+
+                var TTC = totalHT * TVA + totalHT;
+
+                var totalTVA = totalHT * TVA;
+
+                totalttc = $('#bes_achats_'+index+'_totalTTCa').val();
+                totalht = $('#bes_achats_'+index+'_totalHTa').val();
+                tvaval= ($('#bes_achats_'+index+'_tva2 option:selected').text() / 100)+1;
+
+
+                $('#bes_achats_'+index+'_totalHTa').val( (totalttc  / tvaval).toFixed(2) );
+                $('#bes_achats_'+index+'_prixHT').val($('#bes_achats_'+index+'_totalHTa').val());
+
+
+                if($('#bes_achats_'+index+'_qte').val() >= 1){
+                    $('#bes_achats_'+index+'_prixHT').each(function(){
+
+                        $(this).val($('#bes_achats_'+index+'_totalTTCa').val() / $('#bes_achats_'+index+'_qte').val() );
+
+                    });
+                    $('#bes_achats_'+index+'_prixHT').each(function(){
+                        totalpu = $('#bes_achats_'+index+'_totalHTa').val() / $('#bes_achats_'+index+'_qte').val();
+
+                        $('#bes_achats_'+index+'_prixHT').val(totalpu.toFixed(2));
+
+                    });
+                    $('#bes_achats_'+index+'_totalHTa').each(function(){
+                        totalht =  $(this).val();
+
+                        $(this).val();
+
+                    });
+                    $('#bes_achats_'+index+'_totalTTCa').each(function(){
+
+                        $(this).val();
+
+                    })
+
+
+
+                    $('#bes_achats_'+index+'_tva2').each(function(){
+
+                        $(this).attr('value',totalTVA);
+
+
+                    });
+                    $('#bes_achats_'+index+'_tva2').change(function(){
+
+                        $('#bes_achats_'+index+'_prixHT').val(totalpu.toFixed(2));
+
+
+                    });
+
+
+                     var ttca = $('#bes_achats_'+index+'_totalTTCa').val() / $('#bes_achats_'+index+'_qte').val();
+                    $('#bes_achats_'+index+'_prixTTC').each(function(){
+
+                        $(this).val( ttca.toFixed(2) );
+
+                    });
+                }else {
+
+
+                    $('#bes_achats_'+index+'_prixHT').each(function(){
+
+                        $(this).val(totalHT.toFixed(2));
+
+                    });
+                    $('#bes_achats_'+index+'_totalHTa').each(function(){
+
+                        $(this).val(TTC.toFixed(2));
+
+                    });
+
+                    $('#bes_achats_'+index+'_tva2').each(function(){
+
+                        $(this).attr('value',totalTVA);
+
+
+                    });
+
+                    $('#bes_achats_'+index+'_totalTTCa').each(function(){
+
+                        $(this).val(TTC.toFixed(2));
+
+                    });
+
+
+                }
+
+
+
+                var sum = 0;
+                $(".totalHTa").each(function() {
+                    sum += parseFloat(+this.value.replace(/ /g, ''));
+                });
+
+
+                $('#sum_net').text(accounting.formatMoney(sum , "", 2, " ", ","));
+
+
+
+                var sumTTC = 0;
+                $(".totalTTCa").each(function() {
+                    sumTTC += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_ttc').text(accounting.formatMoney(sumTTC, "", 2, " ", ","));
+
+
+                $('#sum_tva').text(accounting.formatMoney(sumTTC - sum, "", 2, " ", ","));
+
+
+                valReduction = $('#bes_achats_'+index+'_reduction').val() * $('#bes_achats_'+index+'_totalTTCa').val() /100 ;
+
+                $('#bes_achats_'+index+'_totalreduct').val(valReduction + (TTC - totalHT) /100 * $('#bes_achats_'+index+'_reduction').val());
+
+                puHTreduit = $('#bes_achats_'+index+'_puHTreduit').val() * totalHT /100 ;
+
+                $('#bes_achats_'+index+'_puHTreduit').val(totalHT - valReduction  );
+
+
+
+                $('#bes_achats_'+index+'_puTTCreduit').val((totalHT - valReduction) * ($('#bes_achats_'+index+'_tva2 option:selected').text()/100) + (totalHTa - valReduction));
+
+
+                var sumReduction = 0;
+
+                $(".totalReduct").each(function() {
+                    sumReduction += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_discount').text(accounting.formatMoney(sumReduction, "", 2, " ", ",") );
+
+
+
+                var sumtotalReduction = 0;
+
+                $('#bes_achats_'+index+'_totalreduct').each(function() {
+                    sumtotalReduction += parseFloat(+ sumTTC - sumReduction  );
+                });
+                var sumtotalht = 0;
+                $(".totalhtr").each(function() {
+                    sumtotalht += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                var sumtotalttc = 0;
+                $(".totalttcr").each(function() {
+                    sumtotalttc += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_after_discount').text(accounting.formatMoney(sumtotalReduction, "", 2, " ", ",") );
+
+                $('#depenses_totalHT').val(sumtotalht);
+                $('#depenses_totalTTC').val(sumtotalttc);
+                $('#depenses_totalReduction').val(sumReduction);
+                $('#indicator1').hide();
+
+
+            });
+
+            $('#bes_achats_'+index+'_totalHT').keyup(function(){
+                $('#indicator1').hide();
+                if($('#bes_achats_'+index+'_reduction').val()){
+                    reductionVal = $('#bes_achats_'+index+'_reduction').val();
+                }else {
+                    reductionVal = 0;
+                }
+
+                var totalHT = $('#bes_achats_'+index+'_totalHT').val() * $('#bes_achats_'+index+'_qte').val();
+
+                var TVA = $('#bes_achats_'+index+'_tva option:selected').text() / 100 ;
+
+                var TTC = totalHT * TVA + totalHT;
+
+                var totalTVA = totalHT * TVA;
+                totalttc = $('#bes_achats_'+index+'_totalTTC').val();
+                totalht = $('#bes_achats_'+index+'_totalHT').val();
+                tvaval= ($('#bes_achats_'+index+'_tva option:selected').text() / 100)+1;
+
+
+
+                $('#bes_achats_'+index+'_totalTTC').val( (TTC/$('#bes_achats_'+index+'_qte').val()).toFixed(2) );
+                var ttca = $('#bes_achats_'+index+'_totalTTC').val() / $('#bes_achats_'+index+'_qte').val();
+                $('#bes_achats_'+index+'_puTTC').each(function(){
+
+                    $(this).val( ttca.toFixed(2) );
+
+                });
+                if($('#bes_achats_'+index+'_qte').val() >= 1){
+                    $('#bes_achats_'+index+'_puHT').each(function(){
+
+                        $(this).val($('#bes_achats_'+index+'_totalTTCa').val() / $('#bes_achats_'+index+'_qte').val() );
+
+                    });
+                    $('#bes_achats_'+index+'_puHT').each(function(){
+                        totalpu = $('#bes_achats_'+index+'_totalHT').val() / $('#bes_achats_'+index+'_qte').val();
+
+                        $('#bes_achats_'+index+'_puHT').val(totalpu.toFixed(2));
+
+                    });
+                    $('#bes_achats_'+index+'_totalHT').each(function(){
+                        totalht =  $(this).val();
+
+                        $(this).val();
+
+                    });
+                    $('#bes_achats_'+index+'_totalTTC').each(function(){
+
+                        $(this).val();
+
+                    });
+
+                    $('#bes_achats_'+index+'_tva').each(function(){
+
+                        $(this).attr('value',totalTVA2);
+
+
+                    });
+                    $('#bes_achats_'+index+'_tva').change(function(){
+
+                        $('#bes_achats_'+index+'_puHT').val(totalpu.toFixed(2));
+
+
+                    });
+                }else {
+
+
+                    $('#bes_achats_'+index+'_puHT').each(function(){
+
+                        $(this).val(totalHTa.toFixed(2));
+
+                    });
+                    $('#bes_achats_'+index+'_totalHT').each(function(){
+
+                        $(this).val(TTCa.toFixed(2));
+
+                    });
+
+                    $('#bes_achats_'+index+'_tva').each(function(){
+
+                        $(this).attr('value',totalTVA);
+
+
+                    });
+
+                    $('#bes_achats_'+index+'_totalTTC').each(function(){
+
+                        $(this).val(TTC.toFixed(2));
+
+                    });
+
+                    var ttca = $('#bes_achats_'+index+'_totalTTC').val() / $('#bes_achats_'+index+'_qte').val();
+                    $('#bes_achats_'+index+'_puTTC').each(function(){
+
+                        $(this).val( ttca.toFixed(2) );
+
+                    });
+                }
+
+
+                var sum = 0;
+                $(".totalHTa").each(function() {
+                    sum += parseFloat(+this.value.replace(/ /g, ''));
+                });
+
+
+                $('#sum_net').text(accounting.formatMoney(sum , "", 2, " ", ","));
+
+
+
+                var sumTTC = 0;
+                $(".totalTTCa").each(function() {
+                    sumTTC += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_ttc').text(accounting.formatMoney(sumTTC, "", 2, " ", ","));
+
+
+                $('#sum_tva').text(accounting.formatMoney(sumTTC - sum, "", 2, " ", ","));
+
+
+                valReduction = $('#bes_achats_'+index+'_reduction').val() * totalHT /100 ;
+
+                $('#bes_achats_'+index+'_totalreduct').val(valReduction + (TTC - totalHT) /100 * $('#bes_achats_'+index+'_reduction').val());
+
+                puHTreduit = $('#bes_achats_'+index+'_puHTreduit').val() * totalHT /100 ;
+
+                $('#bes_achats_'+index+'_puHTreduit').val(totalHT - valReduction  );
+
+
+
+                $('#bes_achats_'+index+'_puTTCreduit').val((totalHT - valReduction) * ($('#bes_achats_'+index+'_tva option:selected').text()/100) + (totalHT - valReduction));
+
+
+                var sumReduction = 0;
+
+                $(".totalReduct").each(function() {
+                    sumReduction += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_discount').text(accounting.formatMoney(sumReduction, "", 2, " ", ",") );
+
+
+
+                var sumtotalReduction = 0;
+
+                $('#bes_achats_'+index+'_totalreduct').each(function() {
+                    sumtotalReduction += parseFloat(+ sumTTC - sumReduction  );
+                });
+                var sumtotalht = 0;
+                $(".totalhtr").each(function() {
+                    sumtotalht += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                var sumtotalttc = 0;
+                $(".totalttcr").each(function() {
+                    sumtotalttc += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_after_discount').text(accounting.formatMoney(sumtotalReduction, "", 2, " ", ",") );
+
+                $('#depenses_totalHT').val(sumtotalht);
+                $('#depenses_totalTTC').val(sumtotalttc);
+                $('#depenses_totalReduction').val(sumReduction);
+                $('#indicator1').hide();
+
+            });
+            $('#bes_achats_'+index+'_totalTTC').keyup(function(){
+                $('#indicator1').hide();
+                if($('#bes_achats_'+index+'_reduction').val()){
+                    reductionVal = $('#bes_achats_'+index+'_reduction').val();
+                }else {
+                    reductionVal = 0;
+                }
+                var totalHT = $('#bes_achats_'+index+'_totalHT').val() * $('#bes_achats_'+index+'_qte').val();
+
+                var TVA = ($('#bes_achats_'+index+'_tva option:selected').text() / 100) ;
+
+                var TTC = totalHT * TVA + totalHT;
+
+                var totalTVA = totalHT * TVA;
+
+                totalttc = $('#bes_achats_'+index+'_totalTTC').val();
+                totalht = $('#bes_achats_'+index+'_totalHT').val();
+                tvaval= ($('#bes_achats_'+index+'_tva option:selected').text() / 100)+1;
+
+
+                $('#bes_achats_'+index+'_totalHT').val( (totalttc  / tvaval).toFixed(2) );
+                $('#bes_achats_'+index+'_puHT').val($('#bes_achats_'+index+'_totalHT').val());
+
+
+                if($('#bes_achats_'+index+'_qte').val() >= 1){
+                    $('#bes_achats_'+index+'_puHT').each(function(){
+
+                        $(this).val($('#bes_achats_'+index+'_totalTTC').val() / $('#bes_achats_'+index+'_qte').val() );
+
+                    });
+                    $('#bes_achats_'+index+'_puHT').each(function(){
+                        totalpu = $('#bes_achats_'+index+'_totalHT').val() / $('#bes_achats_'+index+'_qte').val();
+
+                        $('#bes_achats_'+index+'_puHT').val(totalpu.toFixed(2));
+
+                    });
+                    $('#bes_achats_'+index+'_totalHT').each(function(){
+                        totalht =  $(this).val();
+
+                        $(this).val();
+
+                    });
+                    $('#bes_achats_'+index+'_totalTTC').each(function(){
+
+                        $(this).val();
+
+                    })
+
+
+
+                    $('#bes_achats_'+index+'_tva').each(function(){
+
+                        $(this).attr('value',totalTVA);
+
+
+                    });
+                    $('#bes_achats_'+index+'_tva').change(function(){
+
+                        $('#bes_achats_'+index+'_puHT').val(totalpu.toFixed(2));
+
+
+                    });
+
+
+                    var ttca = $('#bes_achats_'+index+'_totalTTC').val() / $('#bes_achats_'+index+'_qte').val();
+                    $('#bes_achats_'+index+'_puTTC').each(function(){
+
+                        $(this).val( ttca.toFixed(2) );
+
+                    });
+                }else {
+
+
+                    $('#bes_achats_'+index+'_puHT').each(function(){
+
+                        $(this).val(totalHT.toFixed(2));
+
+                    });
+                    $('#bes_achats_'+index+'_totalHT').each(function(){
+
+                        $(this).val(TTC.toFixed(2));
+
+                    });
+
+                    $('#bes_achats_'+index+'_tva').each(function(){
+
+                        $(this).attr('value',totalTVA);
+
+
+                    });
+
+                    $('#bes_achats_'+index+'_totalTTC').each(function(){
+
+                        $(this).val(TTC.toFixed(2));
+
+                    });
+
+
+                }
+
+
+
+                var sum = 0;
+                $(".totalHTa").each(function() {
+                    sum += parseFloat(+this.value.replace(/ /g, ''));
+                });
+
+
+                $('#sum_net').text(accounting.formatMoney(sum , "", 2, " ", ","));
+
+
+
+                var sumTTC = 0;
+                $(".totalTTCa").each(function() {
+                    sumTTC += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_ttc').text(accounting.formatMoney(sumTTC, "", 2, " ", ","));
+
+
+                $('#sum_tva').text(accounting.formatMoney(sumTTC - sum, "", 2, " ", ","));
+
+
+                valReduction = $('#bes_achats_'+index+'_reduction').val() * $('#bes_achats_'+index+'_totalTTCa').val() /100 ;
+
+                $('#bes_achats_'+index+'_totalreduct').val(valReduction + (TTC - totalHT) /100 * $('#bes_achats_'+index+'_reduction').val());
+
+                puHTreduit = $('#bes_achats_'+index+'_puHTreduit').val() * totalHT /100 ;
+
+                $('#bes_achats_'+index+'_puHTreduit').val(totalHT - valReduction  );
+
+
+
+                $('#bes_achats_'+index+'_puTTCreduit').val((totalHT - valReduction) * ($('#bes_achats_'+index+'_tva2 option:selected').text()/100) + (totalHTa - valReduction));
+
+
+                var sumReduction = 0;
+
+                $(".totalReduct").each(function() {
+                    sumReduction += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_discount').text(accounting.formatMoney(sumReduction, "", 2, " ", ",") );
+
+
+
+                var sumtotalReduction = 0;
+
+                $('#bes_achats_'+index+'_totalreduct').each(function() {
+                    sumtotalReduction += parseFloat(+ sumTTC - sumReduction  );
+                });
+                var sumtotalht = 0;
+                $(".totalhtr").each(function() {
+                    sumtotalht += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                var sumtotalttc = 0;
+                $(".totalttcr").each(function() {
+                    sumtotalttc += parseFloat(+this.value.replace(/ /g, ''));
+                });
+                $('#sum_after_discount').text(accounting.formatMoney(sumtotalReduction, "", 2, " ", ",") );
+
+                $('#depenses_totalHT').val(sumtotalht);
+                $('#depenses_totalTTC').val(sumtotalttc);
+                $('#depenses_totalReduction').val(sumReduction);
+                $('#indicator1').hide();
+
+
+            });
+            $( 'a#autocomplete_arrow'+index ).click(function() {
+                $('#bes_achats_'+index+'_reduction').val(0);
+                var input = $(this).val(); // We take the input value
+
+                $('#indicator1').show();// Loader icon apprears in the <div id="match"></div>
+                var data = {input: input}; // We pass input argument in Ajax
+                $.ajax({
+                    type: "POST",
+                    url: ROOT_URL , // call the php file ajax/tuto-autocomplete.php (check the routine we defined)
+                    data: data, // Send dataFields var
+                    dataType: 'json', // json method
+                    timeout: 3000,
+                    success: function(response){ // If success
+                        $('#match'+index).html(response.countryList); // Return data (UL list) and insert it in the <div id="match"></div>
+                        $('#matchList li').on('click', function() { // When click on an element in the list
+                            $('#bes_achats_'+index+'_name').val($(this).attr('id')); // Update the field with the new element
+                            $('#match'+index).text(''); // Clear the <div id="match"></div>
+                            if($('#bes_achats_'+index+'_reduction').val()){
+                                reductionVal = $('#bes_achats_'+index+'_reduction').val();
+                            }else {
+                                reductionVal = 0;
+                            }
+
+                            $.ajax({
+                                type:'GET',
+                                url: Routing.generate('admin_depenses_prod',{prod:$(this).attr('value'), qte:$('#bes_achats_'+index+'_qte').val(), tva:$('#bes_achats_'+index+'_tva option:selected').text(), tva2:$('#bes_achats_'+index+'_tva2 option:selected').text(),reduction:reductionVal}),
+                                success: function (data) {
+
+                                    var totalHT = data.puAchat * $('#bes_achats_'+index+'_qte').val();
+
+                                    $('#bes_achats_'+index+'_produits').each(function(){
+
+                                        $(this).val(data.pid).prop("selected", true);
+
+                                    });
+
+                                    $('#bes_achats_'+index+'_reference').each(function(){
+
+                                        $(this).val(data.reference);
+
+                                    });
+                                    $('#bes_achats_'+index+'_unite').each(function(){
+
+                                        $(this).val(data.unite);
+
+
+                                    });
+                                    $('#bes_achats_'+index+'_prixHT').each(function(){
+
+                                        $(this).val(data.puAchat);
+
+                                    });
+                                    $('#bes_achats_'+index+'_puHT').each(function(){
+
+                                        $(this).val(data.puHT);
+
+                                    });
+                                    $('#bes_achats_'+index+'_puTTC').each(function(){
+
+                                        $(this).val(data.puTTC);
+
+                                    });
+                                    $('#bes_achats_'+index+'_prixTTC').each(function(){
+
+                                        $(this).val(data.puTTCa);
+
+                                    });
+
+                                    $('#bes_achats_'+index+'_totalHTa').each(function(){
+
+                                        $(this).val(data.totalHTa);
+
+
+                                    });
+                                    $('#bes_achats_'+index+'_totalHT').each(function(){
+
+                                        $(this).val(data.totalHT);
+
+
+                                    });
+
+                                    $('#bes_achats_'+index+'_tva2').each(function(){
+
+                                        $(this).val(data.TVAprod).prop("selected", true);
+
+                                    });
+                                    $('#bes_achats_'+index+'_tva').each(function(){
+
+
+                                        $(this).val(data.TVA).prop("selected", true);
+
+
+                                    });
+
+                                    $('#bes_achats_'+index+'_totalTTCa').each(function(){
+
+                                        $(this).val(totalHT * $('#bes_achats_'+index+'_tva2 option:selected').text() / 100 + totalHT);
+
+                                    });
+                                    $('#bes_achats_'+index+'_totalTTC').each(function(){
+
+                                        $(this).val(data.TTC);
+
+                                    });
+                                    $('#bes_achats_'+index+'_description').each(function(){
+
+                                        $(this).val(data.description);
+
+                                    });
+
+
+
+
+
+
+
+                                    var sum = 0;
+                                    $(".totalHTa").each(function() {
+                                        sum += parseFloat(+this.value.replace(/ /g, ''));
+                                    });
+
+
+                                    $('#sum_net').text(accounting.formatMoney(sum , "", 2, " ", ","));
+
+
+
+
+                                    var sumTTC = 0;
+                                    $(".totalTTCa").each(function() {
+                                        sumTTC += parseFloat(+this.value.replace(/ /g, ''));
+                                    });
+                                    $('#sum_ttc').text(accounting.formatMoney(sumTTC, "", 2, " ", ","));
+
+
+                                    $('#sum_tva').text(accounting.formatMoney(sumTTC - sum, "", 2, " ", ","));
+
+
+                                    valReduction = $('#bes_achats_'+index+'_reduction').val() * data.totalHT /100 ;
+
+                                    $('#bes_achats_'+index+'_totalreduct').val(valReduction + (data.TTC - data.totalHT) /100 * $('#bes_achats_'+index+'_reduction').val());
+
+                                    puHTreduit = $('#bes_achats_'+index+'_puHTreduit').val() * data.totalHT /100 ;
+
+                                    $('#bes_achats_'+index+'_puHTreduit').val(data.totalHT - valReduction  );
+
+
+
+                                    $('#bes_achats_'+index+'_puTTCreduit').val((data.totalHT - valReduction) * ($('#bes_achats_'+index+'_tva option:selected').text()/100) + (data.totalHT - valReduction));
+
+
+                                    var sumReduction = 0;
+
+                                    $(".totalReduct").each(function() {
+                                        sumReduction += parseFloat(+this.value.replace(/ /g, ''));
+                                    });
+                                    $('#sum_discount').text(accounting.formatMoney(sumReduction, "", 2, " ", ",") );
+
+
+
+                                    var sumtotalReduction = 0;
+
+                                    $('#bes_achats_'+index+'_totalreduct').each(function() {
+                                        sumtotalReduction += parseFloat(+ sumTTC - sumReduction  );
+                                    });
+                                    var sumtotalht = 0;
+                                    $(".totalhtr").each(function() {
+                                        sumtotalht += parseFloat(+this.value.replace(/ /g, ''));
+                                    });
+                                    var sumtotalttc = 0;
+                                    $(".totalttcr").each(function() {
+                                        sumtotalttc += parseFloat(+this.value.replace(/ /g, ''));
+                                    });
+                                    $('#sum_after_discount').text(accounting.formatMoney(sumtotalReduction, "", 2, " ", ",") );
+
+                                    $('#devis_totalHT').val(sumtotalht);
+                                    $('#devis_totalTTC').val(sumtotalttc);
+                                    $('#devis_totalReduction').val(sumReduction);
+                                    $('#indicator1').hide();
+                                    $('#devis_etat').change(function(){
+
+                                        if($('#devis_etat').val() == 'Payé'){
+                                            $('#devis_montantpaye').val(sumTTC)
+                                        }else {
+                                            $('#devis_montantpaye').val(null)
+                                        }
+
+                                    });
+
+
+
+
+                                }
+                            });
+
+                        });
+                        $('#indicator1').hide();
+
+                    },
+                    error: function() { // if error
+
+                    }
+                });
+
+            });
+
+
+        }
+        function addTagForm2($collectionHolder2, $newLinkLi2) {
+            // Get the data-prototype explained earlier
+            var prototype2 = $collectionHolder2.data('prototype');
+
+            // get the new index
+            var index2 = $collectionHolder2.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm2 = prototype2.replace(/__name__/g, index2);
+
+            // increase the index with one for the next item
+            $collectionHolder2.data('index', index2 + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormLi2 = $("<div id='"+index2+ "'></div>").append(newForm2);
+
+            $newLinkLi2.before($newFormLi2);
+
+
+
+            addTagFormDeleteLink2($newFormLi2);
+
+        }
+
+        function addTagFormDeleteLink($tagFormLi) {
+
+            var $removeFormA = $('<a class="del"><i class="fa fa-close" aria-hidden="true" style=""></i></a>');
+            $tagFormLi.prepend($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $tagFormLi.remove();
+
+                var sum = 0;
+                $(".totalHT").each(function() {
+                    sum += parseInt(+this.value);
+                });
+                $('#sum_net').text(sum);
+
+                var sumTTC = 0;
+                $(".totalTTC").each(function() {
+                    sumTTC += parseInt(+this.value);
+                });
+                $('#sum_ttc').text(sumTTC);
+
+                var sumTVA = 0;
+                $(".TVA").each(function() {
+                    sumTVA += parseInt(+$(".TVA").attr('value'));
+                });
+                $('#sum_tva').text(sumTVA);
+
+
+
+
+            });
+
+        }
+        function addTagFormDeleteLink2($tagFormLi2) {
+
+            var $removeFormA2 = $('<a class="del"><i class="fa fa-close" aria-hidden="true" style=""></i></a>');
+            $tagFormLi2.append($removeFormA2);
+
+            $removeFormA2.on('click', function(e) {
+
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $tagFormLi2.remove();
+
+
+            });
+
+        }
+        $(document).mouseup(function (e) {
+            var popup = $(".ui-autocomplete");
+            if (!$('#matchList').is(e.target) && !popup.is(e.target) && popup.has(e.target).length == 0) {
+                popup.hide(500);
+            }
+        });
+
+    </script>
+
+{% endblock %}
+
+
+

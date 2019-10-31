@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pis list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Nf</th>
+                <th>Datecreation</th>
+                <th>Lieu</th>
+                <th>Additionnelle</th>
+                <th>Dateadd</th>
+                <th>Moderegle</th>
+                <th>Dateregle</th>
+                <th>Objet</th>
+                <th>Etat</th>
+                <th>Montantpaye</th>
+                <th>Paiementrecu</th>
+                <th>Dateenvois</th>
+                <th>Nc</th>
+                <th>Nomvendeur</th>
+                <th>Informations</th>
+                <th>Editerpar</th>
+                <th>Expedierpar</th>
+                <th>Receptionnerpar</th>
+                <th>Ncommande</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pi in pis %}
+            <tr>
+                <td><a href="{{ path('admin_pis_show', { 'id': pi.id }) }}">{{ pi.id }}</a></td>
+                <td>{{ pi.type }}</td>
+                <td>{{ pi.nf }}</td>
+                <td>{% if pi.datecreation %}{{ pi.datecreation|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ pi.lieu }}</td>
+                <td>{{ pi.additionnelle }}</td>
+                <td>{% if pi.dateadd %}{{ pi.dateadd|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ pi.moderegle }}</td>
+                <td>{{ pi.dateregle }}</td>
+                <td>{{ pi.objet }}</td>
+                <td>{{ pi.etat }}</td>
+                <td>{{ pi.montantpaye }}</td>
+                <td>{% if pi.paiementrecu %}{{ pi.paiementrecu|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if pi.dateenvois %}{{ pi.dateenvois|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ pi.nc }}</td>
+                <td>{{ pi.nomvendeur }}</td>
+                <td>{{ pi.informations }}</td>
+                <td>{{ pi.editerpar }}</td>
+                <td>{{ pi.expedierpar }}</td>
+                <td>{{ pi.receptionnerpar }}</td>
+                <td>{{ pi.ncommande }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_pis_show', { 'id': pi.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_pis_edit', { 'id': pi.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_pis_new') }}">Create a new pi</a>
+        </li>
+    </ul>
+{% endblock %}

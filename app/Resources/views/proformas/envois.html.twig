@@ -1,0 +1,198 @@
+
+
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+    <style>
+        body{
+            background: white;
+        }
+        .aa{
+            padding: 1.5rem;
+            margin-right: 0;
+            margin-bottom: 0;
+            margin-left: 0;
+            border: solid 1px #dddddd;
+
+        }
+        #1 option[label]{
+            float: left;
+            color: red;
+        }
+        .panel-success>.panel-heading{
+            background: linear-gradient(to bottom, #fff 0%, #f6f6f6 19%, #ededed 100%);
+            border-color: #dddddd;
+            color: #000;
+        }
+        .panel-success {
+            border-color: #dddddd;
+
+        }
+        .panel-title{
+            font-size: 12px;
+        }
+        .forms{
+            margin-bottom: 10px;
+        }
+
+        .fa-close{
+            -webkit-border-radius: 100px;
+            font-size: 1.1em;
+            color: white;
+            border-radius: 100px;
+            line-height: 0.9em;
+            padding: 5px 6px;
+            margin-top: 20px;
+            cursor: pointer;
+            background: linear-gradient(to bottom, #f85032 0%, #f16f5c 19%, #f6290c 55%, #f02f17 71%, #e73827 100%);
+        }
+        .del{
+            position: relative;
+            float: right;
+            margin-top: -58px;
+            margin-right: 56px;
+
+        }
+        form .row{
+            margin-bottom: 10px;
+        }
+        textarea.form-control {
+            height: auto;
+            font-size: 13px !important;
+        }
+        input.form-control {
+            height: auto;
+            font-size: 13px !important;
+        }
+        h4{
+            color: #696d73;
+            font-style: italic;
+            font-size: 132%;
+            font-weight: bold;
+            font-family: arial, sans-serif;
+        }
+    </style>
+
+    <div class="container">
+        <div class="form1">
+
+            <div class="invoice_preview  container" id="send" style="display: block;">
+                <div class="row header">
+                    <div class="col-xs-12">
+                        <h4>Envoi du document par email</h4>
+                    </div>
+                </div>
+
+
+                <div class="clear"></div>
+
+                {{ form_start(edit_form) }}
+
+                <div class="row">
+
+                </div> <!-- row -->
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ form_label(edit_form.expediteur, "Expéditeur ") }}
+                        {{ form_widget(edit_form.expediteur,{'attr': {'class': 'form-control','value': facture.departements.email }}) }}
+                        {{ form_errors(edit_form.expediteur) }}
+                    </div>
+                </div> <!-- row -->
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ form_label(edit_form.adresseEmail, "Adresse email ") }}
+                        {{ form_widget(edit_form.adresseEmail,{'attr': {'class': 'form-control','value': facture.acheteur.email }}) }}
+                        {{ form_errors(edit_form.adresseEmail) }}
+                    </div>
+                    <div class="col-sm-12 hidden" id="email_change_div">
+                        <div class="checkbox">
+
+                        </div>
+                    </div>
+                </div> <!-- row -->
+
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ form_label(edit_form.copie, "Copie à ") }}
+                        {{ form_widget(edit_form.copie,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(edit_form.copie) }}
+
+                    </div>
+                </div> <!-- row -->
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ form_label(edit_form.titre, "Titre ") }}
+                        {{ form_widget(edit_form.titre,{'attr': {'class': 'form-control','value': 'Facture Proforma numéro '~ facture.nf  }}) }}
+                        {{ form_errors(edit_form.titre) }}
+                    </div>
+                </div> <!-- row -->
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        {% set sumHT = 0 %}
+                        {% set sumTTC = 0 %}
+                        {% set sumTVA = 0 %}
+                        {% for produit in facture.ventes %}
+                            {% set TVA = produit.tva.valeur/100 * produit.totalHT %}
+                            {% set sumHT = sumHT + produit.totalHT %}
+                            {% set sumTTC = sumTTC + produit.totalTTC %}
+                            {% set sumTVA = sumTVA + TVA %}
+                        {% endfor %}
+
+
+                        {{ form_label(edit_form.texte, "Texte ") }}
+                        {{ form_widget(edit_form.texte,{'attr': {'class': 'form-control','rows':"6" },'value':
+                            "Bonjour, "~
+                            "\n \n"~
+                            "Veuillez trouver en pièce jointe le document suivant: \n"~
+                            "Facture Proforma numéro "~ facture.nf ~
+                            " d’un montant total de " ~ sumTTC|number_format(2, ',', ' ') ~ " DA. \n \n"~
+                            "Vous pouvez également visualiser le document en cliquant sur le lien suivant: \n \n"~
+                            "-- \n"~
+                            facture.departements.nom ~ " \n"~
+                            facture.departements.adresse ~ " \n"~
+                            facture.departements.ville ~" "~ facture.departements.codepostal
+                        }) }}
+                        {{ form_errors(edit_form.texte) }}
+
+                    </div>
+                </div> <!-- row -->
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="checkbox">
+                            {{ form_label(edit_form.document, "Joindre le document en PDF ") }}
+                            {{ form_widget(edit_form.document,{'attr': {'class': ''}}) }}
+                            {{ form_errors(edit_form.document)}}
+
+                        </div>
+                    </div>
+                </div> <!-- row -->
+
+
+
+
+                <div class="buttons row">
+                    <input type="submit" name="commit" value="Envoyer" class="btn btn-glow success">
+                    ou
+                    <a href="#" onclick="$('#send').hide();$('._invoice_body').fadeIn();$('.buttons_panel').fadeIn();; return false;">Annuler</a>
+                </div>
+
+                {{ form_end(edit_form) }}
+
+            </div>
+
+        </div>
+    </div>
+    <br> <br> <br>
+
+    <script type="text/javascript" src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js') }}"></script>
+
+
+
+{% endblock %}
+
+

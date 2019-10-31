@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Reservations list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Nf</th>
+                <th>Datecreation</th>
+                <th>Lieu</th>
+                <th>Additionnelle</th>
+                <th>Dateadd</th>
+                <th>Moderegle</th>
+                <th>Dateregle</th>
+                <th>Objet</th>
+                <th>Etat</th>
+                <th>Montantpaye</th>
+                <th>Paiementrecu</th>
+                <th>Dateenvois</th>
+                <th>Nc</th>
+                <th>Nomvendeur</th>
+                <th>Informations</th>
+                <th>Editerpar</th>
+                <th>Expedierpar</th>
+                <th>Receptionnerpar</th>
+                <th>Ncommande</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reservation in reservations %}
+            <tr>
+                <td><a href="{{ path('admin_reservations_show', { 'id': reservation.id }) }}">{{ reservation.id }}</a></td>
+                <td>{{ reservation.type }}</td>
+                <td>{{ reservation.nf }}</td>
+                <td>{% if reservation.datecreation %}{{ reservation.datecreation|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ reservation.lieu }}</td>
+                <td>{{ reservation.additionnelle }}</td>
+                <td>{% if reservation.dateadd %}{{ reservation.dateadd|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ reservation.moderegle }}</td>
+                <td>{{ reservation.dateregle }}</td>
+                <td>{{ reservation.objet }}</td>
+                <td>{{ reservation.etat }}</td>
+                <td>{{ reservation.montantpaye }}</td>
+                <td>{% if reservation.paiementrecu %}{{ reservation.paiementrecu|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if reservation.dateenvois %}{{ reservation.dateenvois|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ reservation.nc }}</td>
+                <td>{{ reservation.nomvendeur }}</td>
+                <td>{{ reservation.informations }}</td>
+                <td>{{ reservation.editerpar }}</td>
+                <td>{{ reservation.expedierpar }}</td>
+                <td>{{ reservation.receptionnerpar }}</td>
+                <td>{{ reservation.ncommande }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_reservations_show', { 'id': reservation.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_reservations_edit', { 'id': reservation.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_reservations_new') }}">Create a new reservation</a>
+        </li>
+    </ul>
+{% endblock %}

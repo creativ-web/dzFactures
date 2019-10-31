@@ -1,0 +1,310 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <div class="container">
+
+        <h2 style="margin-top: 0;">Nouvelle entrée</h2>
+
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                {% block datalist_widget %}
+                    {{ form_label(form.name, "Produit ") }} <span class="requis">*</span> <a style="font-size: 11px;margin-top: 5px; color:#58b758; " href="{{ path('admin_achats_new') }}">Ajouter</a>
+                    {{ form_widget(form.name,{'attr': {'class': 'form-control','list': '1', 'autocomplete':'off'}}) }}
+                    <datalist id="1">
+                        {% for produit in produitsList %}
+                            <option value="{{ produit.name }}">{{ produit.id }}</option>
+                        {% endfor %}
+                    </datalist>
+                {% endblock %}
+                {{ form_errors(form.name) }}
+
+            </div>
+
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+
+                {{ form_label(form.dateentrer, "Date d'achat ") }} <span class="requis">*</span>
+                {{ form_widget(form.dateentrer,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.dateentrer) }}
+
+            </div>
+        </div>
+        <br>
+        <div class="row">
+
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+
+                {{ form_label(form.tva, "TVA") }} <span class="requis">*</span> <a data-toggle="modal" data-target="#TVA" data-whatever="@mdo" style="font-size: 11px;margin-top: 5px; color:#58b758; " href="">Ajouter</a>
+                {{ form_widget(form.tva,{'attr': {'class': 'form-control TVA'}}) }}
+                {{ form_errors(form.tva) }}
+
+            </div>
+
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                {{ form_label(form.prixHTachat, "Prix d'achat HT") }} <span class="requis">*</span>
+                {{ form_widget(form.prixHTachat,{'attr': {'class': 'form-control HTA'}}) }}
+                {{ form_errors(form.prixHTachat) }}
+            </div>
+
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                {{ form_label(form.prixTTCachat, "Prix d'achat TTC ") }} <span class="requis">*</span>
+                {{ form_widget(form.prixTTCachat,{'attr': {'class': 'form-control TTCA'}}) }}
+                {{ form_errors(form.prixTTCachat) }}
+            </div>
+
+
+        </div>
+        <br>
+        <div class="row">
+
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                {{ form_label(form.prixHTvente, "Prix de vente HT") }} <span class="requis">*</span>
+                {{ form_widget(form.prixHTvente,{'attr': {'class': 'form-control HTV'}}) }}
+                {{ form_errors(form.prixHTvente) }}
+            </div>
+
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                {{ form_label(form.prixTTCvente, "Prix de vente TTC") }} <span class="requis">*</span>
+                {{ form_widget(form.prixTTCvente,{'attr': {'class': 'form-control TTCV'}}) }}
+                {{ form_errors(form.prixTTCvente) }}
+            </div>
+
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+
+                {{ form_label(form.fournisseurs, "Fournisseur ") }} <span class="requis">*</span> <a data-toggle="modal" data-target="#FOURNISSEUR" data-whatever="@mdo"  style="font-size: 11px;margin-top: 5px; color:#58b758; " href="">Ajouter</a>
+                {{ form_widget(form.fournisseurs,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.fournisseurs) }}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+
+                {{ form_label(form.qte, "Quantité disponible ") }} <span class="requis">*</span>
+                {{ form_widget(form.qte,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.qte) }}
+            </div>
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+
+                {{ form_label(form.qteLimite, "Quantité alerte ") }}
+                {{ form_widget(form.qteLimite,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.qteLimite) }}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+
+                {{ form_label(form.dateexpire, "D'ate d'expiration ") }}
+                {{ form_widget(form.dateexpire,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.dateexpire) }}
+
+            </div>
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+
+                {{ form_label(form.dateexpireAlert, "Expiration alerte ") }}
+                {{ form_widget(form.dateexpireAlert,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.dateexpireAlert) }}
+
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                {{ form_label(form.zonnestocks, "Zone de stock ") }} <span class="requis">*</span> <a data-toggle="modal" data-target="#ZONE" data-whatever="@mdo"  style="font-size: 11px;margin-top: 5px; color:#58b758; " href="">Ajouter</a>
+                {{ form_widget(form.zonnestocks,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.zonnestocks) }}
+
+            </div>
+        </div>
+        <br>
+        <hr>
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+
+                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Sauvegarder</button>
+                ou
+                <a href="{{ path('admin_produits_index') }}"> Annuler </a>
+            </div>
+        </div>
+
+
+        {{ form_end(form) }}
+
+
+
+        <div class="modal fade" id="TVA" tabindex="-1" role="dialog" aria-labelledby="TVA">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="TVA" style="font-size: 18px;">Ajouter TVA</h4>
+                    </div>
+
+
+                {{ form_start(formTVA) }}
+                    <div class="modal-body">
+
+                            <div class="form-group">
+                                {{ form_label(formTVA.valeur, "Valeur") }}
+                                {{ form_widget(formTVA.valeur,{'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(formTVA.valeur) }}
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    </div>
+                {{ form_end(formTVA) }}
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="FOURNISSEUR" tabindex="-1" role="dialog" aria-labelledby="FOURNISSEUR">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="FOURNISSEUR" style="font-size: 18px;">Ajouter un fournisseur</h4>
+                    </div>
+
+
+                    {{ form_start(formFOURNISSEUR) }}
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            {{ form_label(formFOURNISSEUR.nom, "Nom") }}
+                            {{ form_widget(formFOURNISSEUR.nom,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formFOURNISSEUR.nom) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formFOURNISSEUR.adresse, "Adrésse") }}
+                            {{ form_widget(formFOURNISSEUR.adresse,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formFOURNISSEUR.adresse) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formFOURNISSEUR.email, "Email") }}
+                            {{ form_widget(formFOURNISSEUR.email,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formFOURNISSEUR.email) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formFOURNISSEUR.tel, "Téléphone") }}
+                            {{ form_widget(formFOURNISSEUR.tel,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formFOURNISSEUR.tel) }}
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    </div>
+                    {{ form_end(formFOURNISSEUR) }}
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="ZONE" tabindex="-1" role="dialog" aria-labelledby="ZONE">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="ZONE" style="font-size: 18px;">Ajouter une zone</h4>
+                    </div>
+
+
+                    {{ form_start(formZONE) }}
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            {{ form_label(formZONE.nom, "Nom") }}
+                            {{ form_widget(formZONE.nom,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formZONE.nom) }}
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    </div>
+                    {{ form_end(formZONE) }}
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script type="text/javascript" src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js') }}"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+
+
+    <script>
+        $("document").ready(function(){
+
+
+            $('.HTA, .TVA').change(function(){
+
+                $.ajax({
+                    type:'GET',
+                    url:'http://localhost/stockedin/web/admin/achats/cttc/'+$('.HTA').val()+'/'+$('.TVA option:selected').val(),
+                    success: function (data) {
+
+                        $('input.TTCA').val(data.TTC)
+
+                    }
+                });
+
+            });
+
+            $('.HTV, .TVA').change(function(){
+
+                $.ajax({
+                    type:'GET',
+                    url:'http://localhost/stockedin/web/admin/achats/cttc/'+$('.HTV').val()+'/'+$('.TVA option:selected').val(),
+                    success: function (data) {
+
+                        $('input.TTCV').val(data.TTC)
+
+                    }
+                });
+            });
+
+
+
+
+            $('.TTCA, .TVA').change(function(){
+
+                $.ajax({
+                    type:'GET',
+                    url:'http://localhost/stockedin/web/admin/achats/cht/'+$('.TTCA').val()+'/'+$('.TVA option:selected').val(),
+                    success: function (data) {
+
+                        $('input.HTA').val(data.HT)
+
+                    }
+                });
+            });
+
+
+
+        });
+
+
+
+
+    </script>
+
+{% endblock %}

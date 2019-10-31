@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Reservation</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ reservation.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ reservation.type }}</td>
+            </tr>
+            <tr>
+                <th>Nf</th>
+                <td>{{ reservation.nf }}</td>
+            </tr>
+            <tr>
+                <th>Datecreation</th>
+                <td>{% if reservation.datecreation %}{{ reservation.datecreation|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Lieu</th>
+                <td>{{ reservation.lieu }}</td>
+            </tr>
+            <tr>
+                <th>Additionnelle</th>
+                <td>{{ reservation.additionnelle }}</td>
+            </tr>
+            <tr>
+                <th>Dateadd</th>
+                <td>{% if reservation.dateadd %}{{ reservation.dateadd|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Moderegle</th>
+                <td>{{ reservation.moderegle }}</td>
+            </tr>
+            <tr>
+                <th>Dateregle</th>
+                <td>{{ reservation.dateregle }}</td>
+            </tr>
+            <tr>
+                <th>Objet</th>
+                <td>{{ reservation.objet }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ reservation.etat }}</td>
+            </tr>
+            <tr>
+                <th>Montantpaye</th>
+                <td>{{ reservation.montantpaye }}</td>
+            </tr>
+            <tr>
+                <th>Paiementrecu</th>
+                <td>{% if reservation.paiementrecu %}{{ reservation.paiementrecu|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Dateenvois</th>
+                <td>{% if reservation.dateenvois %}{{ reservation.dateenvois|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Nc</th>
+                <td>{{ reservation.nc }}</td>
+            </tr>
+            <tr>
+                <th>Nomvendeur</th>
+                <td>{{ reservation.nomvendeur }}</td>
+            </tr>
+            <tr>
+                <th>Informations</th>
+                <td>{{ reservation.informations }}</td>
+            </tr>
+            <tr>
+                <th>Editerpar</th>
+                <td>{{ reservation.editerpar }}</td>
+            </tr>
+            <tr>
+                <th>Expedierpar</th>
+                <td>{{ reservation.expedierpar }}</td>
+            </tr>
+            <tr>
+                <th>Receptionnerpar</th>
+                <td>{{ reservation.receptionnerpar }}</td>
+            </tr>
+            <tr>
+                <th>Ncommande</th>
+                <td>{{ reservation.ncommande }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_reservations_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('admin_reservations_edit', { 'id': reservation.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

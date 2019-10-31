@@ -1,0 +1,163 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+    #parameter_name: value
+
+
+services:
+    app.form.registration:
+        class: Commandes\CommandesBundle\Form\RegistrationType
+        tags:
+            - { name: form.type, alias: app_user_registration }
+    app.form.profile:
+        class: Commandes\CommandesBundle\Form\ProfileFormType
+        tags:
+        - { name: form.type, alias: fos_user_profile  }
+
+    fm.mail_alert.form.alert_type:
+        class: Commandes\CommandesBundle\Form\Acheteurs2Type
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: form.type }
+
+    fm2.mail_alert2.form.alert_type:
+        class: Commandes\CommandesBundle\Form\DepartementsType
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: form.type }
+
+
+    fm3.mail_alert3.form.alert_type:
+        class: Commandes\CommandesBundle\Form\DiffprixType
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: form.type }
+
+
+
+
+    fm4.mail_alert4.form.alert_type:
+        class: Commandes\CommandesBundle\Form\LotsType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+
+    fm5.mail_alert5.form.alert_type:
+        class: Commandes\CommandesBundle\Form\TvaType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+
+    fm6.mail_alert6.form.alert_type:
+        class: Commandes\CommandesBundle\Form\ProduitsType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+
+    fm7.mail_alert7.form.alert_type:
+        class: Commandes\CommandesBundle\Form\FacturesType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+    fm8.mail_alert8.form.alert_type:
+        class: Commandes\CommandesBundle\Form\BesType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+    fm9.mail_alert9.form.alert_type:
+        class: Commandes\CommandesBundle\Form\AchatsType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+
+
+    fm10.mail_alert10.form.alert_type:
+        class: Commandes\CommandesBundle\Form\VentesType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+
+    fm11.mail_alert11.form.alert_type:
+        class: Commandes\CommandesBundle\Form\BlsType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+    fm12.mail_alert12.form.alert_type:
+        class: Commandes\CommandesBundle\Form\Filtre\FiltreFacturesType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+
+    fm10.mail_alert13.form.alert_type:
+        class: Commandes\CommandesBundle\Form\LotsfacturesType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+
+    fm10.mail_alert14.form.alert_type:
+        class: Commandes\CommandesBundle\Form\Graphes\GraphesType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+
+    fm10.mail_alert15.form.alert_type:
+        class: Commandes\CommandesBundle\Form\DepensesType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+
+    fm11.mail_alert15.form.alert_type:
+        class: Commandes\CommandesBundle\Form\ParamettresType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+    fm12.mail_alert15.form.alert_type:
+        class: Commandes\CommandesBundle\Form\LogosType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+    fm13.mail_alert15.form.alert_type:
+        class: Commandes\CommandesBundle\Form\CachetsType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }
+
+
+    fm14.mail_alert12.form.alert_type:
+        class: Commandes\CommandesBundle\Form\Filtre\FiltreFacturesSansTableType
+        arguments:
+        - '@security.token_storage'
+        tags:
+        - { name: form.type }

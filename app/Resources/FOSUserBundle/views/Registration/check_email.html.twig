@@ -1,0 +1,110 @@
+
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+
+
+    <style>
+        .login-wrapper .already {
+            margin: 0 auto;
+            float: none;
+            text-align: center;
+            font-size: 13px;
+            margin-top: 30px;
+        }
+        .login-wrapper .already a {
+            color: #222;
+            margin-left: 7px;
+            border-bottom: 1px solid;
+            transition: all .1s linear;
+            -moz-transition: all .1s linear;
+            -webkit-transition: all .1s linear;
+            -o-transition: all .1s linear;
+        }
+        .required label:after {
+            color: #FF1200;
+            content: " *";
+            font-weight: bold;
+        }
+        .conditions p {
+            color: #898a8c;
+            font-size: 10px;
+        }
+        .login-wrapper .box .action {
+            border-top: 1px solid #d3d7db;
+            background-color: #f4f5f6;
+            margin: 0px -36px;
+            position: relative;
+            top: 30px;
+            border-radius: 0px 0px 7px 7px;
+            padding: 15px 0px;
+            text-align: center;
+        }
+        .login-wrapper .box .signup {
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 7px 25px;
+            border-radius: 5px;
+        }
+        .m-b-n-md {
+            margin-bottom: -35px;
+        }
+
+    </style>
+    <div class="box">
+
+        <div class="content-wrap" style="text-align: left;">
+
+            {{ form_start(form2, {'method': 'GET', 'action': path('commandes_dashbords'),}) }}
+
+            <label for="account_prefix" style="margin-bottom:15px"><strong>Un email de confirmation de votre inscription a été envoyé à l’adresse email indiquée.<br></strong> <br><br></label>
+            <div class="required">
+                <span class="help-block">Indiquer le nom du compte (ex: nom de société)</span>
+                <span class="input-group-addon" style="    width: auto;
+    white-space: nowrap;
+    vertical-align: middle;
+    position: absolute;
+    margin-left: 213px;    padding: 12px 12px;">.creativ-dz.com</span>
+                {{ form_widget(form2.username,{'attr': {'class': 'form-control '}}) }}
+
+
+
+            </div>
+
+            </br>
+
+            <div class="conditions m-b-n-md">
+                <p class="m-n">
+                    En utilisant ce site, vous acceptez les <a >Conditions Générales d’Utilisation</a> de creativ-dz.com, dont <a >la Politique de Confidentialité</a> et <a  >la Politique des Cookies</a>, et autorisez le <a  >traitement des données à caractère personnel</a>.
+                </p>
+            </div>
+
+
+
+            <div class="action">
+                <input type="submit" name="commit" value="S'inscrire" class="btn-glow primary signup">
+
+
+
+            </div>
+        </div>
+        {{ form_end(form2) }}
+
+    </div> <!-- content-wrap -->
+    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
+
+    <script>
+
+
+
+
+    $('#prefix_user_username').val(function(index, value) {
+
+        return value.replace(/[`~!#$%^&*()_|+\-=?;:'",<>.\{\}\[\]\\\/]/gi, '').replace(/@/g, '').replace(/com/g, '').replace(/fr/g, '').replace(/dz/g, '').replace(/creativ/g, '');
+
+
+
+    });
+</script>
+{% endblock %}
+

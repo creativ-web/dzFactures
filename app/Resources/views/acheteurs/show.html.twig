@@ -1,0 +1,181 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-xs-8">
+            <span class="name" style="    font-size: 24px; padding-bottom: 5px;">{{ acheteur.nomusage }}</span>
+
+        </div>
+
+        <div class="col-xs-4 pull-right text-right">
+            <a class="btn-glow primary btn-sm top-btn" href="{{ path('admin_Acheteurs_edit', { 'id': acheteur.id }) }}"><i class="fa fa-edit"></i>&nbsp;&nbsp;Modifier</a>
+
+            <a data-confirm="Êtes-vous sûr de vouloir effacer ce contact? " class="btn-glow btn-sm danger top-btn" rel="nofollow" data-method="delete" href="#"><i class="fa fa-trash-o"></i><span class="hidden-sm ">&nbsp;&nbsp; Effacer</span></a>
+        </div>
+
+    </div>
+    <div class="row profile">
+        <div class="col-sm-12">
+            <div class="profile-box">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <!-- Nazwa firmy -->
+                        <p>
+
+                            <strong>
+                                Particulier:
+                            </strong>
+                            {{ acheteur.prenom }} {{ acheteur.famille }}
+
+                        </p>
+
+                        <!-- NIP -->
+                        <p>
+                            <strong>NIF:</strong>
+                            {{ acheteur.nif }}
+                        </p>
+
+                        <!-- REGON -->
+
+                        <!-- Adres -->
+                        <p>
+                            <strong>Adresse:</strong><br>
+                            <!--<br/>-->
+                            <!--<br/>-->
+                            {{ acheteur.adresse }}<br>{{ acheteur.codepostal }} {{ acheteur.pays }}, {{ acheteur.ville }}
+                        </p>
+
+                        <!-- Inny adres -->
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <!-- Imię -->
+                        <p>
+                            <strong>Prénom:</strong>
+                            {{ acheteur.prenom }}
+                        </p>
+
+                        <!-- Nazwisko -->
+                        <p>
+                            <strong>Nom de famille:</strong>
+                            {{ acheteur.famille }}
+                        </p>
+
+                        <!-- Telefon -->
+                        <p>
+                            <strong>Téléphone:</strong>
+                            <a href="tel:{{ acheteur.telephone }}">{{ acheteur.telephone }}</a>
+                        </p>
+                        <!-- Telefon mobile -->
+                        <p>
+                            <strong>Tel. portable:</strong>
+                            <a href="tel:{{ acheteur.telmobile }}">{{ acheteur.telmobile }}</a>
+                        </p>
+                        <!-- Email -->
+                        <p>
+                            <strong>E-mail:</strong>
+                            <a href="mailto:{{ acheteur.email }}">{{ acheteur.email }}</a>
+                        </p>
+                        <!-- WWW -->
+                        <p>
+                            <strong>Site internet:</strong>
+                            <a href="{{ acheteur.siteweb }}">{{ acheteur.siteweb }}</a>
+                        </p>
+                        <!-- Fax -->
+                        <p>
+                            <strong>Fax:</strong>
+                            {{ acheteur.fax }}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h2>Options additionnelles</h2>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+
+
+                        <p>
+                            <strong>Réf/code client:</strong>
+                            {{ acheteur.codeclient }}
+                        </p>
+
+
+
+                        <p>
+                            <strong>Domiciliation bancaire:</strong>
+                            {{ acheteur.cb }}
+                        </p>
+
+                        <p>
+                            <strong>Numéro de compte:</strong>
+                            {{ acheteur.ncb }}
+                        </p>
+
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6">
+                        <p>
+                            <strong>Réduction par défaut (%):</strong>
+                            {{ acheteur.reduction }}
+                        </p>
+
+
+                        <p>
+                            <strong>Date limite de règlement par défaut:</strong>
+                            {{ acheteur.limitereglement }}
+                        </p>
+
+                        <p>
+                            <strong>Mode de règlement par défaut:</strong>
+                            {{ acheteur.modereglement }}
+                        </p>
+
+
+
+                    </div>
+                </div>
+
+
+
+
+            </div> <!-- profile-box -->
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 btns">
+
+            <a class="btn-glow btn-sm top-btn" href="{{ path('admin_Acheteurs_index') }}"><i class="fa fa-reply"></i>&nbsp;&nbsp;Retour</a>
+
+            <a class="btn-glow btn-sm danger top-btn" href="#">Facturer le contact</a>
+
+            <a class="btn-glow btn-sm danger top-btn" href="#">Créer une dépense</a>
+
+            <a class="btn-glow btn-sm danger top-btn" href="#">Afficher les documents de vente</a>
+
+            <a class="btn-glow btn-sm danger top-btn" href="#">Afficher les dépenses</a>
+
+            <div class="pull-right">
+                <a class="btn-glow btn-sm danger top-btn" href="{{ path('admin_Acheteurs_new') }}">Ajouter un autre contact</a>
+
+                <a class="btn-glow primary btn-sm top-btn" href="{{ path('admin_Acheteurs_edit', { 'id': acheteur.id }) }}"><i class="fa fa-edit"></i>&nbsp;&nbsp;Modifier</a>
+
+                <a data-confirm="Êtes-vous sûr de vouloir effacer ce contact? " class="btn-glow btn-sm danger top-btn" rel="nofollow" data-method="delete" href="#"><i class="fa fa-trash-o"></i><span class="hidden-sm ">&nbsp;&nbsp; Effacer</span></a>
+            </div>
+
+        </div>
+    </div>
+
+
+<br><br>
+
+    </div>
+{% endblock %}

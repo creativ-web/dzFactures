@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Bts list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Nf</th>
+                <th>Datecreation</th>
+                <th>Lieu</th>
+                <th>Additionnelle</th>
+                <th>Dateadd</th>
+                <th>Moderegle</th>
+                <th>Dateregle</th>
+                <th>Objet</th>
+                <th>Etat</th>
+                <th>Montantpaye</th>
+                <th>Paiementrecu</th>
+                <th>Dateenvois</th>
+                <th>Nc</th>
+                <th>Nomvendeur</th>
+                <th>Informations</th>
+                <th>Editerpar</th>
+                <th>Expedierpar</th>
+                <th>Receptionnerpar</th>
+                <th>Ncommande</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bt in bts %}
+            <tr>
+                <td><a href="{{ path('admin_bts_show', { 'id': bt.id }) }}">{{ bt.id }}</a></td>
+                <td>{{ bt.type }}</td>
+                <td>{{ bt.nf }}</td>
+                <td>{% if bt.datecreation %}{{ bt.datecreation|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ bt.lieu }}</td>
+                <td>{{ bt.additionnelle }}</td>
+                <td>{% if bt.dateadd %}{{ bt.dateadd|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ bt.moderegle }}</td>
+                <td>{{ bt.dateregle }}</td>
+                <td>{{ bt.objet }}</td>
+                <td>{{ bt.etat }}</td>
+                <td>{{ bt.montantpaye }}</td>
+                <td>{% if bt.paiementrecu %}{{ bt.paiementrecu|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if bt.dateenvois %}{{ bt.dateenvois|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ bt.nc }}</td>
+                <td>{{ bt.nomvendeur }}</td>
+                <td>{{ bt.informations }}</td>
+                <td>{{ bt.editerpar }}</td>
+                <td>{{ bt.expedierpar }}</td>
+                <td>{{ bt.receptionnerpar }}</td>
+                <td>{{ bt.ncommande }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_bts_show', { 'id': bt.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_bts_edit', { 'id': bt.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_bts_new') }}">Create a new bt</a>
+        </li>
+    </ul>
+{% endblock %}

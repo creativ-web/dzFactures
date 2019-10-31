@@ -1,0 +1,315 @@
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+    <div class="content  wide-content">
+        <div class="container">
+
+            <div id="pad-wrapper">
+
+                <div class="row header">
+                    <div class="col-sm-12">
+                        <h3>Liste des rapports</h3>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-9 with-sidebar">
+
+
+                    <ul class="list-group">
+                        <li class="list-group-item active"><i class="icon-reorder"></i>&nbsp;&nbsp;Graphes</li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/charts?kind=revenue_and_expenses">Revenus et Dépenses</a>
+                            <br>
+
+                            Revenus et Dépenses (T.T.C., H.T., TVA) à diviser par année, mois, semaine, ou jour
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/charts?kind=revenue">Revenus</a>
+                            <br>
+
+                            Revenus (T.T.C. payé/impayé, H.T., TVA)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/charts?kind=expenses">Dépenses</a>
+                            <br>
+
+                            Dépenses (T.T.C. payé/impayé, H.T., TVA)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/charts?kind=sales_count">Nombre total de ventes </a>
+                            <br>
+
+                            Total des ventes
+
+                        </li>
+
+                        <li class="list-group-item active"><i class="icon-reorder"></i>&nbsp;&nbsp;Trésorerie</li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/income_tax_records">Registre des ventes TVA </a>
+                            <br>
+
+                            Registre des ventes TVA (table + export PDF et XLS)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/invoice_list">Liste des revenus</a>
+                            <br>
+
+                            Liste des revenus (table)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/expense_invoice_list">Liste des dépenses</a>
+                            <br>
+
+                            Liste des dépenses (table)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/department_balance">Situation financière des départements/succursales </a>
+                            <br>
+
+                            Situation financière du département
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/categories">Revenus et dépenses par catégorie</a>
+                            <br>
+
+                            Balance (chiffre d'affaire, dépenses, profit) par catégorie
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/unpaid_invoice_list">Liste des factures non payées</a>
+                            <br>
+
+                            Liste des factures non payées (table)
+
+                        </li>
+
+                        <li class="list-group-item active"><i class="icon-reorder"></i>&nbsp;&nbsp;Produits</li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/products_income">Produits: Ventes (revenus)</a>
+                            <br>
+
+                            Pour chaque produit: quantité, montant moyen et total des ventes (impression et exportation vers XLS)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/products_expense">Produits: Achat (dépenses)</a>
+                            <br>
+
+                            Pour chaque produit: quantité, montant moyen et total des achats (impression et exportation vers XLS)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/products_margin">Produits: Marge</a>
+                            <br>
+
+                            Résumé des marges réalisées par produit
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/categories_products">Revenus et dépenses par catégorie de produit</a>
+                            <br>
+
+                            Balance (chiffre d'affaire, dépenses, profit) par catégorie de produit
+
+                        </li>
+
+                        <li class="list-group-item active"><i class="icon-reorder"></i>&nbsp;&nbsp;Stocks</li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/warehouse_actions">Résumé des opérations de stock</a>
+                            <br>
+
+                            Résumé des opérations par type de document de stock (avec indication des quantités et prix d'achat HT) (*)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/cost_inventory">Inventaire des achats</a>
+                            <br>
+
+                            Etat du stock trié par prix HT d'achat (selon documents de stock ou à défaut fiche produits)  (*)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/products_warehouse_statement">Stock entré/sorti (selon les documents de gestion de stock)</a>
+                            <br>
+
+                            Quantité des produits entrés et sortis du stock sur une période donnée, selon les documents de gestion de stock (*)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/products_availability">État des stocks</a>
+                            <br>
+
+                            Quantité et valeur (prix d'achat) des produits actifs en stock (*)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/products_statement">Mouvements des stocks</a>
+                            <br>
+
+                            Quantité et valeur (prix d'achat) des produits sur une période donnée (*)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/products_statement_fifo">Mouvements des stocks (selon les documents de gestion de stock)</a>
+                            <br>
+
+                            Quantité et valeur (prix d'achat) des produits sur une période donnée, selon les documents de gestion de stocks uniquement (*)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/products_margin_warehouse">Stocks: Marge</a>
+                            <br>
+
+                            Rapport de marge selon les documents de gestion de stock (*)
+
+                        </li>
+
+                        <li class="list-group-item active"><i class="icon-reorder"></i>&nbsp;&nbsp;Clients</li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/clients">Clients</a>
+                            <br>
+
+                            Ventes par client: nombre de factures, moyenne facturée, total facturé (table)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/customer_balance">Solde des clients</a>
+                            <br>
+
+                            Pour chaque client: Montant total facturé, encaissé, et impayé.
+
+                        </li>
+
+                        <li class="list-group-item active"><i class="icon-reorder"></i>&nbsp;&nbsp;Comptabilité</li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/income_tax_records">Registre des ventes TVA </a>
+                            <br>
+
+                            Registre des ventes TVA (table + export PDF et XLS)
+
+                        </li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/expenses_tax_records">Registre des achats TVA</a>
+                            <br>
+
+                            Registre des achats TVA
+
+                        </li>
+
+                        <li class="list-group-item active"><i class="icon-reorder"></i>&nbsp;&nbsp;Espèces</li>
+
+
+                        <li class="list-group-item">
+
+                            <a href="/reports/cash_report">Mouvements des Espèces</a>
+                            <br>
+
+                            Mouvements des Espèces (entrées et sorties sur la base des documents créés)
+
+                        </li>
+
+
+                    </ul>
+
+
+                </div>
+
+                <!-- side right column -->
+                <div class="col-sm-3 form-sidebar">
+
+                    <div class="alert alert-info hidden-tablet">
+
+                        (*) Rapport disponible avec la fonction gestion de stock.<br><br><b>Remarques</b>:  Vous pouvez également générer des journaux comptables et autres fichiers d'exportation de vos factures  sous format Excel directement depuis la liste de vos documents. Allez dans <i>Revenus &gt; Tous</i> ou <i>Dépense &gt; Tous</i>), utilisez le moteur de recherche pour affiner la liste et cliquez sur l’icône « Exports/imprimés » situé en haut à droite.
+
+                    </div>
+
+                </div>
+
+            </div> <!-- pad-wrapper -->
+
+
+        </div>
+    </div>
+{% endblock %}

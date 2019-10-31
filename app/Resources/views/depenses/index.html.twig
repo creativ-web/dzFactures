@@ -1,0 +1,786 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <style>
+        .btn-glow.primary {
+            border-color: #a7d350;
+            text-decoration: none;
+            color: #fff;
+            text-shadow: rgba(0,0,0,0.35) 0 1px 0;
+            box-shadow: inset 0px 1px 0px 0px rgba(255,255,255,0.5);
+            background: #54b3ff;
+            background: -moz-linear-gradient(top, #54b3ff 0%, #0078d9 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #54b3ff), color-stop(100%, #0078d9));
+            background: -webkit-linear-gradient(top, #54b3ff 0%, #0078d9 100%);
+            background: linear-gradient(#a2ce4e, #97c149);
+            background: -o-linear-gradient(top, #54b3ff 0%, #0078d9 100%);
+            background: -ms-linear-gradient(top, #54b3ff 0%, #0078d9 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#54b3ff', endColorstr='#0078d9',GradientType=0 );
+        }
+        .btn-glow.primary:hover {
+            background: #68901d;
+            background: linear-gradient(to bottom, #8eb04b 0%, #7ca135 100%);
+            box-shadow: inset 0px 1px 0px 0px rgba(255,255,255,0.5);
+            border: 1px solid #99bd56;
+            text-shadow: rgba(0,0,0,0.24706) 0px 1px 0px;
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
+    <div class="container-fluid">
+
+
+        <div id="sidebar-nav" class="hidden-print at-scroll-content">
+
+            <a class="btn-glow success btn-block 1add_new 1add_new_expense" title="Nouvelle dépense" href="{{ path('admin_depenses_new') }}">Nouvelle dépense</a>
+
+
+            <div class="form" id="search_more_div" style="margin-top: 14px;">
+
+                <strong style="font-size: 12px;display:block;margin-bottom:8px;padding-bottom:3px;border-bottom:1px solid #ddd">Rechercher</strong>
+
+
+                {{ form_start(form) }}
+
+                {{ form_label(form.mot, "Mot-clé ou n° ") }}
+                {{ form_widget(form.mot,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.mot) }}
+
+                {{ form_label(form.type, "Type de document ") }}
+                {{ form_widget(form.type,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.type) }}
+                <div id="periode">
+                    {{ form_label(form.periode, "Période") }}
+                    {{ form_widget(form.periode,{'attr': {'class': 'form-control periode'}}) }}
+                    {{ form_errors(form.periode) }}
+                </div>
+                <div id="date">
+                    {{ form_label(form.du, "Date du") }}
+                    {{ form_widget(form.du,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.du) }}
+
+                    {{ form_label(form.au, "Date au") }}
+                    {{ form_widget(form.au,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.au) }}
+                </div>
+                {{ form_label(form.etat, "Etat") }}
+                {{ form_widget(form.etat,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.etat) }}
+
+                {{ form_label(form.zone, "Entrepôt") }}
+                {{ form_widget(form.zone,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.zone) }}
+
+                <input style="margin-top: 20px;" type="submit" value="Rechercher" title="Rechercher" class="btn-glow btn-block" onclick="$('#page').remove()">                        {{ form_end(form) }}
+
+
+
+
+            </div> <!-- search_more_div -->
+
+
+
+
+
+
+        </div>
+
+
+        <main class="col-sm-9 ml-sm-auto col-md-10 pt-3 content" role="main" style="width:79%;">
+
+
+            <section class="row text-center placeholders">
+                <div class="row">
+                    <div class="col-md-4"><h2 style="position: relative; float: left;">Dépenses / Tous</h2>
+
+
+                    </div>
+                    <div style="padding-top: 20px;"></div>
+                    <div class="btn-group pull-right">
+
+                        <button data-toggle="dropdown" class="btn glow dropdown-toggle" style="margin-left:10px">
+                            <i class="fa fa-cog"></i> <span class="caret"></span>
+                        </button>
+
+
+                        <ul class="dropdown-menu">
+                            <li><a onclick="$('#dynamic_columns_modal').modal(); return false;" href="#">Personnaliser l'affichage des colonnes</a></li>
+                        </ul>
+
+                    </div>
+                    <div class="btn-group pull-right" id="export_dropdown_menu">
+
+                        <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                            <i class="fa fa-download"></i> <span class="">Export</span> / <i class="icon-print"></i> <span class="">Imprimés</span> <span class="caret"></span>
+                        </button>
+
+                        <ul class="dropdown-menu">
+
+                            <li role="presentation" class="dropdown-header" id="export_dropdown_menu_header">Tous les documents listés seront exportés</li>
+                            <li role="presentation" class="divider"></li>
+
+
+                            <li><a onclick="export_function('pdf');return false;" href="">Liste des documents (tableau) en format PDF</a></li>
+                            <li><a  href=""></a></li>
+
+
+
+                        </ul>
+                    </div>
+
+                </div>
+                <br>
+                {% if depenses == null %}
+                    <div class="row">
+
+
+
+                        <div id="list_table" class="narrower">
+
+
+
+
+
+                            <style type="text/css" media="screen">
+                                .content.scroll-content {
+                                    width:auto !important;
+                                    float: none;
+                                }
+                            </style>
+
+                            <!-- blank state -->
+                            <div class="blank-state">
+
+                                <div class="center">
+
+                                    <p style="    font-size: 13px;">Afin de créer un nouveau document, cliquez sur le bouton. </p>
+
+                                    <a class="btn-glow btn-block btn-lg primary btn-block 1add_new 1add_new_invoice" title="Nouvelle depense" href="{{ path('admin_depenses_new') }}">Nouvelle depense</a>
+
+                                </div>
+                            </div>
+                            <!-- end blank state -->
+
+
+                            <p class="text-center">
+
+
+                            </p>
+
+
+                        </div> <!-- list_table -->
+
+                        <script type="text/javascript">
+                            var SUMMATIONS_CACHED_VARIABLES = {
+                                initial_sums: {},
+                                invoice_values: {},
+                                price_keys: [],
+                                original_total_count: 0
+                            };
+                        </script>
+
+
+
+
+                        <script type="text/javascript">
+                            $(function(){
+                                //Firmlet.show_if_checked('#search_more_div', '#search_more');
+                            });
+                        </script>
+
+
+
+
+
+                    </div>
+                {% else %}
+                    <div id="list_table" class="row">
+
+                        <table id="example2" class="display" cellspacing="0"  style="">
+                            <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>DOCUMENTS DE GESTION DE STOCK</th>
+                                <th>TOTAL HT</th>
+                                <th>MONTANT TTC</th>
+                                <th>VENDEUR</th>
+                                <th>DATE DE CRÉATION</th>
+                                <th>PAIEMENT REÇU LE</th>
+                                <th>DATE LIMITE DE RÈGLEMENT</th>
+                                <th>ETAT</th>
+                                <th>FACTURÉ</th>
+                                <th> </th>
+
+                            </tr>
+                            </thead>
+
+
+                            <tbody>
+                            {% set totalHT = 0 %}
+                            {% set totalTTC = 0 %}
+                            {% set depensesCount = 0 %}
+                            {% set proformasCount = 0 %}
+                            {% set recusCount = 0 %}
+                            {% set devisCount = 0 %}
+                            {% set bdcCount = 0 %}
+
+                            {% for depense in depenses %}
+                                {% set depensesCount = depensesCount + 1 %}
+                                <tr>
+                                    <td>
+                                        <a  style="text-decoration: none;" href="{{ path('admin_depenses_show', { 'id': depense.id }) }}">
+                            <span class="depense_mark" title="depense">
+
+
+                            {{ depense.nf }}
+
+				            </span>
+                                        </a>
+
+                                        <a style="text-transform: none; padding-left: 5px;"href="{{ path('admin_depenses_show', { 'id': depense.id }) }}"></a></td>
+                                    <td>
+                                        {% for bes in depense.bes %} <a href="{{ path('admin_bes_show', { 'id': bes.id }) }}"> BE/{{ bes.nf }}  </a> {% endfor %}
+
+                                    </td>
+                                    <td>
+
+                                        {% set sumHT = 0 %}
+                                        {% set sumTTC = 0 %}
+                                        {% set sumTVA = 0 %}
+
+                                        {% for dep in depense.achats %}
+                                            {% set reduction = (dep.reduction * dep.totalHTa)/100   %}
+                                            {% set totalreduct =  dep.totalHTa - reduction  %}
+                                            {% set TVA = dep.tva2.valeur/100 * totalreduct %}
+                                            {% set totalttc =  totalreduct + TVA  %}
+                                            {% set sumTVA = sumTVA + TVA %}
+                                            {% set sumHT = sumHT + totalreduct %}
+                                            {% set sumTTC = sumHT + sumTVA %}
+
+                                            {% set totalHT = totalHT + dep.totalHTa  %}
+                                            {% set totalTTC = totalTTC + dep.totalTTCa  %}
+                                            {% endfor %}
+
+
+                                        <a href="{{ path('admin_depenses_show', { 'id': depense.id }) }}">{{ sumHT|number_format(2, ',', ' ')}} DA</a>
+
+                                    </td>
+                                    <td>
+
+
+
+                                        <a href="{{ path('admin_depenses_show', { 'id': depense.id }) }}">{{ sumTTC|number_format(2, ',', ' ') }} DA</a>
+                                        <input id="inputTTC{{ depense.id }}" type="hidden" value="{{ sumTTC  }}">
+                                    </td>
+                                    <td> <a href="{{ path('admin_Acheteurs_show', { 'id': depense.acheteur.id }) }}">{{ depense.acheteur.nom }}</a></td>
+                                    <td><a href="{{ path('admin_depenses_show', { 'id': depense.id }) }}">{{ depense.datecreation|date("d/m/Y") }}</a></td>
+                                    <td> </td>
+                                    <td>
+
+                                    <a href="{{ path('admin_depenses_show', { 'id': depense.id }) }}">{{ depense.dateadd|date("d/m/Y") }}</a>
+
+                                    </td>
+                                    <td>
+
+                                        <div class="btn-group" style="    height: 20px; ">
+
+                                            {% if depense.etat == 'Créé' %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = depense.datecreation|date("d")   %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - depense.datecreation|date("d")  %}
+                                                    {% set colorretard = 'badge-retard' %}
+
+                                                {% endif %}
+
+
+
+
+                                                <span id="etat{{ depense.id }}" data-toggle="dropdown" class="colored_select badge status-issued {{ colorretard }}" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="textetat{{ depense.id }}">{{ depense.etat }}</span>
+
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ depense.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat'+{{ depense.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ depense.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ depense.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                                        <span class="caret"></span>
+                                            </span>
+
+                                            {% elseif depense.etat =='Payé' %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = depense.datecreation|date("d")  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - depense.datecreation|date("d")  %}
+
+
+                                                {% endif %}
+                                                <span id="etat{{ depense.id }}"  data-toggle="dropdown" class="colored_select badge2 status-issued" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                    <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                    <span class="textetat{{ depense.id }}">{{ depense.etat }}</span>
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ depense.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat'+{{ depense.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ depense.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ depense.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                    <span class="caret"></span>
+		                        	</span>
+                                            {% elseif depense.etat =='Payé en partie' %}
+                                                {% set pourcentage = depense.montantpaye*100/ sumTTC %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = depense.datecreation|date("d") + depense.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - depense.datecreation|date("d")  %}
+
+
+                                                {% endif %}
+                                                <div class="progress prog{{ depense.id }}">
+                                                    <div id="etat{{ depense.id }}" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width:{{ pourcentage|round(1, 'floor')  }}%">
+                                                    </div>
+
+                                                </div>
+                                                <span id="etat{{ depense.id }}" data-toggle="dropdown" class="colored_select badge status-issued progst" style="background: transparent; margin-top: -38px; border: none; box-shadow: none; color: white;     padding: 2px 8px;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="">{{ depense.etat }}</span>
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ depense.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat'+{{ depense.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ depense.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ depense.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                                <span class="caret"></span>
+                                            </span>
+
+                                            {% endif %}
+
+                                            <ul id="" class="dropdown-menu pull-right hidden-print" role="menu">
+
+                                                <li>
+                                                    <a class="depense_créé" id="{{ depense.id }}">Créé</a>
+
+                                                </li>
+
+
+                                                <li>
+                                                    <a class="depense_payé" id="{{ depense.id }}">Payé</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="partranche" id="{{ depense.id }}" type="{{ depense.type }}" data-toggle="modal" data-target="#exampleModal">Payé en partie</a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                            <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                                <i class="fa fa-cog"></i> <span class="caret"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu">
+                                                <li><a title="Afficher" class="cms_show" href="{{ path('admin_depenses_show', { 'id': depense.id }) }}">Afficher</a></li>
+
+
+                                                <li><a class="cms_edit" href="{{ path('admin_depenses_edit', { 'id': depense.id }) }}">Modifier</a></li>
+                                                <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_depenses_delete', { 'depense': depense.id }) }}">Effacer</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+
+                            <tr>
+                                <td></td>
+
+
+                                <td id="total_count">
+                                    {% set totalCount = depensesCount  %}
+                                    <span class="text-muted ">Total:  {{ totalCount }}</span>
+                                </td>
+
+                                <td id="total_price_net" style="width: 100px;">
+                                    <strong id="total_price_net_values">{{ totalHT|number_format(2, ',', ' ') }} DA<br></strong>
+
+                                    <strong id="total_price_net_sum"></strong>
+                                </td>
+
+                                <td id="total_price_gross" style="width: 100px;" class="digit">
+                                    <strong id="total_price_gross_values">{{ totalTTC|number_format(2, ',', ' ') }} DA<br></strong>
+
+                                    <strong id="total_price_gross_sum"></strong>
+                                </td>
+
+                                <td id="total_price_gross" style="" class="digit">
+
+                                </td>
+
+                                <td></td>
+
+                                <td></td>
+
+                                <td></td>
+
+                                <td></td>
+
+                                <td></td>
+
+                                <td></td>
+
+
+
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                {% endif %}
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        {{ form_start(form2) }}
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" style="color: #29323d;font-size: 18px; float: left;">Montant payé</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                {{ form_label(form2.type, " ") }}
+                                {{ form_widget(form2.type,{'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form2.type) }}
+
+
+                                {{ form_label(form2.id, " ") }}
+                                {{ form_widget(form2.id,{'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form2.id) }}
+
+                                {{ form_label(form2.prix, " ") }}
+                                {{ form_widget(form2.prix,{'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form2.prix) }}
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                            </div>
+                        </div>
+                        {{ form_end(form2) }}
+                    </div>
+                </div>
+            </section>
+
+
+
+        </main>
+    </div>
+
+
+    <script>
+        $('#date').hide();
+
+        $("#periode").change(function() {
+
+            if ($('#option_searchs_periode').val() == 'more') {
+                $('#periode').hide();
+                $('#date').show();
+
+
+            }
+        });
+        $('.depense_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_depenses_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat'+data.id).text('Créé');
+                    $('.prog'+data.id).remove();
+                    $('#etat'+data.id).removeAttr( 'style' );
+                    $('#etat'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat'+data.id).html('Créé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+        $('.depense_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_depenses_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat'+data.id).text('Payé');
+                    $('.prog'+data.id).remove();
+                    $('#etat'+data.id).removeAttr( 'style' );
+                    $('#etat'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat'+data.id).removeClass().addClass( "progst colored_select badge2 status-issued" );
+                    $('#etat'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+
+
+        $('.proforma_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_proformas_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat_proforma'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat_proforma'+data.id).text('Créé');
+                    $('.prog_proforma'+data.id).remove();
+                    $('#etat_proforma'+data.id).removeAttr( 'style' );
+                    $('#etat_proforma'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_proforma'+data.id).html('Créé <span class="caret"> </span>');
+                }
+            });
+
+
+        });
+        $('.proforma_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_proformas_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat_proforma'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat_proforma'+data.id).text('Payé');
+                    $('.prog_proforma'+data.id).remove();
+                    $('#etat_proforma'+data.id).removeAttr( 'style' );
+                    $('#etat_proforma'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_proforma'+data.id).removeClass().addClass( "progst_proforma colored_select badge2 status-issued" );
+                    $('#etat_proforma'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+        $('.devis_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_devis_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat_devis'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat_devis'+data.id).text('Créé');
+                    $('.prog_devis'+data.id).remove();
+                    $('#etat_devis'+data.id).removeAttr( 'style' );
+                    $('#etat_devis'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_devis'+data.id).html('Créé <span class="caret"> </span>');
+                }
+            });
+
+
+        });
+        $('.devis_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_devis_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat_devis'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat_devis'+data.id).text('Payé');
+                    $('.prog_devis'+data.id).remove();
+                    $('#etat_devis'+data.id).removeAttr( 'style' );
+                    $('#etat_devis'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_devis'+data.id).removeClass().addClass( "progst_devis colored_select badge2 status-issued" );
+                    $('#etat_devis'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+        $('.recu_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_recus_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat_recu'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat_recu'+data.id).text('Créé');
+                    $('.prog_recu'+data.id).remove();
+                    $('#etat_recu'+data.id).removeAttr( 'style' );
+                    $('#etat_recu'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_recu'+data.id).html('Créé <span class="caret"> </span>');
+                }
+            });
+
+
+        });
+        $('.recu_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_recus_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat_recu'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat_recu'+data.id).text('Payé');
+                    $('.prog_recu'+data.id).remove();
+                    $('#etat_recu'+data.id).removeAttr( 'style' );
+                    $('#etat_recu'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_recu'+data.id).removeClass().addClass( "progst_recu colored_select badge2 status-issued" );
+                    $('#etat_recu'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+
+
+        $('.bdc_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_depenses_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat_bdc'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat_bdc'+data.id).text('Créé');
+                    $('.prog_bdc'+data.id).remove();
+                    $('#etat_bdc'+data.id).removeAttr( 'style' );
+                    $('#etat_bdc'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_bdc'+data.id).html('Créé <span class="caret"> </span>');
+                }
+            });
+
+
+        });
+        $('.bdc_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_depenses_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat_bdc'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat_bdc'+data.id).text('Payé');
+                    $('.prog_bdc'+data.id).remove();
+                    $('#etat_bdc'+data.id).removeAttr( 'style' );
+                    $('#etat_bdc'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_bdc'+data.id).removeClass().addClass( "progst_bdc colored_select badge2 status-issued" );
+                    $('#etat_bdc'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+
+        $('.partranche').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+
+        $('.partranche_proforma').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+
+        $('.partranche_recu').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+        $('.partranche_devis').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+        $('.partranche_bdc').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+        $(document).ready(function(){
+
+
+
+            $(".delete").click(function(){
+                if (!confirm("Êtes-vous sûr de vouloir effacer ce document?")){
+                    return false;
+                }
+            });
+
+
+            $("#option_searchs_zone").change(function(){
+                var element = $("option:selected", this);
+                var myTag = element.attr("myTag");
+
+                $('#setMyTag').val(myTag);
+            });
+
+        });
+    </script>
+
+{% endblock %}

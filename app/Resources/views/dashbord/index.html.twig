@@ -1,0 +1,291 @@
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+<style>
+
+    .aa{
+        padding: 1.5rem;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+        border: solid 1px #dddddd;
+
+    }
+    #1 option[label]{
+        float: left;
+        color: red;
+    }
+    .panel-success>.panel-heading{
+        background: linear-gradient(to bottom, #fff 0%, #f6f6f6 19%, #ededed 100%);
+        border-color: #dddddd;
+        color: #000;
+    }
+    .panel-success {
+        border-color: #dddddd;
+
+    }
+    .panel-title{
+        font-size: 12px;
+    }
+    .forms{
+        margin-bottom: 10px;
+    }
+
+    .fa-close{
+        -webkit-border-radius: 100px;
+        font-size: 1.1em;
+        color: white;
+        border-radius: 100px;
+        line-height: 0.9em;
+        padding: 5px 6px;
+        margin-top: 20px;
+        cursor: pointer;
+        background: linear-gradient(to bottom, #f85032 0%, #f16f5c 19%, #f6290c 55%, #f02f17 71%, #e73827 100%);
+    }
+
+    form .row{
+        margin-bottom: 10px;
+    }
+
+
+    .main-stats {
+        background-color: #fdfdfd;
+        border-bottom: 1px solid #efeef3;
+    }
+
+    .main-stats .stat {
+        text-align: right;
+        padding: 25px 0px 15px 0px;
+        border-right: 1px solid #e8e9ee;
+        position: relative;
+        box-shadow: 1px 0px 0px 0px white;
+        width: auto;
+
+    }
+    .main-stats .stats-row {
+        box-shadow: inset -1px 0px 5px 2px #f9f9f9;
+        margin: 0;
+    }
+
+
+    body {
+        background: #f7f7f7;
+    }
+    .btn-glow.btn-lg {
+        font-size: 14px;
+        padding: 12px;
+        text-align: left;
+    }
+    .dashbord{
+        background: white;
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 100px;
+        padding-right: 80px;
+        padding-bottom: 260px;
+        border-bottom: 1px solid #dae3e9;
+        box-shadow: -3px 3px 3px -2px #f1f1f3;
+        border-radius: 0px 0px 0px 5px;
+        -webkit-transition: margin-left .3s ease;
+        -moz-transition: margin-left .3s ease;
+        -o-transition: margin-left .3s ease;
+        -ms-transition: margin-left .3s ease;
+        transition: margin-left .3s ease;
+        font-size: 12px;
+    }
+    .dashboard_buttons {
+        margin-bottom: 5px;
+
+    }
+.dashboard_buttons i{
+
+        margin: 0 10px 0 10px;
+
+}
+    .cont{
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 104px;
+        padding-right: 104px;
+    }
+    .btn-glow2:hover {
+        background: #68901d;
+        background: linear-gradient(to bottom, #8eb04b 0%, #7ca135 100%);
+        box-shadow: inset 0px 1px 0px 0px rgba(255,255,255,0.5);
+        border: 1px solid #99bd56;
+        text-shadow: rgba(0,0,0,0.24706) 0px 1px 0px;
+        color: #fff;
+        text-transform: none;
+        text-decoration: none;
+    }
+    .btn-glow:hover{
+        text-decoration: none;
+    }
+
+</style>
+
+
+    <div id="main-stats" class="main-stats ">
+        <div class="cont">
+            <div class="row stats-row">
+                <div class="col-md-3 col-sm-6 stat" style="height: 84px;padding-right: 2%;">
+                    <div class="data">
+                <span class="number">
+                         {% set sumJour = 0 %}
+                    {% set sumVj= 0 %}
+                    {% for jour in jours %}
+                        {% set sumJour = sumJour + jour.totalTTC %}
+                        {% set sumVj = sumVj + 1 %}
+                        {% endfor %}
+                    <a href="">
+                    {{ sumJour|number_format(0, '.', ' ') }}
+                   DA</a>
+                </span>
+                        aujourd'hui
+                    </div>
+                    <span class="date">{{ sumVj }} ventes</span>
+
+                </div>
+                <div class="col-md-3 col-sm-6 stat" style="height: 84px;padding-right: 2%;">
+                    <div class="data">
+                <span class="number">
+                    {% set sumSemaine = 0 %}
+                    {% set sumVs= 0 %}
+                    {% for semaine in semaines %}
+                        {% set sumSemaine = sumSemaine + semaine.totalTTC %}
+                        {% set sumVs = sumVs + 1 %}
+                    {% endfor %}
+                    <a href="">
+                        {{ sumSemaine|number_format(0, '.', ' ') }}
+                        DA</a>
+                </span>
+                        7 derniers jours
+                    </div>
+                    <span class="date">{{ sumVs }} ventes</span>
+
+                </div>
+                <div class="col-md-3 col-sm-6 stat" style="height: 84px;padding-right: 2%;">
+                    <div class="data">
+                <span class="number">
+                    {% set sumMoi = 0 %}
+                    {% set sumVm= 0 %}
+                    {% for moi in mois %}
+                        {% set sumMoi = sumMoi + moi.totalTTC %}
+                        {% set sumVm = sumVm + 1 %}
+                    {% endfor %}
+                    <a href="">
+                        {{ sumMoi|number_format(0, '.', ' ') }}
+                        DA</a>
+                </span>
+                        Mois en cours
+                    </div>
+                    <span class="date"> {{ sumVm }} ventes</span>
+
+                </div>
+                <div class="col-md-3 col-sm-6 stat" style="height: 84px;padding-right: 2%;">
+                    <div class="data">
+                <span class="number">
+                    {% set sumAnnee = 0 %}
+                    {% set sumVa= 0 %}
+                    {% for annee in annees %}
+                        {% set sumAnnee = sumAnnee + annee.totalTTC %}
+
+                        {% set sumVa = sumVa + 1 %}
+                    {% endfor %}
+                    <a href="">
+                        {{ sumAnnee|number_format(0, '.', ' ') }}
+                        DA</a>
+                </span>
+                        Exercice {{ "now"|date("Y") }}
+                    </div>
+                    <span class="date"> {{ sumVa }} ventes</span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashbord">
+    <div class=" dashboard_buttons">
+
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-4 col-md-3" style="height: 60px;">
+                <a href="{{ path('admin_factures_new') }}" class="btn-glow btn-block primary btn-lg new_vat" title="Facture">
+                    <i class="fa fa-plus"></i>
+                    Facture
+                </a>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-3" style="height: 60px;">
+                <a href="{{ path('admin_proformas_new') }}" class="btn-glow btn-block primary btn-lg new_proforma" title="Facture Proforma">
+                    <i class="fa fa-plus"></i>
+                    Facture Proforma
+                </a>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-3" style="height: 60px;">
+                <a href="{{ path('admin_recus_new') }}" class="btn-glow btn-block primary btn-lg new_receipt" title="Reçu">
+                    <i class="fa fa-plus"></i>
+                    Reçu
+                </a>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-3" style="height: 60px;">
+                <a href="{{ path('admin_devis_new') }}" class="btn-glow btn-block primary btn-lg new_vat_rr" title="Devis">
+                    <i class="fa fa-plus"></i>
+                    Devis
+                </a>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-3"style="height: 60px;">
+                <a href="{{ path('admin_bdc_new') }}" class="btn-glow btn-block primary btn-lg new_client_order" title="Bon de Commande">
+                    <i class="fa fa-plus"></i>
+                    Bon de Commande
+                </a>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-3"style="height: 60px;">
+                <a href="{{ path('admin_depenses_new') }}" class="btn-glow2 btn-lg btn-block  new_expense blank_expense"><i class="fa fa-plus"></i> Dépenses</a>
+            </div>
+
+
+            <div class="col-xs-12 col-sm-4 col-md-3"style="height: 60px;">
+                <a href="" class="btn-glow btn-lg  btn-block   white new_more" title="Autre..."><i class="fa fa-plus"></i> Autres documents</a>
+            </div>
+
+        </div> <!-- row -->
+
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-3" style="height: 60px;">
+                <a href="{{ path('admin_bes_new') }}" class="btn-glow warehouse btn-block btn-lg new_vat foreign"><i class="fa fa-plus"></i> Entrée</a>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-3" style="height: 60px;">
+                <a href="{{ path('admin_bls_new') }}" class="btn-glow warehouse btn-block btn-lg new_vat foreign"><i class="fa fa-plus"></i> Sortie</a>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="row">
+
+
+
+        </div> <!-- row -->
+
+    </div>
+        <div class="container">
+            <div class="col-sm-12">
+                <p class="help-block small text-right" style="color:#ddd;font-size:10px">v1.0.0</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Stock</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ stock.id }}</td>
+            </tr>
+            <tr>
+                <th>Dispo</th>
+                <td>{% if stock.dispo %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Datexp</th>
+                <td>{% if stock.datexp %}{{ stock.datexp|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Datexpalert</th>
+                <td>{% if stock.datexpAlert %}{{ stock.datexpAlert|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Datentrer</th>
+                <td>{% if stock.datentrer %}{{ stock.datentrer|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Ug</th>
+                <td>{{ stock.ug }}</td>
+            </tr>
+            <tr>
+                <th>Reference</th>
+                <td>{{ stock.reference }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ stock.description }}</td>
+            </tr>
+            <tr>
+                <th>Prixht</th>
+                <td>{{ stock.prixHT }}</td>
+            </tr>
+            <tr>
+                <th>Prixttc</th>
+                <td>{{ stock.prixTTC }}</td>
+            </tr>
+            <tr>
+                <th>Prixvente</th>
+                <td>{{ stock.prixVente }}</td>
+            </tr>
+            <tr>
+                <th>Qte</th>
+                <td>{{ stock.qte }}</td>
+            </tr>
+            <tr>
+                <th>Qtealert</th>
+                <td>{{ stock.qtealert }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ stock.name }}</td>
+            </tr>
+            <tr>
+                <th>Barcode</th>
+                <td>{{ stock.barcode }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_stock_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('admin_stock_edit', { 'id': stock.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

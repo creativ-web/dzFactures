@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Ventes list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Datevente</th>
+                <th>Name</th>
+                <th>Reference</th>
+                <th>Qte</th>
+                <th>Prixhtvente</th>
+                <th>Prixttcvente</th>
+                <th>Totalht</th>
+                <th>Totalttc</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for vente in ventes %}
+            <tr>
+                <td><a href="{{ path('admin_ventes_show', { 'id': vente.id }) }}">{{ vente.id }}</a></td>
+                <td>{% if vente.datevente %}{{ vente.datevente|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ vente.name }}</td>
+                <td>{{ vente.reference }}</td>
+                <td>{{ vente.qte }}</td>
+                <td>{{ vente.prixHTvente }}</td>
+                <td>{{ vente.prixTTCvente }}</td>
+                <td>{{ vente.totalHT }}</td>
+                <td>{{ vente.totalTTC }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_ventes_show', { 'id': vente.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_ventes_edit', { 'id': vente.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_ventes_new') }}">Create a new vente</a>
+        </li>
+    </ul>
+{% endblock %}

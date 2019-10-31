@@ -1,0 +1,294 @@
+
+
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+    <style>
+        body{background: white;}
+        .row.header {
+            margin-bottom: 0;
+        }
+        #pad-wrapper h4 {
+            color: #696d73;
+            font-style: italic;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .newtab[id]>.header>h4 {
+            margin-top: -19px;
+            padding-top: 53px;
+        }
+        div>.header:first-child h4 {
+            font-size: 132%;
+            font-weight: bold;
+        }
+        .header>h4 {
+            margin-left: 10px;
+        }
+
+
+    </style>
+    <div class="container">
+        <div id="pad-wrapper" class="users-list mod-list">
+        <div class="form1">
+            {{ form_start(ParametresForm, {'attr': {'id': 'logoform'}}) }}
+
+        <div id="tabs-print-setup" class="newtab " style="display: block;">
+
+            <div class="row header">
+                <h4 id="section_documents">Paramètres d'impression  </h4>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+
+                    {% for logo in logo %}
+                        <img src="{{ asset('imgProduit/') }}{{ logo.path }}"  alt="Logo">
+
+                    {% endfor %}
+
+                    <br>
+                    <label for="account_logo">Logo </label>
+                    {{ form_widget(ParametresForm.logos) }}
+
+                    <div class="company_logo">
+                        <div id="l1" >
+
+
+				  	        <span class="label_inline_left">
+				  	        	<input name="account[delete_logo]" type="hidden" value="0"><input onchange="$('#l1').fadeToggle();" type="checkbox" value="1" name="account[delete_logo]" id="account_delete_logo">
+				    	  	    <label for="account_delete_logo">Supprimer le logo</label>
+				  	        </span>
+                        </div>
+
+                    </div> <!-- company_logo -->
+
+                </div>	 <!-- col-sm-6 -->
+
+
+
+                <div class="col-sm-6">
+                    {% for cachet in cachets %}
+                        <img src="{{ asset('imgProduit/') }}{{ cachet.path }}"  alt="Logo">
+
+                    {% endfor %}
+
+                    <br>
+                    <label for="account_stamp">Tampon (cachet)</label>
+                    {{ form_widget(ParametresForm.cachets) }}
+
+                </div> <!-- col-sm-6 -->
+            </div>
+            <br>
+                <div class="row header">
+
+                    <h4 id="section_documents">Section Documents </h4>
+                </div>
+            <div id="account_tax_div">
+
+                <div class="row">
+
+                    <div class="col-lg-3 col-sm-4">
+
+                        {% if sectionDocuments %}
+                            {{ form_label(ParametresForm.sectionDocuments.defaultTax, "Taux de taxe par défaut (%) ") }}
+                            {{ form_widget(ParametresForm.sectionDocuments.defaultTax,{'attr': {'class': 'form-control','value': sectionDocuments.defaultTax  }}) }}
+                            {{ form_errors(ParametresForm.sectionDocuments.defaultTax) }}
+                            {% else %}
+                                {{ form_label(ParametresForm.sectionDocuments.defaultTax, "Taux de taxe par défaut (%)  ") }}
+                                {{ form_widget(ParametresForm.sectionDocuments.defaultTax,{'attr': {'class': 'form-control'  }}) }}
+                                {{ form_errors(ParametresForm.sectionDocuments.defaultTax) }}
+                        {% endif %}
+
+                    </div>
+
+                    <div class="col-lg-3 col-sm-4">
+                        {% if sectionDocuments %}
+                            {{ form_label(ParametresForm.sectionDocuments.invoiceTaxName, "Nom de la taxe ") }}
+                            {{ form_widget(ParametresForm.sectionDocuments.invoiceTaxName,{'attr': {'class': 'form-control','placeholder': 'TVA','value': sectionDocuments.invoiceTaxName  }}) }}
+                            {{ form_errors(ParametresForm.sectionDocuments.invoiceTaxName) }}
+                        {% else %}
+                            {{ form_label(ParametresForm.sectionDocuments.invoiceTaxName, "Nom de la taxe ") }}
+                            {{ form_widget(ParametresForm.sectionDocuments.invoiceTaxName,{'attr': {'class': 'form-control','placeholder': 'TVA'  }}) }}
+                            {{ form_errors(ParametresForm.sectionDocuments.invoiceTaxName) }}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="checkbox">
+                            {% if sectionDocuments %}
+                                {{ form_label(ParametresForm.sectionDocuments.invoiceTax2Visible, "Deuxième taxe ") }}
+                                {{ form_widget(ParametresForm.sectionDocuments.invoiceTax2Visible,{'attr': {'class': '','value': sectionDocuments.invoiceTax2Visible }}) }}
+                                {{ form_errors(ParametresForm.sectionDocuments.invoiceTax2Visible) }}
+                            {% else %}
+                                {{ form_label(ParametresForm.sectionDocuments.invoiceTax2Visible, "Deuxième taxe") }}
+                                {{ form_widget(ParametresForm.sectionDocuments.invoiceTax2Visible,{'attr': {'class': ''  }}) }}
+                                {{ form_errors(ParametresForm.sectionDocuments.invoiceTax2Visible) }}
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row" id="account_invoice_tax2_div">
+                    <div class="col-lg-3 col-sm-4">
+                        {% if sectionDocuments %}
+                            {{ form_label(ParametresForm.sectionDocuments.defaultTax2, "Taux par défaut de la 2ème taxe (%) ") }}
+                            {{ form_widget(ParametresForm.sectionDocuments.defaultTax2,{'attr': {'class': 'form-control','value': sectionDocuments.defaultTax2 }}) }}
+                            {{ form_errors(ParametresForm.sectionDocuments.defaultTax2) }}
+                        {% else %}
+                            {{ form_label(ParametresForm.sectionDocuments.defaultTax2, "Taux par défaut de la 2ème taxe (%)") }}
+                            {{ form_widget(ParametresForm.sectionDocuments.defaultTax2,{'attr': {'class': 'form-control'  }}) }}
+                            {{ form_errors(ParametresForm.sectionDocuments.defaultTax2) }}
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-3 col-sm-4">
+                        {% if sectionDocuments %}
+                            {{ form_label(ParametresForm.sectionDocuments.invoiceTax2Name, "Nom de la Deuxième taxe ") }}
+                            {{ form_widget(ParametresForm.sectionDocuments.invoiceTax2Name,{'attr': {'class': 'form-control','placeholder': 'TAX','value': sectionDocuments.invoiceTax2Name  }}) }}
+                            {{ form_errors(ParametresForm.sectionDocuments.invoiceTax2Name) }}
+                        {% else %}
+                            {{ form_label(ParametresForm.sectionDocuments.invoiceTax2Name, "Nom de la Deuxième taxe ") }}
+                            {{ form_widget(ParametresForm.sectionDocuments.invoiceTax2Name,{'attr': {'class': 'form-control','placeholder': 'TAX'  }}) }}
+                            {{ form_errors(ParametresForm.sectionDocuments.invoiceTax2Name) }}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="checkbox">
+                            {% if sectionDocuments %}
+                                {{ form_label(ParametresForm.sectionDocuments.invoiceTax3Visible, "Tax Droit de timbre «quittance» ") }}
+                                {{ form_widget(ParametresForm.sectionDocuments.invoiceTax3Visible,{'attr': {'class': '','value': sectionDocuments.invoiceTax3Visible }}) }}
+                                {{ form_errors(ParametresForm.sectionDocuments.invoiceTax3Visible) }}
+                            {% else %}
+                                {{ form_label(ParametresForm.sectionDocuments.invoiceTax3Visible, "Tax Droit de timbre «quittance»") }}
+                                {{ form_widget(ParametresForm.sectionDocuments.invoiceTax3Visible,{'attr': {'class': ''  }}) }}
+                                {{ form_errors(ParametresForm.sectionDocuments.invoiceTax3Visible) }}
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row" id="account_invoice_tax2_div">
+                    <div class="col-lg-3 col-sm-4">
+                        {% if sectionDocuments %}
+                            {{ form_label(ParametresForm.sectionDocuments.defaultTax3, "Taux par défaut de la 3ème taxe (%) ") }}
+                            {{ form_widget(ParametresForm.sectionDocuments.defaultTax3,{'attr': {'class': 'form-control','value': sectionDocuments.defaultTax3 }}) }}
+                            {{ form_errors(ParametresForm.sectionDocuments.defaultTax3) }}
+                        {% else %}
+                            {{ form_label(ParametresForm.sectionDocuments.defaultTax3, "Taux par défaut de la 3ème taxe (%)") }}
+                            {{ form_widget(ParametresForm.sectionDocuments.defaultTax3,{'attr': {'class': 'form-control'  }}) }}
+                            {{ form_errors(ParametresForm.sectionDocuments.defaultTax3) }}
+                        {% endif %}
+                    </div>
+
+
+                    <div class="col-lg-3 col-sm-4">
+                        {% if sectionDocuments %}
+                            {{ form_label(ParametresForm.sectionDocuments.invoiceTax3Name, "Nom de la troisième taxe ") }}
+                            {{ form_widget(ParametresForm.sectionDocuments.invoiceTax3Name,{'attr': {'class': 'form-control','placeholder': 'D T','value': sectionDocuments.invoiceTax3Name  }}) }}
+                            {{ form_errors(ParametresForm.sectionDocuments.invoiceTax3Name) }}
+                        {% else %}
+                            {{ form_label(ParametresForm.sectionDocuments.invoiceTax3Name, "Nom de la troisième taxe ") }}
+                            {{ form_widget(ParametresForm.sectionDocuments.invoiceTax3Name,{'attr': {'class': 'form-control','placeholder': 'D T'  }}) }}
+                            {{ form_errors(ParametresForm.sectionDocuments.invoiceTax3Name) }}
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div class="row header">
+                <h4 id="warehouse_settings">Gestion des stocks </h4>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-6 ">
+                    <!-- FIFO LIFO -->
+                    <label for="account_products_dispense_order">Ordre de sortie des produits en stock</label>
+
+                    <select class="form-control" name="account[products_dispense_order]" id="account_products_dispense_order"><option selected="selected" value="fifo">FIFO (les premiers produits qui entrent en stock sont les premiers qui en sortent)</option></select>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 ">
+                    <div class="checkbox">
+                        <input name="account[warehouse_autoupdate_documents]" type="hidden" value="0"><input type="checkbox" value="1" checked="checked" name="account[warehouse_autoupdate_documents]" id="account_warehouse_autoupdate_documents">
+                        <label for="account_warehouse_autoupdate_documents">Mise à jour automatique des documents de stock </label>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 ">
+
+                    {{ form_label(ParametresForm.paramGestion.autobl, "Création automatique de documents en cas de sortie de stock (livraison)") }}
+                    <a class="help_sign" title2="En savoir plus sur l'aide en ligne →" id="sugester_hl_XI05oxYravmq9CJAsdf3" onclick="return sugester_help_link('sugester_hl_XI05oxYravmq9CJAsdf3', 'warehouse-action', 'fr')" href="">?</a>
+
+                    {{ form_widget(ParametresForm.paramGestion.autobl,{'attr': {'class': 'form-control'  }}) }}
+                    {{ form_errors(ParametresForm.paramGestion.autobl) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 ">
+                    {{ form_label(ParametresForm.paramGestion.autobe, "Création automatique de documents en cas d'entrée de stock (réception)") }}
+                    <a class="help_sign" title2="En savoir plus sur l'aide en ligne →" id="sugester_hl_XI05oxYravmq9CJAsdf3" onclick="return sugester_help_link('sugester_hl_XI05oxYravmq9CJAsdf3', 'warehouse-action', 'fr')" href="">?</a>
+
+                    {{ form_widget(ParametresForm.paramGestion.autobe,{'attr': {'class': 'form-control'  }}) }}
+                    {{ form_errors(ParametresForm.paramGestion.autobe) }}
+                </div>
+
+            </div>
+
+
+
+            <div class="row header">
+                <h4 id="warehouse_settings">Facturation </h4>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 ">
+                    {{ form_label(ParametresForm.paramGestion.galeriephotos, "Afficher galerie de produits") }}
+                    <a class="help_sign" title2="En savoir plus sur l'aide en ligne →" id="sugester_hl_XI05oxYravmq9CJAsdf3" onclick="return sugester_help_link('sugester_hl_XI05oxYravmq9CJAsdf3', 'warehouse-action', 'fr')" href="">?</a>
+
+                    {{ form_widget(ParametresForm.paramGestion.galeriephotos,{'attr': {'class': 'form-control'  }}) }}
+                    {{ form_errors(ParametresForm.paramGestion.galeriephotos) }}
+                </div>
+
+            </div>
+
+            <br>  <br>
+
+
+
+
+            <button id="btn" type="submit" class="btn-glow primary ">Sauvegarder</button>
+            {{ form_end(ParametresForm) }}
+
+        </div>
+    </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+

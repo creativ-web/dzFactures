@@ -1,0 +1,79 @@
+
+
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+    <div class="container">
+
+
+
+        <div class="row">
+            <div class="col-md-4" style="    margin-top: -25px;"><h1 style="position: relative; float: left;">Achats</h1>
+            <span style=" margin-top: 23px; margin-left: 8px;position: absolute;color: #58b758;">
+                <a style="color:#58b758; " href="{{ path('admin_achats_new') }}">Ajouter</a>
+
+            </span>
+
+            </div>
+            <div class="col-md-2 ht"></div>
+            <div class="col-md-2 ttc"></div>
+            <div class="col-md-2 tva"></div>
+        </div>
+        <br>
+        <table id="example" class="display" cellspacing="0" width="100%" style="text-transform: uppercase;">
+            <thead>
+            <tr>
+                <th>#CODE</th>
+                <th>NOM</th>
+                <th>RÉFÉRENCE</th>
+                <th>FAMILLE</th>
+                <th>FOURNISSEUR</th>
+                <th>PU ACHAT HT</th>
+                <th>T.T.C</th>
+                <th>TVA</th>
+                <th>QTE</th>
+                <th>Date D'ACHAT</th>
+                <th>ACTION</th>
+            </tr>
+            </thead>
+
+
+            <tbody>
+
+            {% set TTC = 0 %}
+            {% set Tva = 0 %}
+            {% for achat in achats %}
+                {% set Tva =  achat.Tva.valeur /100 * achat.prixHTachat %}
+                {% set TTC = achat.prixHTachat + Tva  %}
+
+                <tr>
+                    <td>{{ achat.barcode }}</td>
+                    <td>{{ achat.name }} </td>
+                    <td>{{ achat.reference }} </td>
+                    <td>{{ achat.familles }} </td>
+                    <td>{{ achat.fournisseurs.nom }}</td>
+                    <td>{{ achat.prixHTachat|number_format(2, '.', ' ') }} DA</td>
+                    <td> {{ achat.prixTTCachat|number_format(2, '.', ' ') }} DA </td>
+                    <td>{{ Tva|number_format(2, '.', ' ') }} DA</td>
+                    <td> {{ achat.qte }} </td>
+                    <td>{{ achat.dateentrer|date("d/m/Y")  }}</td>
+                    <td>
+                        <li role="presentation" class="dropdown" style="list-style: none;"> <a style="text-decoration: none;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <i class="fa fa-cog" aria-hidden="true" style="color: #333;"> <span class="caret"></span></i> </a> <ul class="dropdown-menu">
+                                <li><a href="{{ path('admin_achats_show', { 'id': achat.id }) }}">Afficher</a></li>
+                                <li><a href="{{ path('admin_achats_edit', { 'id': achat.id }) }}">Modifier</a></li>
+                            </ul> </li>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+
+
+
+
+    </div>
+{% endblock %}

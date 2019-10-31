@@ -1,0 +1,926 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <style>
+        td{
+            font-size: 12px;
+            text-transform: initial;
+        }
+        .table thead>tr>th, .table tbody>tr>th, .table tfoot>tr>th, .table thead>tr>td, .table tbody>tr>td, .table tfoot>tr>td {
+            padding: 8px;
+            line-height: 1.428571429;
+            vertical-align: top;
+            border-top: 1px solid #dddddd;
+        }
+        .sorting_1{
+            text-transform: uppercase;
+        }
+        .number, .digit {
+            white-space: nowrap;
+            text-align: right;
+        }
+        #sidebar-nav {
+            position: relative;
+            float: left;
+            /* margin: 0em; */
+            /* padding-top: 5.8em; */
+            margin: 9px 12px 8px 3px;
+            padding: 4px;
+            width: 12%;
+        }
+    </style>
+    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
+
+    <div class="container-fluid">
+
+
+        <div id="sidebar-nav" class="hidden-print at-scroll-content">
+
+            <a class="btn-glow primary btn-block 1add_new 1add_new_invoice" title="Nouveau document" href="{{ path('admin_bes_new') }}">Nouveau <br> Document</a>
+
+
+            <div class="form" id="search_more_div" style="margin-top: 14px;">
+
+                <strong style="font-size: 12px;display:block;margin-bottom:8px;padding-bottom:3px;border-bottom:1px solid #ddd">Rechercher</strong>
+
+
+                {{ form_start(form) }}
+
+                {{ form_label(form.mot, "Mot-clé ou n° ") }}
+                {{ form_widget(form.mot,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.mot) }}
+
+                {{ form_label(form.type, "Type de document ") }}
+                {{ form_widget(form.type,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.type) }}
+
+                <div  >
+                    {{ form_label(form.du, "Date du") }}
+                    {{ form_widget(form.du,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.du) }}
+
+                    {{ form_label(form.au, "Date au") }}
+                    {{ form_widget(form.au,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.au) }}
+                </div>
+
+
+                {{ form_label(form.zone, "Entrepôt") }}
+                {{ form_widget(form.zone,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.zone) }}
+
+                {{ form_widget(form.valzone,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.valzone) }}
+
+                <input style="margin-top: 20px;" type="submit" value="Rechercher" title="Rechercher" class="btn-glow btn-block" onclick="$('#page').remove()">                        {{ form_end(form) }}
+
+
+
+
+            </div> <!-- search_more_div -->
+
+
+
+
+
+
+        </div>
+
+
+        <main class="col-sm-9 ml-sm-auto col-md-10 pt-3 content" role="main">
+
+            <section class="row text-center placeholders">
+                <div class="row">
+                    <div class="col-md-4"><h2 style="position: relative; float: left;">Documents de gestion de stock </h2>
+
+
+                    </div>
+                    <div style="padding-top: 20px;"></div>
+                    <div class="btn-group pull-right">
+
+                        <button data-toggle="dropdown" class="btn glow dropdown-toggle" style="margin-left:10px">
+                            <i class="fa fa-cog"></i> <span class="caret"></span>
+                        </button>
+
+
+                        <ul class="dropdown-menu">
+                            <li><a onclick="$('#dynamic_columns_modal').modal(); return false;" href="#">Personnaliser l'affichage des colonnes</a></li>
+                        </ul>
+
+                    </div>
+                    <div class="btn-group pull-right" id="export_dropdown_menu">
+
+                        <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                            <i class="fa fa-download"></i> <span class="">Export</span> / <i class="icon-print"></i> <span class="">Imprimés</span> <span class="caret"></span>
+                        </button>
+
+                        <ul class="dropdown-menu">
+
+                            <li role="presentation" class="dropdown-header" id="export_dropdown_menu_header">Tous les documents listés seront exportés</li>
+                            <li role="presentation" class="divider"></li>
+
+                            <li><a onclick="export_function('pdf');return false;" href="">Liste des documents (tableau) en format PDF</a></li>
+                            <li><a  href="">Documents dans un fichier PDF </a></li>
+
+
+
+                        </ul>
+                    </div>
+
+                </div>
+                <br>
+
+                <div id="list_table" class="row">
+
+                    <table id="example2" class="display" cellspacing="0" width="100%" style="text-transform: uppercase;">
+                        <thead>
+                        <tr>
+                            <th>TYPE</th>
+                            <th>N°</th>
+                            <th>FACTURES</th>
+                            <th>N° COM.</th>
+                            <th>NOM DE L'ENTREPÔT</th>
+                            <th>DATE DE CRÉATION</th>
+                            <th>FOURNISSEUR / CLIENT</th>
+                            <th>QUANTITÉ</th>
+                            <th>TOTAL HT (ACHAT)</th>
+                            <th>TOTAL HT</th>
+                            <th>CRÉÉ LE</th>
+                            <th>COMMENTAIRES</th>
+
+                            <th> </th>
+
+                        </tr>
+                        </thead>
+
+
+                        <tbody>
+                        {% set totalHTv = 0 %}
+                        {% set totalHT = 0 %}
+                        {% set totalQte = 0 %}
+                        {% set besCount = 0 %}
+                        {% set blsCount = 0 %}
+                        {% set reservationsCount = 0 %}
+                        {% set bcsCount = 0 %}
+                        {% set cisCount = 0 %}
+                        {% set pisCount = 0 %}
+                        {% set btsCount = 0 %}
+                        {% for bes in bes %}
+                            {% set besCount = besCount  %}
+                            <tr>
+                                <td>{{ bes.type }}</td>
+                                <td>{{ bes.id }}</td>
+                                <td></td>
+                                <td></td>
+                                <td>
+
+                                    {{ bes.zonnestocks }}
+
+                                </td>
+                                <td>{{ bes.datecreation|date("d/m/Y") }}</td>
+                                <td>{{ bes.acheteur.nom }}</td>
+                                <td>
+                                    {% set QTE = 0 %}
+                                    {% for bes in bes.achats %}
+                                        {% set QTE = QTE + bes.qte %}
+
+                                    {% endfor %}
+                                    {{ QTE|number_format(3, ',', ' ')  }}
+                                </td>
+
+                                <td>
+                                    {% set sumHTv = 0 %}
+                                    {% for bes in bes.achats %}
+                                        {% set sumHTv = sumHTv + bes.totalHTa %}
+
+                                    {% endfor %}
+                                    {{ sumHTv|number_format(2, ',', ' ') }} DA
+                                </td>
+                                <td>
+                                    {% set sumHT = 0 %}
+                                    {% for bes in bes.achats %}
+                                        {% set sumHT = sumHT + bes.totalHT %}
+
+                                    {% endfor %}
+                                    {{ sumHT|number_format(2, ',', ' ') }} DA
+                                </td>
+                                <td>
+                                    {{ bes.creele|date("d/m/Y") }}
+                                    {{ bes.creele|date("H:i") }}
+                                    {% set totalHTv  = totalHTv + sumHTv %}
+                                    {% set totalHT  = totalHT + sumHT %}
+                                    {% set totalQte = totalQte + QTE %}
+                                </td>
+                                <td></td>
+                                <td>
+                                    <div class="btn-group pull-right">
+                                        <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                            <i class="fa fa-cog"></i> <span class="caret"></span>
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+                                            <li><a title="Afficher" class="cms_show" href="{{ path('admin_bes_show', { 'id': bes.id }) }}">Afficher</a></li>
+
+
+                                            <li><a class="cms_edit" href="{{ path('admin_bes_edit', { 'id': bes.id }) }}">Modifier</a></li>
+                                            <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_bes_delete', { 'id': bes.id }) }}">Effacer</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+                        {% for bls in bls %}
+                            {% set blsCount = blsCount + 1 %}
+                            <tr>
+                                <td>{{ bls.type }}</td>
+                                <td>{{ bls.id }}</td>
+                                <td>  {% if bls.factures  %} {{ bls.factures.id }} {% endif %}</td>
+                                <td></td>
+                                <td>
+
+                                    {{ bls.zonnestocks }}
+
+                                </td>
+                                <td>{{ bls.datecreation|date("d/m/Y") }}</td>
+                                <td>{{ bls.acheteur.nom }}</td>
+                                <td>
+                                    {% set QTE = 0 %}
+                                    {% for bls in bls.ventes %}
+                                        {% set QTE = QTE - bls.qte %}
+                                        {% set totalQte = totalQte + QTE %}
+                                    {% endfor %}
+                                   {{ QTE|number_format(3, ',', ' ')  }}
+                                </td>
+                                <td>
+                                    {% set sumHTv = 0 %}
+                                    {% for bls in bls.ventes %}
+                                        {% set sumHTv = sumHTv + bls.prixHT %}
+                                        {% set totalHTv  = totalHTv + sumHTv %}
+                                    {% endfor %}
+                                    {{ sumHTv|number_format(2, ',', ' ') }} DA
+                                </td>
+                                <td>
+                                    {% set sumHT = 0 %}
+                                    {% for bls in bls.ventes %}
+                                        {% set sumHT = sumHT + bls.totalHT %}
+                                        {% set totalHT  = totalHT + sumHT %}
+                                    {% endfor %}
+                                    {{ sumHT|number_format(2, ',', ' ') }} DA
+                                </td>
+
+                                <td>
+                                    {{ bls.creele|date("d/m/Y") }}
+                                    {{ bls.creele|date("H:i") }}
+                                </td>
+                                <td></td>
+                                <td>
+                                    <div class="btn-group pull-right">
+                                        <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                            <i class="fa fa-cog"></i> <span class="caret"></span>
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+                                            <li><a title="Afficher" class="cms_show" href="{{ path('admin_bls_show', { 'id': bls.id }) }}">Afficher</a></li>
+
+
+                                            <li><a class="cms_edit" href="{{ path('admin_bls_edit', { 'id': bls.id }) }}">Modifier</a></li>
+                                            <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_bls_delete', { 'id': bls.id }) }}">Effacer</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+                        {% for reservations in reservations %}
+                            {% set reservationsCount = reservationsCount + 1 %}
+                            <tr>
+                                <td>{{ reservations.type }}</td>
+                                <td>{{ reservations.id }}</td>
+                                <td></td>
+                                <td></td>
+                                <td>
+
+                                    {{ reservations.zonnestocks }}
+
+                                </td>
+                                <td>{{ reservations.datecreation|date("d/m/Y") }}</td>
+                                <td>{{ reservations.acheteur.nom }}</td>
+                                <td>
+                                    {% set QTE = 0 %}
+                                    {% for reservations in reservations.ventes %}
+                                        {% set QTE = QTE - reservations.qte %}
+                                        {% set totalQte = totalQte + QTE %}
+                                    {% endfor %}
+                                    {{ QTE|number_format(3, ',', ' ')  }}
+                                </td>
+                                <td>
+                                    {% set sumHTv = 0 %}
+                                    {% for reservations in reservations.ventes %}
+                                        {% set sumHTv = sumHTv + reservations.prixHT %}
+                                        {% set totalHTv  = totalHTv + sumHTv %}
+                                    {% endfor %}
+                                    {{ sumHTv|number_format(2, ',', ' ') }} DA
+                                </td>
+                                <td>
+                                    {% set sumHT = 0 %}
+                                    {% for reservations in reservations.ventes %}
+                                        {% set sumHT = sumHT + reservations.totalHT %}
+                                        {% set totalHT  = totalHT + sumHT %}
+                                    {% endfor %}
+                                    {{ sumHT|number_format(2, ',', ' ') }} DA
+                                </td>
+
+                                <td>
+                                    {{ reservations.creele|date("d/m/Y") }}
+                                    {{ reservations.creele|date("H:i") }}
+                                </td>
+                                <td></td>
+                                <td>
+                                    <div class="btn-group pull-right">
+                                        <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                            <i class="fa fa-cog"></i> <span class="caret"></span>
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+                                            <li><a title="Afficher" class="cms_show" href="{{ path('admin_reservations_show', { 'id': reservations.id }) }}">Afficher</a></li>
+
+
+                                            <li><a class="cms_edit" href="{{ path('admin_reservations_edit', { 'id': reservations.id }) }}">Modifier</a></li>
+                                            <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_reservations_delete', { 'id': reservations.id }) }}">Effacer</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+                        {% for bcs in bcs %}
+                            {% set reservationsCount = reservationsCount + 1 %}
+                            <tr>
+                                <td>{{ bcs.type }}</td>
+                                <td>{{ bcs.id }}</td>
+                                <td></td>
+                                <td></td>
+                                <td>
+
+                                    {{ bcs.zonnestocks }}
+
+                                </td>
+                                <td>{{ bcs.datecreation|date("d/m/Y") }}</td>
+                                <td>{{ bcs.acheteur.nom }}</td>
+                                <td>
+                                    {% set QTE = 0 %}
+                                    {% for bcs in bcs.achats %}
+                                        {% set QTE = QTE + bcs.qte %}
+                                        {% set totalQte = totalQte + QTE %}
+                                    {% endfor %}
+                                    {{ QTE|number_format(3, ',', ' ')  }}
+                                </td>
+                                <td>
+                                    {% set sumHTv = 0 %}
+                                    {% for bcs in bcs.achats %}
+                                        {% set sumHTv = sumHTv + bcs.prixHT %}
+                                        {% set totalHTv  = totalHTv + sumHTv %}
+                                    {% endfor %}
+                                    {{ sumHTv|number_format(2, ',', ' ') }} DA
+                                </td>
+                                <td>
+                                    {% set sumHT = 0 %}
+                                    {% for bcs in bcs.achats %}
+                                        {% set sumHT = sumHT + bcs.totalHT %}
+                                        {% set totalHT  = totalHT + sumHT %}
+                                    {% endfor %}
+                                    {{ sumHT|number_format(2, ',', ' ') }} DA
+                                </td>
+
+                                <td>
+                                    {{ bcs.creele|date("d/m/Y") }}
+                                    {{ bcs.creele|date("H:i") }}
+                                </td>
+                                <td></td>
+                                <td>
+                                    <div class="btn-group pull-right">
+                                        <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                            <i class="fa fa-cog"></i> <span class="caret"></span>
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+                                            <li><a title="Afficher" class="cms_show" href="{{ path('admin_bcs_show', { 'id': bcs.id }) }}">Afficher</a></li>
+
+
+                                            <li><a class="cms_edit" href="{{ path('admin_bcs_edit', { 'id': bcs.id }) }}">Modifier</a></li>
+                                            <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_bcs_delete', { 'id': bcs.id }) }}">Effacer</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+                        {% for cis in cis %}
+                            {% set cisCount = cisCount + 1 %}
+                            <tr>
+                                <td>{{ cis.type }}</td>
+                                <td>{{ cis.id }}</td>
+                                <td></td>
+                                <td></td>
+                                <td>
+
+                                    {{ cis.zonnestocks }}
+
+                                </td>
+                                <td>{{ cis.datecreation|date("d/m/Y") }}</td>
+                                <td>{{ cis.acheteur.nom }}</td>
+                                <td>
+                                    {% set QTE = 0 %}
+                                    {% for cis in cis.ventes %}
+                                        {% set QTE = QTE - cis.qte %}
+                                        {% set totalQte = totalQte + QTE %}
+                                    {% endfor %}
+                                    {{ QTE|number_format(3, ',', ' ')  }}
+                                </td>
+                                <td>
+                                    {% set sumHTv = 0 %}
+                                    {% for cis in cis.ventes %}
+                                        {% set sumHTv = sumHTv + cis.prixHT %}
+                                        {% set totalHTv  = totalHTv + sumHTv %}
+                                    {% endfor %}
+                                    {{ sumHTv|number_format(2, ',', ' ') }} DA
+                                </td>
+                                <td>
+                                    {% set sumHT = 0 %}
+                                    {% for cis in cis.ventes %}
+                                        {% set sumHT = sumHT + cis.totalHT %}
+                                        {% set totalHT  = totalHT + sumHT %}
+                                    {% endfor %}
+                                    {{ sumHT|number_format(2, ',', ' ') }} DA
+                                </td>
+
+                                <td>
+                                    {{ cis.creele|date("d/m/Y") }}
+                                    {{ cis.creele|date("H:i") }}
+                                </td>
+                                <td></td>
+                                <td>
+                                    <div class="btn-group pull-right">
+                                        <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                            <i class="fa fa-cog"></i> <span class="caret"></span>
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+                                            <li><a title="Afficher" class="cms_show" href="{{ path('admin_cis_show', { 'id': cis.id }) }}">Afficher</a></li>
+
+
+                                            <li><a class="cms_edit" href="{{ path('admin_cis_edit', { 'id': cis.id }) }}">Modifier</a></li>
+                                            <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_cis_delete', { 'id': cis.id }) }}">Effacer</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+                        {% for pis in pis %}
+                            {% set pisCount = pisCount + 1 %}
+                            <tr>
+                                <td>{{ pis.type }}</td>
+                                <td>{{ pis.id }}</td>
+                                <td></td>
+                                <td></td>
+                                <td>
+
+                                    {{ pis.zonnestocks }}
+
+                                </td>
+                                <td>{{ pis.datecreation|date("d/m/Y") }}</td>
+                                <td>{{ pis.acheteur.nom }}</td>
+                                <td>
+                                    {% set QTE = 0 %}
+                                    {% for pis in pis.achats %}
+                                        {% set QTE = QTE + pis.qte %}
+                                        {% set totalQte = totalQte + QTE %}
+                                    {% endfor %}
+                                    {{ QTE|number_format(3, ',', ' ')  }}
+                                </td>
+                                <td>
+                                    {% set sumHTv = 0 %}
+                                    {% for pis in pis.achats %}
+                                        {% set sumHTv = sumHTv + pis.prixHT %}
+                                        {% set totalHTv  = totalHTv + sumHTv %}
+                                    {% endfor %}
+                                    {{ sumHTv|number_format(2, ',', ' ') }} DA
+                                </td>
+                                <td>
+                                    {% set sumHT = 0 %}
+                                    {% for pis in pis.achats %}
+                                        {% set sumHT = sumHT + pis.totalHT %}
+                                        {% set totalHT  = totalHT + sumHT %}
+                                    {% endfor %}
+                                    {{ sumHT|number_format(2, ',', ' ') }} DA
+                                </td>
+
+                                <td>
+                                    {{ pis.creele|date("d/m/Y") }}
+                                    {{ pis.creele|date("H:i") }}
+                                </td>
+                                <td></td>
+                                <td>
+                                    <div class="btn-group pull-right">
+                                        <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                            <i class="fa fa-cog"></i> <span class="caret"></span>
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+                                            <li><a title="Afficher" class="cms_show" href="{{ path('admin_pis_show', { 'id': pis.id }) }}">Afficher</a></li>
+
+
+                                            <li><a class="cms_edit" href="{{ path('admin_pis_edit', { 'id': pis.id }) }}">Modifier</a></li>
+                                            <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_pis_delete', { 'id': pis.id }) }}">Effacer</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+                        {% for bts in bts %}
+                            {% set btsCount = btsCount + 1 %}
+                            <tr>
+                                <td>{{ bts.type }}</td>
+                                <td>{{ bts.id }}</td>
+                                <td></td>
+                                <td></td>
+                                <td>
+
+                                    {{ bts.zonnestocks }}
+
+                                </td>
+                                <td>{{ bts.datecreation|date("d/m/Y") }}</td>
+                                <td>{{ bts.acheteur.nom }}</td>
+                                <td>
+                                    {% set QTE = 0 %}
+                                    {% for bts in bts.ventes %}
+                                        {% set QTE = QTE - bts.qte %}
+                                        {% set totalQte = totalQte + QTE %}
+                                    {% endfor %}
+                                    {{ QTE|number_format(3, ',', ' ')  }}
+                                </td>
+                                <td>
+                                    {% set sumHTv = 0 %}
+                                    {% for bts in bts.ventes %}
+                                        {% set sumHTv = sumHTv + bts.prixHT %}
+                                        {% set totalHTv  = totalHTv + sumHTv %}
+                                    {% endfor %}
+                                    {{ sumHTv|number_format(2, ',', ' ') }} DA
+                                </td>
+                                <td>
+                                    {% set sumHT = 0 %}
+                                    {% for bts in bts.ventes %}
+                                        {% set sumHT = sumHT + bts.totalHT %}
+                                        {% set totalHT  = totalHT + sumHT %}
+                                    {% endfor %}
+                                    {{ sumHT|number_format(2, ',', ' ') }} DA
+                                </td>
+
+                                <td>
+                                    {{ bts.creele|date("d/m/Y") }}
+                                    {{ bts.creele|date("H:i") }}
+                                </td>
+                                <td></td>
+                                <td>
+                                    <div class="btn-group pull-right">
+                                        <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                            <i class="fa fa-cog"></i> <span class="caret"></span>
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+                                            <li><a title="Afficher" class="cms_show" href="{{ path('admin_bts_show', { 'id': bts.id }) }}">Afficher</a></li>
+
+
+                                            <li><a class="cms_edit" href="{{ path('admin_bts_edit', { 'id': bts.id }) }}">Modifier</a></li>
+                                            <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_bts_delete', { 'id': bts.id }) }}">Effacer</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+                        <tr>
+                            <td></td>
+
+
+                            <td id="total_count">
+                                {% set totalCount = besCount + blsCount + reservationsCount + bcsCount + cisCount + pisCount + btsCount %}
+                                <span class="text-muted ">Total:  {{ totalCount }}</span>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td id="total_price_net" style="text-align:left;" class="digit">
+                                <strong id="total_price_net_values">{{ totalQte|number_format(3, ',', ' ') }} <br></strong>
+
+                            </td>
+                            <td id="total_price_net" style="text-align:left;" class="digit">
+                                <strong id="total_price_net_values">{{ totalHTv|number_format(2, ',', ' ') }} DA<br></strong>
+
+                            </td>
+
+                            <td id="total_price_gross" style="text-align:left;" class="digit">
+                                <strong id="total_price_gross_values">{{ totalHT|number_format(2, ',', ' ') }} DA<br></strong>
+
+                            </td>
+
+                            <td id="total_price_gross" style="" class="digit">
+
+                            </td>
+
+                            <td></td>
+
+                            <td></td>
+
+
+
+
+                        </tr>
+                    </table>
+
+                </div>
+
+
+
+                <!-- Modal -->
+            </section>
+
+
+
+        </main>
+    </div>
+
+
+    <script>
+        $('#date').hide();
+
+        $("#periode").change(function() {
+
+            if ($('#option_searchs_periode').val() == 'more') {
+                $('#periode').hide();
+                $('#date').show();
+
+
+            }
+        });
+        $('.facture_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_factures_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat'+data.id).text('Créé');
+                    $('.prog'+data.id).remove();
+                    $('#etat'+data.id).removeAttr( 'style' );
+                    $('#etat'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat'+data.id).html('Créé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+        $('.facture_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_factures_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat'+data.id).text('Payé');
+                    $('.prog'+data.id).remove();
+                    $('#etat'+data.id).removeAttr( 'style' );
+                    $('#etat'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat'+data.id).removeClass().addClass( "progst colored_select badge2 status-issued" );
+                    $('#etat'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+
+
+        $('.proforma_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_proformas_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat_proforma'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat_proforma'+data.id).text('Créé');
+                    $('.prog_proforma'+data.id).remove();
+                    $('#etat_proforma'+data.id).removeAttr( 'style' );
+                    $('#etat_proforma'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_proforma'+data.id).html('Créé <span class="caret"> </span>');
+                }
+            });
+
+
+        });
+        $('.proforma_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_proformas_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat_proforma'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat_proforma'+data.id).text('Payé');
+                    $('.prog_proforma'+data.id).remove();
+                    $('#etat_proforma'+data.id).removeAttr( 'style' );
+                    $('#etat_proforma'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_proforma'+data.id).removeClass().addClass( "progst_proforma colored_select badge2 status-issued" );
+                    $('#etat_proforma'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+        $('.devis_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_devis_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat_devis'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat_devis'+data.id).text('Créé');
+                    $('.prog_devis'+data.id).remove();
+                    $('#etat_devis'+data.id).removeAttr( 'style' );
+                    $('#etat_devis'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_devis'+data.id).html('Créé <span class="caret"> </span>');
+                }
+            });
+
+
+        });
+        $('.devis_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_devis_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat_devis'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat_devis'+data.id).text('Payé');
+                    $('.prog_devis'+data.id).remove();
+                    $('#etat_devis'+data.id).removeAttr( 'style' );
+                    $('#etat_devis'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_devis'+data.id).removeClass().addClass( "progst_devis colored_select badge2 status-issued" );
+                    $('#etat_devis'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+        $('.recu_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_recus_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat_recu'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat_recu'+data.id).text('Créé');
+                    $('.prog_recu'+data.id).remove();
+                    $('#etat_recu'+data.id).removeAttr( 'style' );
+                    $('#etat_recu'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_recu'+data.id).html('Créé <span class="caret"> </span>');
+                }
+            });
+
+
+        });
+        $('.recu_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_recus_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat_recu'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat_recu'+data.id).text('Payé');
+                    $('.prog_recu'+data.id).remove();
+                    $('#etat_recu'+data.id).removeAttr( 'style' );
+                    $('#etat_recu'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_recu'+data.id).removeClass().addClass( "progst_recu colored_select badge2 status-issued" );
+                    $('#etat_recu'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+
+
+        $('.bdc_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_bonscommandes_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat_bdc'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat_bdc'+data.id).text('Créé');
+                    $('.prog_bdc'+data.id).remove();
+                    $('#etat_bdc'+data.id).removeAttr( 'style' );
+                    $('#etat_bdc'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_bdc'+data.id).html('Créé <span class="caret"> </span>');
+                }
+            });
+
+
+        });
+        $('.bdc_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_bonscommandes_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat_bdc'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat_bdc'+data.id).text('Payé');
+                    $('.prog_bdc'+data.id).remove();
+                    $('#etat_bdc'+data.id).removeAttr( 'style' );
+                    $('#etat_bdc'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_bdc'+data.id).removeClass().addClass( "progst_bdc colored_select badge2 status-issued" );
+                    $('#etat_bdc'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+
+        $('.partranche').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+
+        $('.partranche_proforma').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+
+        $('.partranche_recu').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+        $('.partranche_devis').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+        $('.partranche_bdc').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+        $(document).ready(function(){
+
+
+
+            $(".delete").click(function(){
+                if (!confirm("Êtes-vous sûr de vouloir effacer ce document?")){
+                    return false;
+                }
+            });
+            $("#option_searchs_zone").change(function() {
+
+                $( "#option_searchs_valzone" ).val($( "#option_searchs_zone" ).val());
+                if(!$('#option_searchs_zone').val() ){
+                    $( "#option_searchs_valzone" ).val('tous');
+                }
+
+            });
+            $( "#option_searchs_valzone" ).val('tous');
+
+        });
+
+    </script>
+
+
+{% endblock %}

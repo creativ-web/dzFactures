@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Cis list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Nf</th>
+                <th>Datecreation</th>
+                <th>Lieu</th>
+                <th>Additionnelle</th>
+                <th>Dateadd</th>
+                <th>Moderegle</th>
+                <th>Dateregle</th>
+                <th>Objet</th>
+                <th>Etat</th>
+                <th>Montantpaye</th>
+                <th>Paiementrecu</th>
+                <th>Dateenvois</th>
+                <th>Nc</th>
+                <th>Nomvendeur</th>
+                <th>Informations</th>
+                <th>Editerpar</th>
+                <th>Expedierpar</th>
+                <th>Receptionnerpar</th>
+                <th>Ncommande</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ci in cis %}
+            <tr>
+                <td><a href="{{ path('admin_cis_show', { 'id': ci.id }) }}">{{ ci.id }}</a></td>
+                <td>{{ ci.type }}</td>
+                <td>{{ ci.nf }}</td>
+                <td>{% if ci.datecreation %}{{ ci.datecreation|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ ci.lieu }}</td>
+                <td>{{ ci.additionnelle }}</td>
+                <td>{% if ci.dateadd %}{{ ci.dateadd|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ ci.moderegle }}</td>
+                <td>{{ ci.dateregle }}</td>
+                <td>{{ ci.objet }}</td>
+                <td>{{ ci.etat }}</td>
+                <td>{{ ci.montantpaye }}</td>
+                <td>{% if ci.paiementrecu %}{{ ci.paiementrecu|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if ci.dateenvois %}{{ ci.dateenvois|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ ci.nc }}</td>
+                <td>{{ ci.nomvendeur }}</td>
+                <td>{{ ci.informations }}</td>
+                <td>{{ ci.editerpar }}</td>
+                <td>{{ ci.expedierpar }}</td>
+                <td>{{ ci.receptionnerpar }}</td>
+                <td>{{ ci.ncommande }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_cis_show', { 'id': ci.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_cis_edit', { 'id': ci.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_cis_new') }}">Create a new ci</a>
+        </li>
+    </ul>
+{% endblock %}

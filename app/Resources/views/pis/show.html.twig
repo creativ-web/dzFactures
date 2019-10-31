@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pi</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ pi.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ pi.type }}</td>
+            </tr>
+            <tr>
+                <th>Nf</th>
+                <td>{{ pi.nf }}</td>
+            </tr>
+            <tr>
+                <th>Datecreation</th>
+                <td>{% if pi.datecreation %}{{ pi.datecreation|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Lieu</th>
+                <td>{{ pi.lieu }}</td>
+            </tr>
+            <tr>
+                <th>Additionnelle</th>
+                <td>{{ pi.additionnelle }}</td>
+            </tr>
+            <tr>
+                <th>Dateadd</th>
+                <td>{% if pi.dateadd %}{{ pi.dateadd|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Moderegle</th>
+                <td>{{ pi.moderegle }}</td>
+            </tr>
+            <tr>
+                <th>Dateregle</th>
+                <td>{{ pi.dateregle }}</td>
+            </tr>
+            <tr>
+                <th>Objet</th>
+                <td>{{ pi.objet }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ pi.etat }}</td>
+            </tr>
+            <tr>
+                <th>Montantpaye</th>
+                <td>{{ pi.montantpaye }}</td>
+            </tr>
+            <tr>
+                <th>Paiementrecu</th>
+                <td>{% if pi.paiementrecu %}{{ pi.paiementrecu|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Dateenvois</th>
+                <td>{% if pi.dateenvois %}{{ pi.dateenvois|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Nc</th>
+                <td>{{ pi.nc }}</td>
+            </tr>
+            <tr>
+                <th>Nomvendeur</th>
+                <td>{{ pi.nomvendeur }}</td>
+            </tr>
+            <tr>
+                <th>Informations</th>
+                <td>{{ pi.informations }}</td>
+            </tr>
+            <tr>
+                <th>Editerpar</th>
+                <td>{{ pi.editerpar }}</td>
+            </tr>
+            <tr>
+                <th>Expedierpar</th>
+                <td>{{ pi.expedierpar }}</td>
+            </tr>
+            <tr>
+                <th>Receptionnerpar</th>
+                <td>{{ pi.receptionnerpar }}</td>
+            </tr>
+            <tr>
+                <th>Ncommande</th>
+                <td>{{ pi.ncommande }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_pis_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('admin_pis_edit', { 'id': pi.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

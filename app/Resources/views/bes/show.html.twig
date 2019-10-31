@@ -1,0 +1,1210 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <style type="text/css">
+        body{
+            background: white;
+        }
+        @media all{
+            .invoice_outline {
+                margin-left: 0.75cm;
+                margin-right: 0.75cm;
+                min-height: 20cm;
+                margin-bottom: 0in;
+            }
+
+            /* FONTS */
+            .invoice_outline *:not(.fa) {
+                font-family: 'arial';
+                font-size: 13px;
+                line-height: 17px;
+            }
+
+
+
+            .seller_buyer .vert_align_top > strong {display:none;}
+            .seller_buyer td {vertical-align: top;}
+
+            p {
+                margin-bottom: 0px;
+                margin-top: 0px;
+            }
+
+            /* ------------------------------------------------- */
+
+            /* INVOICE HEADER CONTAINER */
+            #invoice_header {
+                clear: both;
+                display: table;
+                width: 100%;
+                text-align: left;
+                height: 3.5cm;
+                max-height: 3.5cm;
+                line-height: 1.4em;
+            }
+            /* headers */
+            #invoice_header span { }
+
+            /* INVOICE'S DATA (NUMBER, DATE ETC) */
+            #info {
+                display: table-cell;
+                width: 55%;
+                text-align: left;
+            }
+
+            #document_id {
+                margin-bottom: 6px;
+            }
+            #document_id span {
+                font-weight: bold;
+                font-size: 1.25em;
+            }
+            /* DOCUMENT TYPE */
+            #document_type {}
+            /* DOCUMENT NUMBER */
+            #document_number {}
+            /* BOTH ABOVE */
+            #info p:first-of-type {}
+
+
+
+
+            /* LOGO */
+            #logo {
+                display: table-cell;
+                width: 45%;
+                vertical-align: top;
+                text-align: center;
+                height: auto;
+            }
+            #logo_place {
+                display: block;
+                position: relative;
+                width: 100% !important;
+                max-width:8.4cm;
+                max-height: 3.5cm;
+                height: auto;
+            }
+            /* LOGO IMAGE ONLY */
+            #logo img {
+                display:block;
+                position:relative;
+                width:auto;
+                max-width:8.4cm;
+                max-height: 3.5cm;
+            }
+
+
+            /* ------------------------------------------------- */
+
+
+            /* ROW WITH SELLER AND BUYER IDENTIFICATION DATA */
+            #invoice_traders {
+                clear: both;
+                display: table;
+                width: 100%;
+                text-align: left;
+                width:100%;
+                margin-bottom: 1em;
+                line-height: 1.4em;
+            }
+            /* labels */
+            #invoice_traders span {}
+
+            /* SELLER'S IDENTIFICATION DATA */
+            #seller {
+                display: table-cell;
+                width: 55%;
+                padding-right: 2cm;
+            }
+
+            /* BUYER'S IDENTIFICATION DATA */
+            #buyer {
+                display: table-cell;
+                width: 45%;
+                padding-right: 1.5cm;
+                height: 3.25cm;
+                min-height: 3.25cm
+            }
+
+            #buyer p:first-of-type, #seller p:first-of-type {
+
+            }
+
+            #invoice_traders .header {
+                display: table-cell;
+                font-weight: bold;
+            }
+
+
+            /* ------------------------------------------------- */
+
+
+            /* TITLE */
+            #title {
+                clear: both;
+                width: 100%;
+                display: block;
+                text-align: left;
+                font-weight: bold;
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
+
+
+            /* ------------------------------------------------- */
+
+
+            /* TABLE WITH PRODUCTS */
+            th.width0,
+            td.width0{width:1%;}
+            th.width1,
+            td.width1{width:2%;}
+            th.width2,
+            td.width2{width:5%;}
+            th.width3,
+            td.width3{width:7%;}
+            th.width4,
+            td.width4{width:25%;}
+
+            .main_inv_table th, .advanced_header_titles th {
+                background-color: #DDDDDD;
+                border-bottom: 1px solid #DDDDDD;
+                border-right: 1px solid #FFFFFF;
+                color: #000000;
+                vertical-align: middle;
+            }
+
+            .main_inv_table th:first-of-type, #rel_adv_table th:first-of-type {border-left: 1px solid #DDDDDD;}
+            .main_inv_table th:last-of-type, #rel_adv_table th:last-of-type {border-right: 1px solid #DDDDDD;}
+            table.main_inv_table .no_border td {border:0;}
+            table.main_inv_table td {
+                border:1px solid #DDDDDD;
+                vertical-align: top;
+            }
+
+            .main_inv_table td,
+            .main_inv_table th,
+            #positions_summary td {
+                padding:2px 5px;
+            }
+
+
+            /* ------------------------------------------------- */
+
+
+            /* TABLE WOTH TOTALS */
+            table.to_right{width:100%;}
+            table.to_right th{text-align:right;}
+            table.to_right td{width:15%;text-align:right;}
+            .totals_inv_table td, .totals_inv_table th {padding:1px 5px;}
+            .totals_inv_table {
+                margin-top: 0.5em;
+            }
+
+
+            /* ------------------------------------------------- */
+
+
+            /* TABLE WITH RELATED ADVANCES */
+            .advanced_header, .advanced_header_titles th {
+                padding-top: 3px !important;
+                padding-bottom: 1px !important;
+            }
+            .advanced_header {
+                white-space: nowrap;
+            }
+            #related_advances_title_row {display:none;}
+            #related_advances_title_inside {display: inline !important;}
+
+
+
+            /* ------------------------------------------------- */
+
+
+            /* TEXTS UNDER TOTALS */
+            #summary {
+                clear: both;
+                width: 100%;
+                display: block;
+                text-align: left;
+                line-height: 1.4em;
+            }
+
+            #to_pay {
+                font-size: 1em;
+                font-weight: bold;
+            }
+            #to_pay_amount {
+                font-size: 1.25em;
+            }
+
+
+            /* ------------------------------------------------- */
+
+
+            /* SIGNATURES AT THE END */
+            #invoice_signatures {
+                clear: both;
+                display: table;
+                width: 100%;
+            }
+            #invoice_signatures p {margin: 0px;}
+            #invoice_signatures > div > p:first-of-type {margin-top: 1.5em;}
+
+            /* headers */
+            #invoice_signatures span {font-weight: bold;}
+
+            /* SELLER */
+            #seller_sign {
+                display: table-cell;
+                width: 50%;
+                text-align: center;
+            }
+
+            /* BUYER */
+            #buyer_sign {
+                display: table-cell;
+                width: 50%;
+                text-align: center;
+            }
+
+            #custom_img {
+                max-width: 50%;
+            }
+
+
+            /* ------------------------------------------------- */
+
+
+            /* ONLINE PAYMANT BUTTON */
+            .payment_button {display:block;float:right;text-align:right;height:43px;width:190px;z-index:999;}
+            .payment_button img {display:block;float:right;text-align:right;width:190px;height:43px;z-index:999;}
+
+
+            /* ------------------------------------------------- */
+
+
+            /* HELPERS */
+            .text_center {text-align:center;}
+            .text_left {text-align:left;}
+            .text_right {text-align:right;}
+            .number,
+            .digit {white-space:nowrap;text-align:right;}
+            .nowrap, .no_wrap {white-space:nowrap;}
+            .nowrap-lines {white-space: pre;}
+            .hidden {display:none;}
+            .full_width, .full-width {width:100%;}
+            .half_width {width:50%;}
+            .no_border {border:0;}
+            .no-page-break, .nobreak {
+                page-break-inside: avoid !important;
+            }
+
+
+
+            #rel_adv_table {
+                width: 100%;
+                margin-top: 0.35em;
+            }
+            #rel_adv_table th {
+                border-right: 1px solid #FFFFFF;
+            }
+            #rel_adv_table th:last-of-type {
+                border-right: 1px solid #DDDDDD;
+            }
+            #realted_invoices {
+                background-color: transparent;
+                border: 0px !important;
+            }
+
+            #exchange_currency,
+            #exchange_currency td {
+                width: 100%;
+            }
+
+
+
+            /* footer preview only - DO NOT CHANGE - changes don't work in print */
+            #company_info_footer {
+                border:0;
+                padding:0;
+                margin:0;
+                vertical-align:bottom;
+                padding-top:15px;
+                padding-left:0px;
+                padding-right:0px;
+            }
+            #company_info_footer .small_text.text_center {
+                width:100%;
+                padding-left: 22%;
+                padding-right: 22%;
+            }
+            #company_info_footer .small_text.text_center span {
+                max-width: 407px;
+                display: block;
+                overflow: hidden;
+                height: 50px !important;
+                line-height: 11.3px !important;
+                font-family: arial,sans-serif,tahoma !important;
+                font-size:9.85px !important;
+                letter-spacing: normal !important;
+            }
+
+            #corrected_content {
+                width: 100%;
+                margin-top: 6pt;
+                margin-bottom: 12pt;
+            }
+
+            #corrected_content th,
+            #corrected_content td {
+                width: 50%;
+                vertical-align: top;
+                text-align: left;
+            }
+
+            #corrected_content th {
+                text-align: center;
+            }
+
+            /* EXTRA NOTES ON EXTRA PAGE */
+            #extra_page {
+                clear: both;
+                display: block;
+                text-align: left;
+            }
+
+            #name_col,
+            .name_col.related_advance {
+                text-align: left;
+            }
+
+            /* ------------------------------------------------- */
+            /* payments list */
+            #invoice_payments {
+                text-align: left;
+                margin-top: 0.5em;
+            }
+
+            #invoice_payments_title {
+                width: 100%;
+                box-sizing: border-box;
+                border: 1px solid #DDDDDD;
+                text-align: left !important;
+                background-color: #DDDDDD;
+                padding: 3px 5px 1px 5px;
+                font-weight: bold;
+            }
+
+            #invoice_payments_list {
+                box-sizing: border-box;
+                width: 100%;
+                display: block;
+                border-top: 0px;
+            }
+
+            .invoice_payments_payment {
+                display: block;
+                box-sizing: border-box;
+                width: 100%;
+                border-bottom: 1px solid #DDDDDD;
+                border-left: 1px solid #DDDDDD;
+                border-right: 1px solid #DDDDDD;
+                padding: 2px 5px;
+            }
+
+            .invoice_payments_payment > div {
+                display: inline-block;
+            }
+
+            .invoice_payments_provider::before {
+                content: '- ';
+            }
+
+
+        }
+
+        @page {
+            size: A4;
+            margin: 0.5cm;
+            margin-bottom: 0cm;
+        }
+
+        @media screen {
+            .invoice_preview.invoice {
+                width:210mm;
+                padding: 0px;
+                padding-top: 0.5cm;
+                border: solid 1px;
+                background-color: white;
+                box-shadow: rgba(0, 0, 0, 0.75) 1px 3px 5px 0px;
+
+                min-width: 700px;
+
+                border-width: 1px;
+                border-style: solid;
+                border-color: rgb(221, 221, 221);
+                border-image: initial;
+                padding: 20px 20px 0px;
+                overflow: visible;
+                margin: auto auto 20px;
+            }
+            .invoice_outline {margin-top:0.25in;margin-bottom:0.25in;
+                margin-right:0.75cm;
+                margin-left:0.75cm;
+            }
+        }
+
+
+        @media print{
+            .invoice_outline {
+                margin-top:0.7cm;
+                margin-bottom:0in;
+                margin-right:0.7cm;
+                margin-left:0.7cm;
+                background-color: transparent;
+                background-position: 50% 15cm !important;
+                min-height: 25cm;
+                padding-top: 0px;
+            }
+
+            .invoice_outline *:not(.fa) {
+                font-family: 'arial';
+                font-size: 9.35pt;
+            }
+
+            #buyer a {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            #title {
+                font-size: 9.75pt;
+            }
+
+        }
+
+        section#description_footer {
+            border:0;
+            padding:0;
+            margin:0;
+            vertical-align:bottom;
+            padding-top:15px;
+            padding-left:0px;
+            padding-right:0px;
+            padding-left: 22%;
+            padding-right: 22%;
+            margin-top: 40px;
+        }
+        section#description_footer span {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 407px;
+            display: block;
+            overflow: hidden;
+            line-height: 11.3px !important;
+            font-family: arial,sans-serif,tahoma !important;
+            font-size:9.85px !important;
+            letter-spacing: normal !important;
+            text-align: center;
+        }
+
+        .no-page-break {
+            page-break-before: auto;
+            page-break-inside: avoid !important;
+        }
+
+        /* fix for multipage table printing issue */
+        @media print {
+            table.main_inv_table {border-collapse: collapse;}
+            table.main_inv_table tr { page-break-inside: avoid !important; }
+            table.main_inv_table td { page-break-inside: avoid !important; }
+            table.main_inv_table thead {display: table-header-group !important;}
+
+
+
+
+            .hidden-print, .no-print, .noprint {
+                display: none !important;
+            }
+            .hidden {
+                display: none !important;
+            }
+            .show-print {
+                display: block !important;
+            }
+
+            .pull-right {float: right;}
+
+            a.btn-print {
+                color: #333333 !important;
+                background-color: #FFFFFF !important;
+                border: 1px solid #BEBEBE !important;
+                display: inline-block;
+                padding: 9px 15px 7px 15px!important;
+                margin-bottom: 0;
+                font-size: 9pt !important;
+                font-weight: normal;
+                line-height: 1em !important;
+                text-align: center !important;
+                vertical-align: middle !important;
+                border-radius: 4px !important;
+                white-space: nowrap !important;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                -o-user-select: none;
+                user-select: none;
+                text-decoration: none;
+            }
+            .content.wide-content.incomplete {
+                display: none !important;
+            }
+            #incomplete_safe_print {
+                margin-top: 100pt;
+                width: 100%;
+                text-align: center;
+                font-size: 14pt;
+                font-weight: bold;
+                line-height: 20pt;
+                display: block !important;
+            }
+
+            span.item_description {
+                display: block;
+            }
+
+            .profiler-results,
+            .profiler-popup,
+            .profiler-queries,
+            .profiler-queries-bg {
+                display: none !important;
+            }
+
+            .bilangual table.main_inv_table th {
+                white-space: normal !important;
+            }
+
+
+
+            #HW_frame_cont, li.hw_badge {
+                display: none;
+            }
+
+            #sx_container {
+                display:none;
+            }
+
+            #company_info_footer,
+            section#description_footer span {
+                height: auto;
+                max-height: 50px;
+                padding-top: 0px;
+            }
+
+            section#description_footer {
+                margin-top: 15px;
+            }
+
+        }
+        @media screen {
+            .hidden-screen {
+                display: none !important;
+            }
+            .show-screen {
+                display: block !important;
+            }
+            section#description_footer {
+                width:100%;
+                margin-top: 30px;
+            }
+
+            section#description_footer span {
+                height: 50px !important;
+            }
+
+        }
+
+    </style>
+<div class="container">
+    <nav class="navbar navbar-default buttons_panel hidden-print" role="navigation" style="z-index:1">
+        <!-- Brand and toggle get grouped for better mobile display -->
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+
+
+
+            <script type="text/javascript">
+                function sm(name) {
+                    $('.submenu').hide();
+                    $('#' + name).show();
+                    return false;
+                }
+            </script>
+
+            <ul class="nav navbar-nav">
+
+                <li>
+                    <a href="{{ path('admin_documents_index') }}"><i class="fa fa-reply"></i><span class="hidden-sm"> &nbsp;&nbsp;Retour</span></a>
+                </li>
+
+
+
+                <li class="dropdown ">
+
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-print"></i><span class="hidden-sm">&nbsp;&nbsp; Imprimer</span> <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a target="_blank" href="#">Imprimer</a> </li>
+                        <li><a target="_blank" href="#">Imprimer 2x</a> </li>
+                        <li><a href="#" onclick="">Impression rapide</a></li>
+                        <li class="wider"><a href="#">Original + copie </a></li>
+                        <li id="lang_modal_button">
+                            <a href="#" onclick="">Imprimer dans une autre langue&nbsp;&nbsp;<i class="flag bi-lang"></i></a>
+                        </li>
+
+
+
+                        <li class="divider"></li>
+                        <li>
+                            <a target="_blank" href="#">Bordereau de livraison</a>
+                        </li>
+
+
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#"><i class="fa fa-truck"></i><span class="hidden-sm"> &nbsp;&nbsp; Ajouter un similaire</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-signin"></i><span class="hidden-sm"> &nbsp;&nbsp; Opérations des entrepôts</span></a>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-magic"></i><span class="hidden-sm">&nbsp;&nbsp; Créer la facture/dépense correspondante</span> <b class="caret"></b></a>
+
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a data-confirm="Etes-vous sûr de vouloir créer un document de gestion de stock? " href="#">
+                                Créer le document de gestion de stock correspondant
+                            </a>				    </li>
+                    </ul>
+                </li>
+
+
+
+
+
+
+            </ul>
+
+
+
+            <ul class="nav navbar-nav navbar-right">
+
+                <li class="first green">
+
+                    <a href="{{ path('admin_bes_edit', { 'id': be.id }) }}"><i class="fa fa-edit"></i><span class="hidden-sm"> &nbsp;&nbsp;Modifier</span></a>
+                </li>
+
+                <li class="red last">
+
+                    <a data-confirm="Etes vous sûr de vouloir effacer ce produit?" rel="nofollow" data-method="delete" href="#"><i class="fa fa-trash-o"></i><span class="hidden-sm ">&nbsp;&nbsp; Effacer</span></a>
+
+                </li>
+
+                <li class="status" style="margin-top: 13px;">
+
+
+
+                    <div class="btn-group" style="    height: 20px; ">
+                        {% if be.etat == 'Créé' %}
+
+                            <span data-toggle="dropdown" class="colored_select badge status-issued" style="background-position: -100px 0;" data-original-title="" title="">
+
+				<i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+				<span class="">{{ be.etat }}</span>
+
+				<span class="caret"></span>
+			</span>
+
+                        {% elseif be.etat =='Payé' %}
+
+                            <span data-toggle="dropdown" class="colored_select badge2 status-issued" style="background-position: -100px 0;" data-original-title="" title="">
+
+				<i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+				<span class="">{{ be.etat }}</span>
+
+				<span class="caret"></span>
+			</span>
+                        {% elseif be.etat =='Payé en partie' %}
+                            {% set sumTTC = 0 %}
+                            {% for produit in be.ventes %}
+                                {% set sumTTC = sumTTC + produit.totalTTCa %}
+                            {% endfor %}
+                            {% set pourcentage = be.montantpaye*100/  sumTTC  %}
+
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:{{ pourcentage|round(1, 'floor')  }}%">
+                                </div>
+
+                            </div>
+                            <span class="enparti" >{{ be.etat }}</span>
+
+                        {% endif %}
+
+                        <ul id="" class="dropdown-menu pull-right hidden-print" role="menu">
+
+                            <li>
+                                <a href="#" onclick="change_invoice_status('17701215', 'issued', 'issued', 'Créé');; return false;">Créé</a>
+                            </li>
+
+
+                            <li>
+                                <a href="#" onclick="change_invoice_status('17701215', 'paid', 'paid', 'Payé');; return false;">Payé</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="$('#myModal').modal();$('#partial_payment_invoice_id').val(17701215);$('#partial_payment_price').val();$('#partial_payment_price').focus();; return false;">Payé en partie</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="change_invoice_status('17701215', 'sent', 'sent', 'Envoyé');; return false;">Envoyé</a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+
+
+                </li>
+
+            </ul>
+
+
+        </div><!-- /.navbar-collapse -->
+
+    </nav>
+    <div class="invoice-responsive">
+        <div class="invoice_preview invoice">
+
+
+            <style type="text/css">
+
+                html .warehouse_document h4 {
+                    margin-bottom: 10px;
+                    margin-top: 0;
+                }
+
+                .warehouse_document .display_inline td {
+                    padding: 0;
+                }
+                .warehouse_document .display_inline p {
+                    display: inline-block;
+                    margin: 10px 30px 5px 0;
+                }
+                .warehouse_document .display_inline p br {
+                    display: none;
+                }
+                .warehouse_document p a {
+                    text-decoration: none;
+                    color: inherit;
+                }
+
+                #list_table{
+                    min-height: auto;
+                }
+                table,
+                table th,
+                table td {
+                    border: 0;
+                    background-color: #fff;
+                    text-align: left;
+                    vertical-align: top;
+                    padding: 5px;
+                }
+
+                table.main-table th,
+                table.main-table td,
+                table.main-table caption {
+                    text-align: right;
+                    border-collapse: collapse;
+                    border: 1px solid #d8d7d7;
+                    border-left: 0;
+                    border-right: 0;
+                }
+
+                table.main-table th {
+                    font-weight: bold;
+                    background-color: #f1f1f1;
+                    border: 1px solid #bbbbbb;
+                    font-size: 12px;
+                    border-left: 0;
+                    border-right: 0;
+                }
+
+                table.main-table th p,
+                table td a {
+                    text-align:left;
+                }
+
+                table .clean th,
+                table .clean td {
+                    border:0;
+                }
+
+                .warehouse_document .display_inline td.logo_inside  {
+                    text-align: right;
+                    vertical-align: top;
+                    padding: 5px 0px 5px 20px;
+                }
+
+                .top-data {
+                    margin-bottom: 20px;
+                }
+
+                .signatures td {
+                    text-align: center;
+                }
+
+                .signatures span {
+                    font-size: 10px;
+                    color: #999;
+                    display: block;
+                    margin-top: 10px;
+                }
+
+                .bottom_data p {
+                    font-size: 1em !important;
+                    margin-bottom: 15px;
+                }
+
+
+                .tag {
+                    display: inline-block;
+                    margin-right: 2em;
+                    margin-bottom: 0.5em;
+                }
+
+
+
+                @page {
+                    size: A4;
+                    margin: 0.5cm;
+                    margin-bottom: 0cm;
+                }
+
+                @media screen {
+                    .invoice_preview.invoice{
+                        width: 21cm;
+                    }
+                } /* /screen */
+
+                @media print {
+
+                    .warehouse_document thead {
+                        display: table-row-group !important;
+                    }
+
+                    .bottom_data {
+                        font-size: 0.9em !important;
+                        margin-bottom: 15px;
+                    }
+
+                    body .warehouse_document .invoice_preview.invoice {
+                        font-size: 0.85em !important;
+                    }
+
+                    body .warehouse_document #list_table table {
+                        border-color: #ddd;
+                    }
+                    body .warehouse_document div#list_table table td,
+                    body .warehouse_document div#list_table table th {
+                        padding: 4px !important;
+                        font-size: 0.8em !important;
+                        border-color: #ddd;
+                    }
+                    body .warehouse_document div#list_table th.number,
+                    body .warehouse_document div#list_table td.number {
+                        text-align: right !important;
+                        white-space: nowrap !important;
+                    }
+
+                    body .warehouse_document div#list_table tr td:first-child.clean {
+                        border: 1px solid #fff;
+                    }
+                    body .warehouse_document div#list_table td.clean {
+                        border-left-color: #fff;
+                        border-bottom-color:#fff;
+                    }
+
+
+                    body .warehouse_document div#list_table,
+                    body .warehouse_document div#list_table td {
+                        border-collapse: collapse;
+                        empty-cells: hide;
+                    }
+
+                    .warehouse_document .display_inline p {
+                        font-size: 0.7em !important;
+                        margin-bottom: 5px;
+                    }
+                    .no-border {
+                        border: 0;
+                        font-size: 0.8em !important;
+                    }
+
+                    .warehouse_document p a {
+                        text-decoration: none;
+                        color: inherit;
+                    }
+
+
+                    .warehouse_document,
+                    .top-data td,
+                    .top-data {
+                        padding: 0;
+                        margin: 0;
+                    }
+
+
+                    div.content.wide-content,
+                    body .warehouse_document,
+                    .invoice-responsive,
+                    .invoice_preview.invoice {
+
+                    }
+
+                    #HW_frame_cont, li.hw_badge {
+                        display: none;
+                    }
+
+                    #sx_container {
+                        display:none;
+                    }
+
+                    .nowrap {
+                        white-space: nowrap !important;
+                    }
+                } /* /print */
+                .invoice_preview.invoice {
+                    width: 21cm;
+                }
+                application-3ee…bad23cc.css:37
+                #vat7, .invoice_preview.invoice {
+                    background-color: white;
+                    -webkit-box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
+                    -moz-box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
+                    box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
+                    border: 1px solid #ddd;
+                    padding: 20px;
+                    padding-bottom: 0px;
+                    min-width: 700px;
+                    width: auto;
+                    overflow: visible;
+                    margin: auto auto 20px auto;
+                }
+                .titre {
+                    color: #696d73;
+                    font-size: 18px;
+                    font-style: italic;
+                    font-weight: normal;
+                    font-family: arial, sans-serif;
+                }
+            </style>
+
+            <div class="warehouse_document">
+
+
+                <div class="display_inline">
+
+                    <table border="0" class="top-data">
+
+                        <tbody><tr>
+                            <td>
+
+                                <h4 class="titre">  {{ be.type }} n°{{ be.id }} </h4>
+
+
+
+                                <p>
+                                    <b>Date de création:</b>
+                                    {{ be.datecreation|date('d-m-Y')  }}
+                                </p>
+
+
+
+
+                                <p>
+                                    <b>Nom de l'entrepôt:</b>
+                                    {{ be.zonnestocks }}
+                                </p>
+
+
+                                <p id="wd_supplier">
+                                    <b>Fournisseur:</b>
+                                    {{ be.acheteur.nom }}, {{ be.acheteur.adresse }}  {{ be.acheteur.codepostal }}
+                                    {{ be.acheteur.ville }}
+
+                                </p>
+
+                                <p id="wd_recipient">
+                                    <b>Client:</b>
+                                    {{ be.departements.nom }}, {{ be.departements.adresse }}  {{ be.departements.codepostal }}
+                                    {{ be.departements.ville }}
+                                </p>
+
+
+
+
+
+                            </td>
+
+
+                        </tr>
+                        </tbody></table>
+
+
+
+                </div> <!-- display_inline -->
+
+
+
+                <div class="clear"></div>
+
+
+                <div id="list_table">
+                    <table class="main-table">
+                        <thead>
+                        <tr>
+                            <th width="1%"></th>
+                            <th class="text-left-i">Produit</th>
+                            <th class="number">Quantité</th>
+
+                            <!--PZ-->
+                            <!--WZ-->
+                            <th class="no_print1 number">Prix HT (achat)</th>
+                            <th class="no_print1 number">Total HT (achat)</th>
+                            <th class="no_print1 number">Taxe</th>
+                            <th class="no_print1 number">Total TTC (achat)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set sumHT = 0 %}
+                        {% set sumTTC = 0 %}
+                        {% set sumQTE = 0 %}
+                        {% for produit in be.achats %}
+                            {% set sumHT = sumHT + produit.totalHTa %}
+                            {% set sumTTC = sumTTC + produit.totalTTCa %}
+                            {% set sumQTE = sumQTE + produit.qte %}
+                            <tr>
+                                <td width="1%">{{ produit.id }}.</td>
+                                <td class="text-left-i">
+                                    <a href="/products/10155018">{{ produit.name }}</a>
+
+
+                                    <br>
+                                    {{ produit.description }}
+                                </td>
+
+
+
+                                <td class="number">
+                                    {{ produit.qte }}
+
+                                </td>
+
+                                <!--PZ-->
+                                <!--WZ-->
+
+                                <td class="no_print1 number"> {{ produit.prixHT }}  DA</td>
+                                <td class="no_print1 number">{{ produit.totalHTa }}  DA</td>
+                                <td class="no_print1 number">{{ produit.tva2 }}</td>
+                                <td class="no_print1 number">{{ produit.totalTTCa }}  DA</td>
+
+                            </tr>
+                        {% endfor %}
+
+
+
+
+                        <!--PZ-->
+                        <!--WZ-->
+                        <tr class="clean">
+                            <td class="clean"></td>
+                            <td class="number clean"><b>Total</b></td>
+
+
+
+                            <td class="number"><b>{{ sumQTE }}</b></td>
+
+                            <td class="no_print1"></td>
+                            <td class="no_print1 number"><b>{{ sumHT }} DA</b></td>
+                            <td class="no_print1"></td>
+                            <td class="no_print1 number"><b>{{ sumTTC }} DA</b></td>
+                        </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <br>
+
+
+                <div class="bottom_data no_print2">
+                    <p>
+                        <b>Auteur:</b>
+                        {{ be.departements.nom }}
+                    </p>
+                </div>
+                <div class="bottom_data no_print">
+                    <p>
+                        <b>Date de la dernière sauvegarde:</b>
+                        {% if be.datecreation %}{{ be.datecreation|date('Y-m-d') }}  {{ be.creele|date("H:i") }}{% endif %}
+                    </p>
+                </div>
+                <br>
+                <br>
+                <br>
+                <table class="no-border signatures" style="border:0; width:100%">
+                    <tbody><tr>
+                        <td>
+                            ...........................................
+                            <br>
+                            <span>Edité </span>
+                        </td>
+                        <td>
+                            ...........................................
+                            <br>
+                            <span>Expédié </span>
+                        </td>
+                        <td>
+                            ...........................................
+                            <br>
+                            <span>Réceptionné</span>
+                        </td>
+                    </tr>
+                    </tbody></table>
+
+
+                <br>
+                <br>
+                <br>
+            </div> <!-- warehouse_document -->
+
+        </div> <!-- invoice_preview -->
+    </div>
+
+</div>
+{% endblock %}

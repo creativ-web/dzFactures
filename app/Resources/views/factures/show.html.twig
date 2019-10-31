@@ -1,0 +1,2246 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <style>
+        @media (max-width: 768px) {
+            .invoice-responsive {
+                width: 100%;
+                margin-bottom: 15px;
+                overflow-y: hidden;
+                overflow-x: scroll;
+                border: 1px solid #dddddd;
+            }
+            .navbar-default.buttons_panel .navbar-nav>li li a, .navbar-default.buttons_panel .navbar-nav>li>a {
+                text-align: center;
+                font-size: 15px;
+            }
+            .buttons_panel .navbar-nav {
+                margin: 20px 0;
+            }
+            .navbar-right{
+                float: none !important;
+                text-align: center;
+            }
+            #invoice_body{
+                margin-left: 0 !important;
+            }
+        }
+    </style>
+    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
+
+    <div id="facture">
+
+
+        <style type="text/css">
+            body{
+                background: white;
+            }
+            @media all{
+                .invoice_outline {
+                    margin-left: 0.75cm;
+                    margin-right: 0.75cm;
+                    min-height: 20cm;
+                    margin-bottom: 0in;
+                }
+
+                /* FONTS */
+                .invoice_outline *:not(.fa) {
+                    font-family: 'arial';
+                    font-size: 13px;
+                    line-height: 17px;
+                }
+
+
+
+                .seller_buyer .vert_align_top > strong {display:none;}
+                .seller_buyer td {vertical-align: top;}
+
+                p {
+                    margin-bottom: 0px;
+                    margin-top: 0px;
+                }
+
+                /* ------------------------------------------------- */
+
+                /* INVOICE HEADER CONTAINER */
+                #invoice_header {
+                    clear: both;
+                    display: table;
+                    width: 100%;
+                    text-align: left;
+                    height: 3.5cm;
+                    max-height: 2.5cm;
+                    line-height: 1.4em;
+                }
+                /* headers */
+                #invoice_header span { }
+
+                /* INVOICE'S DATA (NUMBER, DATE ETC) */
+                #info {
+                    display: table-cell;
+                    width: 55%;
+                    text-align: left;
+                }
+
+                #document_id {
+                    margin-bottom: 6px;
+                }
+                #document_id span {
+                    font-weight: bold;
+                    font-size: 1.25em;
+                }
+                /* DOCUMENT TYPE */
+                #document_type {}
+                /* DOCUMENT NUMBER */
+                #document_number {}
+                /* BOTH ABOVE */
+                #info p:first-of-type {}
+
+
+
+
+                /* LOGO */
+                #logo {
+                    display: table-cell;
+                    width: 55%;
+                    vertical-align: top;
+                    text-align: center;
+                    height: auto;
+                }
+                #logo_place {
+                    display: block;
+                    position: relative;
+                    width: 100% !important;
+                    max-width:8.4cm;
+                    max-height: 3.5cm;
+                    height: auto;
+                }
+                /* LOGO IMAGE ONLY */
+                #logo img {
+                    display:block;
+                    position:relative;
+                    width:auto;
+                    max-width:7.4cm;
+                    max-height: 3.5cm;
+                }
+
+
+                /* ------------------------------------------------- */
+
+
+                /* ROW WITH SELLER AND BUYER IDENTIFICATION DATA */
+                #invoice_traders {
+                    clear: both;
+                    display: table;
+                    width: 100%;
+                    text-align: left;
+                    width:100%;
+                    margin-bottom: 1em;
+                    line-height: 1.4em;
+                }
+                /* labels */
+                #invoice_traders span {}
+
+                /* SELLER'S IDENTIFICATION DATA */
+                #seller {
+                    display: table-cell;
+                    width: 55%;
+                    padding-right: 2cm;
+                }
+
+                /* BUYER'S IDENTIFICATION DATA */
+                #buyer {
+                    display: table-cell;
+                    width: 45%;
+                    padding-right: 1.5cm;
+                    height: 3.25cm;
+                    min-height: 3.25cm
+                }
+
+                #buyer p:first-of-type, #seller p:first-of-type {
+
+                }
+
+                #invoice_traders .header {
+                    display: table-cell;
+                    font-weight: bold;
+                }
+
+
+                /* ------------------------------------------------- */
+
+
+                /* TITLE */
+                #title {
+                    clear: both;
+                    width: 100%;
+                    display: block;
+                    text-align: left;
+                    font-weight: bold;
+                    margin-bottom: 8px;
+                    font-size: 14px;
+                }
+
+
+                /* ------------------------------------------------- */
+
+
+                /* TABLE WITH PRODUCTS */
+                th.width0,
+                td.width0{width:1%;}
+                th.width1,
+                td.width1{width:2%;}
+                th.width2,
+                td.width2{width:5%;}
+                th.width3,
+                td.width3{width:7%;}
+                th.width4,
+                td.width4{width:25%;}
+
+                .main_inv_table th, .advanced_header_titles th {
+                    background-color: #DDDDDD;
+                    border-bottom: 1px solid #DDDDDD;
+                    border-right: 1px solid #FFFFFF;
+                    color: #000000;
+                    vertical-align: middle;
+                }
+
+                .main_inv_table th:first-of-type, #rel_adv_table th:first-of-type {border-left: 1px solid #DDDDDD;}
+                .main_inv_table th:last-of-type, #rel_adv_table th:last-of-type {border-right: 1px solid #DDDDDD;}
+                table.main_inv_table .no_border td {border:0;}
+                table.main_inv_table td {
+                    border:1px solid #DDDDDD;
+                    vertical-align: top;
+                }
+
+                .main_inv_table td,
+                .main_inv_table th,
+                #positions_summary td {
+                    padding:2px 5px;
+                }
+
+
+                /* ------------------------------------------------- */
+
+
+                /* TABLE WOTH TOTALS */
+                table.to_right{width:100%;}
+                table.to_right th{text-align:right;}
+                table.to_right td{width:15%;text-align:right;}
+                .totals_inv_table td, .totals_inv_table th {padding:1px 5px;}
+                .totals_inv_table {
+                    margin-top: 0.5em;
+                }
+
+
+                /* ------------------------------------------------- */
+
+
+                /* TABLE WITH RELATED ADVANCES */
+                .advanced_header, .advanced_header_titles th {
+                    padding-top: 3px !important;
+                    padding-bottom: 1px !important;
+                }
+                .advanced_header {
+                    white-space: nowrap;
+                }
+                #related_advances_title_row {display:none;}
+                #related_advances_title_inside {display: inline !important;}
+
+
+
+                /* ------------------------------------------------- */
+
+
+                /* TEXTS UNDER TOTALS */
+                #summary {
+                    clear: both;
+                    width: 100%;
+                    display: block;
+                    text-align: left;
+                    line-height: 1.4em;
+                }
+
+                #to_pay {
+                    font-size: 1em;
+                    font-weight: bold;
+                }
+                #to_pay_amount {
+                    font-size: 1.25em;
+                }
+
+
+                /* ------------------------------------------------- */
+
+
+                /* SIGNATURES AT THE END */
+                #invoice_signatures {
+                    clear: both;
+                    display: table;
+                    width: 100%;
+                }
+                #invoice_signatures p {margin: 0px;}
+                #invoice_signatures > div > p:first-of-type {margin-top: 1.5em;}
+
+                /* headers */
+                #invoice_signatures span {font-weight: bold;}
+
+                /* SELLER */
+                #seller_sign {
+                    display: table-cell;
+                    width: 50%;
+                    text-align: center;
+                }
+
+                /* BUYER */
+                #buyer_sign {
+                    display: table-cell;
+                    width: 50%;
+                    text-align: center;
+                }
+
+                #custom_img {
+                    max-width: 50%;
+                }
+
+
+                /* ------------------------------------------------- */
+
+
+                /* ONLINE PAYMANT BUTTON */
+                .payment_button {display:block;float:right;text-align:right;height:43px;width:190px;z-index:999;}
+                .payment_button img {display:block;float:right;text-align:right;width:190px;height:43px;z-index:999;}
+
+
+                /* ------------------------------------------------- */
+
+
+                /* HELPERS */
+                .text_center {text-align:center;}
+                .text_left {text-align:left;}
+                .text_right {text-align:right;}
+                .number,
+                .digit {white-space:nowrap;text-align:right;}
+                .nowrap, .no_wrap {white-space:nowrap;}
+                .nowrap-lines {white-space: pre;}
+                .hidden {display:none;}
+                .full_width, .full-width {width:100%;}
+                .half_width {width:50%;}
+                .no_border {border:0;}
+                .no-page-break, .nobreak {
+                    page-break-inside: avoid !important;
+                }
+
+
+
+                #rel_adv_table {
+                    width: 100%;
+                    margin-top: 0.35em;
+                }
+                #rel_adv_table th {
+                    border-right: 1px solid #FFFFFF;
+                }
+                #rel_adv_table th:last-of-type {
+                    border-right: 1px solid #DDDDDD;
+                }
+                #realted_invoices {
+                    background-color: transparent;
+                    border: 0px !important;
+                }
+
+                #exchange_currency,
+                #exchange_currency td {
+                    width: 100%;
+                }
+
+
+
+                /* footer preview only - DO NOT CHANGE - changes don't work in print */
+                #company_info_footer {
+                    border:0;
+                    padding:0;
+                    margin:0;
+                    vertical-align:bottom;
+                    padding-top:15px;
+                    padding-left:0px;
+                    padding-right:0px;
+                }
+                #company_info_footer .small_text.text_center {
+                    width:100%;
+                    padding-left: 22%;
+                    padding-right: 22%;
+                }
+                #company_info_footer .small_text.text_center span {
+                    max-width: 407px;
+                    display: block;
+                    overflow: hidden;
+                    height: 50px !important;
+                    line-height: 11.3px !important;
+                    font-family: arial,sans-serif,tahoma !important;
+                    font-size:9.85px !important;
+                    letter-spacing: normal !important;
+                }
+
+                #corrected_content {
+                    width: 100%;
+                    margin-top: 6pt;
+                    margin-bottom: 12pt;
+                }
+
+                #corrected_content th,
+                #corrected_content td {
+                    width: 50%;
+                    vertical-align: top;
+                    text-align: left;
+                }
+
+                #corrected_content th {
+                    text-align: center;
+                }
+
+                /* EXTRA NOTES ON EXTRA PAGE */
+                #extra_page {
+                    clear: both;
+                    display: block;
+                    text-align: left;
+                }
+
+                #name_col,
+                .name_col.related_advance {
+                    text-align: left;
+                }
+
+                /* ------------------------------------------------- */
+                /* payments list */
+                #invoice_payments {
+                    text-align: left;
+                    margin-top: 0.5em;
+                }
+
+                #invoice_payments_title {
+                    width: 100%;
+                    box-sizing: border-box;
+                    border: 1px solid #DDDDDD;
+                    text-align: left !important;
+                    background-color: #DDDDDD;
+                    padding: 3px 5px 1px 5px;
+                    font-weight: bold;
+                }
+
+                #invoice_payments_list {
+                    box-sizing: border-box;
+                    width: 100%;
+                    display: block;
+                    border-top: 0px;
+                }
+
+                .invoice_payments_payment {
+                    display: block;
+                    box-sizing: border-box;
+                    width: 100%;
+                    border-bottom: 1px solid #DDDDDD;
+                    border-left: 1px solid #DDDDDD;
+                    border-right: 1px solid #DDDDDD;
+                    padding: 2px 5px;
+                }
+
+                .invoice_payments_payment > div {
+                    display: inline-block;
+                }
+
+                .invoice_payments_provider::before {
+                    content: '- ';
+                }
+
+
+            }
+
+            @page {
+                size: A4;
+                margin: 0.5cm;
+                margin-bottom: 0cm;
+            }
+
+            @media screen {
+                .invoice_preview.invoice {
+                    width: 210mm;
+                    padding: 0 !important;
+                    padding-top: 0.5cm !important;
+                    border: solid 1px;
+                    background-color: white;
+                    box-shadow: rgba(0, 0, 0, 0.75) 1px 3px 5px 0px;
+                    font-size: 110%;
+                    min-width: 700px;
+                    border-width: 1px;
+                    border-style: solid;
+                    border-color: rgb(221, 221, 221);
+                    border-image: initial;
+                    padding: 20px 20px 0px;
+                    overflow: visible;
+                    margin: auto auto 20px;
+                }
+                .invoice_outline {margin-top:0.25in;margin-bottom:0.25in;
+                    margin-right:0.75cm;
+                    margin-left:0.75cm;
+                }
+            }
+
+            @media print{
+
+                nav {
+                    display:none
+                }
+                #activities{
+                    display:none
+                }
+
+                html, body {
+                    size: A4;
+                    padding-left: auto;
+                    margin-left: auto;
+                    padding-right: auto;
+                    margin-right: auto;
+                }
+                #facture{
+                    float: left;
+                    padding-left: auto;
+                    margin-left: auto;
+                    padding-right: auto;
+                    margin-right: auto;
+                }
+
+
+            }
+
+
+            @media screen {
+                .hidden-screen {
+                    display: none !important;
+                }
+                .show-screen {
+                    display: block !important;
+                }
+                section#description_footer {
+                    width:100%;
+                    margin-top: 30px;
+                    text-align: center;
+                    vertical-align: bottom !important;
+                }
+
+                section#description_footer span {
+                    height: 50px !important;
+                    text-align: center;
+                    vertical-align: bottom !important;
+                }
+                #description_footer{
+                    vertical-align: bottom !important;
+                }
+
+            }
+
+        </style>
+        <div class="container">
+
+
+            <nav class="navbar navbar-default buttons_panel hidden-print" role="navigation" style="z-index:1">
+                <!-- Brand and toggle get grouped for better mobile display -->
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <div class="collapse navbar-collapse navbar-ex1-collapse" style="width: 100%">
+
+
+
+                    <script type="text/javascript">
+                        function sm(name) {
+                            $('.submenu').hide();
+                            $('#' + name).show();
+                            return false;
+                        }
+                    </script>
+
+                    <ul class="nav navbar-nav">
+
+                        <li>
+                            <a href="{{ path('admin_factures_index') }}"><i class="fa fa-reply"></i><span class="hidden-sm"> &nbsp;&nbsp;Retour</span></a>
+                        </li>
+
+
+                        <li>
+
+                            <a href="{{ path('admin_factures_envois', { 'id': facture.id }) }}"><i class="fa fa-envelope-o"></i> <span>&nbsp;&nbsp;Envoyer</span></a>
+
+                        </li>
+                        <li class="dropdown ">
+
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-print"></i><span class="hidden-sm">&nbsp;&nbsp; Imprimer</span> <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a  id="print" target="_blank" href="#">Imprimer</a> </li>
+                                <li><a target="_blank" href="#">Imprimer 2x</a> </li>
+                                <li><a href="#" onclick="">Impression rapide</a></li>
+                                <li class="wider"><a href="#">Original + copie </a></li>
+                                <li id="lang_modal_button">
+                                    <a href="#" onclick="">Imprimer dans une autre langue&nbsp;&nbsp;<i class="flag bi-lang"></i></a>
+                                </li>
+
+
+
+                                <li class="divider"></li>
+                                <li>
+                                    <a target="_blank" href="#">Bordereau de livraison</a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="/invoices/new?kind=vat"><i class="fa fa-download"></i>&nbsp;&nbsp;Exporter <b class="caret"></b></a>
+
+                            <ul class="dropdown-menu">
+
+
+                                <li>
+                                    <a target="_blank" class="copy-after" title="Lien vers Aperçu (qui peut être envoyé au client au lieu d'envoyer le document en pièce jointe)" id="link_to_preview" href="{{ path('admin_factures_showClient', { 'id': facture.id }) }}">Lien vers Aperçu</a>
+                                    <i class="icon-copy" id="clippy" title="Copy to clipboard" onclick="invoiceUrlToClipboard()"></i>
+                                </li>
+                                <li><a href="{{ path('admin_factures_pdf', { 'id': facture.id }) }}">Télécharger en PDF</a>
+                                </li>
+                                <li>
+                                    <a title="Ajouter rapidement une facture de dépense. Vous pouvez aussi télécharger sous XML ou JSON. " href="#">Importer / ajouter aux dépenses</a>
+                                </li>
+
+
+                            </ul>
+
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-cog"></i>&nbsp;&nbsp;Plus<b class="caret"></b></a>
+
+                            <ul class="dropdown-menu">
+
+                                <li><a href="#">Créer un doc. similaire</a></li>
+
+                                <li><a href="#">Ajouter une dépense similaire</a></li>
+
+                                <li><a href="#">Créer un nouveau doc.</a></li>
+
+
+
+                                <li><a onclick="" href="#">Duplicata</a></li>
+
+
+                                <li class="divider"></li>
+
+
+
+                                <li><a href="#">Créer un "Reçu en Espèces"</a></li>
+
+
+
+                                <li>
+                                    <a href="#">
+                                        <i class="icon icon-refresh" title="Document récurrent"></i>&nbsp;
+                                        Créer une récurrence
+                                    </a>	  					</li>
+
+
+                                <li>
+                                    <a href="#" onclick=""><i class="icon-ban-circle"></i>&nbsp;Annuler (sans effacer) le document</a>
+
+                                </li>
+
+
+                            </ul>
+
+
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href=""><i class="fa fa-truck"></i><span class="hidden-sm">&nbsp;&nbsp; Documents de gestion de stock</span> <b class="caret"></b></a>
+
+                            <ul class="dropdown-menu">
+                                <li>
+
+                                        <a data-confirm="Etes-vous sûr de vouloir créer un document de gestion de stock? " href="{{ path('admin_bls_newJointure', { 'formid':facture.id  }) }}">
+                                            Créer le document de gestion de stock correspondant
+                                        </a>
+
+                                 			    </li>
+                            </ul>
+                        </li>
+
+
+
+
+
+
+                    </ul>
+
+
+
+                    <ul class="nav navbar-nav navbar-right">
+
+                        <li class="first green">
+
+                            <a href="{{ path('admin_factures_edit', { 'id': facture.id }) }}"><i class="fa fa-edit"></i><span class="hidden-sm"> &nbsp;&nbsp;Modifier</span></a>
+                        </li>
+                        <li class="first has_submenu menu_open">
+                            <a href="{{ path('admin_parametres_index') }}"><i class="fa fa-picture-o"></i> <span class="hidden-sm">&nbsp;&nbsp;Modifier/supprimer le logo</span></a>
+                        </li>
+                        <li class="red last">
+
+                            <a data-confirm="Etes vous sûr de vouloir effacer ce produit?" rel="nofollow" data-method="delete" href="#"><i class="fa fa-trash-o"></i><span class="hidden-sm ">&nbsp;&nbsp; Effacer</span></a>
+
+                        </li>
+
+                        <li class="status" style="margin-top: 13px;">
+
+
+                            {% set sumTTC = 0 %}
+                            {% set totalTTC = 0 %}
+                            {% for facture in facture.ventes %}
+                                {% set sumTTC = sumTTC + facture.totalTTC %}
+                                {% set totalTTC  = totalTTC + sumTTC %}
+                            {% endfor %}
+
+
+                            <div class="btn-group" style="    height: 20px; ">
+
+                                {% if facture.etat == 'Créé' %}
+                                    {% set retard = 0 %}
+                                    {% set colorretard = 0 %}
+                                    {% set limitedate = facture.datecreation|date("d")   %}
+                                    {% if limitedate < "now"|date("d") %}
+                                        {% set retard =  "now"|date("d") - facture.datecreation|date("d")  %}
+                                        {% set colorretard = 'badge-retard' %}
+
+                                    {% endif %}
+
+
+
+                                    <span id="etat{{ facture.id }}" data-toggle="dropdown" class="colored_select badge status-issued {{ colorretard }}" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="textetat{{ facture.id }}">{{ facture.etat }}</span>
+
+                                        {% if limitedate < "now"|date("d") %}
+
+                                            <div class="tooltip fade bottom in" id="info{{ facture.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                        {% endif %}
+                                        <script>
+                                                                     $('span#etat'+{{ facture.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ facture.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ facture.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                                        <span class="caret"></span>
+                                            </span>
+
+                                {% elseif facture.etat =='Payé' %}
+                                    {% set retard = 0 %}
+                                    {% set colorretard = 0 %}
+                                    {% set limitedate = facture.datecreation|date("d") + facture.dateregle  %}
+                                    {% if limitedate < "now"|date("d") %}
+                                        {% set retard =  "now"|date("d") - facture.datecreation|date("d")  %}
+
+
+                                    {% endif %}
+                                    <span id="etat{{ facture.id }}"  data-toggle="dropdown" class="colored_select badge2 status-issued" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                    <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                    <span class="textetat{{ facture.id }}">{{ facture.etat }}</span>
+                                        {% if limitedate < "now"|date("d") %}
+
+                                            <div class="tooltip fade bottom in" id="info{{ facture.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                        {% endif %}
+                                        <script>
+                                                                     $('span#etat'+{{ facture.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ facture.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ facture.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                    <span class="caret"></span>
+		                        	</span>
+                                {% elseif facture.etat =='Payé en partie' %}
+                                    {% set pourcentage = facture.montantpaye*100/ sumTTC %}
+                                    {% set retard = 0 %}
+                                    {% set colorretard = 0 %}
+                                    {% set limitedate = facture.datecreation|date("d") + facture.dateregle  %}
+                                    {% if limitedate < "now"|date("d") %}
+                                        {% set retard =  "now"|date("d") - facture.datecreation|date("d")  %}
+
+
+                                    {% endif %}
+                                    <div class="progress prog{{ facture.id }}">
+                                        <div id="etat{{ facture.id }}" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                                             aria-valuemin="0" aria-valuemax="100" style="width:{{ pourcentage|round(1, 'floor')  }}%">
+                                        </div>
+
+                                    </div>
+                                    <span id="etat{{ facture.id }}" data-toggle="dropdown" class="colored_select badge status-issued progst" style="background: transparent; margin-top: -38px; border: none; box-shadow: none; color: white;     padding: 2px 8px;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="">{{ facture.etat }}</span>
+                                        {% if limitedate < "now"|date("d") %}
+
+                                            <div class="tooltip fade bottom in" id="info{{ facture.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                        {% endif %}
+                                        <script>
+                                                                     $('span#etat'+{{ facture.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ facture.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ facture.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                                <span class="caret"></span>
+                                            </span>
+
+                                {% endif %}
+
+                                <ul id="" class="dropdown-menu pull-right hidden-print" role="menu">
+
+                                    <li>
+                                        <a class="facture_créé" id="{{ facture.id }}">Créé</a>
+
+                                    </li>
+
+
+                                    <li>
+                                        <a class="facture_payé" id="{{ facture.id }}">Payé</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="partranche" id="{{ facture.id }}" type="{{ facture.type }}" data-toggle="modal" data-target="#exampleModal">Payé en partie</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+
+
+                        </li>
+
+                    </ul>
+
+
+                </div><!-- /.navbar-collapse -->
+
+            </nav>
+            <div id="invoice_body" class="_invoice_body" style="margin-left: 17%; ">
+
+                <style type="text/css">
+                    body{
+                        background: white;
+                    }
+                    @media all{
+                        .invoice_outline {
+                            margin-left: 0.75cm;
+                            margin-right: 0.75cm;
+                            min-height: 20cm;
+                            margin-bottom: 0in;
+                        }
+
+                        /* FONTS */
+                        .invoice_outline *:not(.fa) {
+                            font-family: 'arial';
+                            font-size: 13px;
+                            line-height: 17px;
+                        }
+
+
+
+                        .seller_buyer .vert_align_top > strong {display:none;}
+                        .seller_buyer td {vertical-align: top;}
+
+                        p {
+                            margin-bottom: 0px;
+                            margin-top: 0px;
+                        }
+
+                        /* ------------------------------------------------- */
+
+                        /* INVOICE HEADER CONTAINER */
+                        #invoice_header {
+                            clear: both;
+                            display: table;
+                            width: 100%;
+                            text-align: left;
+                            height: 3.5cm;
+                            max-height: 2.5cm;
+                            line-height: 1.4em;
+                        }
+                        /* headers */
+                        #invoice_header span { }
+
+                        /* INVOICE'S DATA (NUMBER, DATE ETC) */
+                        #info {
+                            display: table-cell;
+                            width: 55%;
+                            text-align: left;
+                        }
+
+                        #document_id {
+                            margin-bottom: 6px;
+                        }
+                        #document_id span {
+                            font-weight: bold;
+                            font-size: 1.25em;
+                        }
+                        /* DOCUMENT TYPE */
+                        #document_type {}
+                        /* DOCUMENT NUMBER */
+                        #document_number {}
+                        /* BOTH ABOVE */
+                        #info p:first-of-type {}
+
+
+
+
+                        /* LOGO */
+                        #logo {
+                            display: table-cell;
+                            width: 55%;
+                            vertical-align: top;
+                            text-align: center;
+                            height: auto;
+                        }
+                        #logo_place {
+                            display: block;
+                            position: relative;
+                            width: 100% !important;
+                            max-width:8.4cm;
+                            max-height: 3.5cm;
+                            height: auto;
+                        }
+                        /* LOGO IMAGE ONLY */
+                        #logo img {
+                            display:block;
+                            position:relative;
+                            width:auto;
+                            max-width:7.4cm;
+                            max-height: 3.5cm;
+                        }
+
+
+                        /* ------------------------------------------------- */
+
+
+                        /* ROW WITH SELLER AND BUYER IDENTIFICATION DATA */
+                        #invoice_traders {
+                            clear: both;
+                            display: table;
+                            width: 100%;
+                            text-align: left;
+                            width:100%;
+                            margin-bottom: 1em;
+                            line-height: 1.4em;
+                        }
+                        /* labels */
+                        #invoice_traders span {}
+
+                        /* SELLER'S IDENTIFICATION DATA */
+                        #seller {
+                            display: table-cell;
+                            width: 55%;
+                            padding-right: 2cm;
+                        }
+
+                        /* BUYER'S IDENTIFICATION DATA */
+                        #buyer {
+                            display: table-cell;
+                            width: 45%;
+                            padding-right: 1.5cm;
+                            height: 3.25cm;
+                            min-height: 3.25cm
+                        }
+
+                        #buyer p:first-of-type, #seller p:first-of-type {
+
+                        }
+
+                        #invoice_traders .header {
+                            display: table-cell;
+                            font-weight: bold;
+                        }
+
+
+                        /* ------------------------------------------------- */
+
+
+                        /* TITLE */
+                        #title {
+                            clear: both;
+                            width: 100%;
+                            display: block;
+                            text-align: left;
+                            font-weight: bold;
+                            margin-bottom: 8px;
+                            font-size: 14px;
+                        }
+
+
+                        /* ------------------------------------------------- */
+
+
+                        /* TABLE WITH PRODUCTS */
+                        th.width0,
+                        td.width0{width:1%;}
+                        th.width1,
+                        td.width1{width:2%;}
+                        th.width2,
+                        td.width2{width:5%;}
+                        th.width3,
+                        td.width3{width:7%;}
+                        th.width4,
+                        td.width4{width:25%;}
+
+                        .main_inv_table th, .advanced_header_titles th {
+                            background-color: #DDDDDD;
+                            border-bottom: 1px solid #DDDDDD;
+                            border-right: 1px solid #FFFFFF;
+                            color: #000000;
+                            vertical-align: middle;
+                        }
+
+                        .main_inv_table th:first-of-type, #rel_adv_table th:first-of-type {border-left: 1px solid #DDDDDD;}
+                        .main_inv_table th:last-of-type, #rel_adv_table th:last-of-type {border-right: 1px solid #DDDDDD;}
+                        table.main_inv_table .no_border td {border:0;}
+                        table.main_inv_table td {
+                            border:1px solid #DDDDDD;
+                            vertical-align: top;
+                        }
+
+                        .main_inv_table td,
+                        .main_inv_table th,
+                        #positions_summary td {
+                            padding:2px 5px;
+                        }
+
+
+                        /* ------------------------------------------------- */
+
+
+                        /* TABLE WOTH TOTALS */
+                        table.to_right{width:100%;}
+                        table.to_right th{text-align:right;}
+                        table.to_right td{width:15%;text-align:right;}
+                        .totals_inv_table td, .totals_inv_table th {padding:1px 5px;}
+                        .totals_inv_table {
+                            margin-top: 0.5em;
+                        }
+
+
+                        /* ------------------------------------------------- */
+
+
+                        /* TABLE WITH RELATED ADVANCES */
+                        .advanced_header, .advanced_header_titles th {
+                            padding-top: 3px !important;
+                            padding-bottom: 1px !important;
+                        }
+                        .advanced_header {
+                            white-space: nowrap;
+                        }
+                        #related_advances_title_row {display:none;}
+                        #related_advances_title_inside {display: inline !important;}
+
+
+
+                        /* ------------------------------------------------- */
+
+
+                        /* TEXTS UNDER TOTALS */
+                        #summary {
+                            clear: both;
+                            width: 100%;
+                            display: block;
+                            text-align: left;
+                            line-height: 1.4em;
+                        }
+
+                        #to_pay {
+                            font-size: 1em;
+                            font-weight: bold;
+                        }
+                        #to_pay_amount {
+                            font-size: 1.25em;
+                        }
+
+
+                        /* ------------------------------------------------- */
+
+
+                        /* SIGNATURES AT THE END */
+                        #invoice_signatures {
+                            clear: both;
+                            display: table;
+                            width: 100%;
+                        }
+                        #invoice_signatures p {margin: 0px;}
+                        #invoice_signatures > div > p:first-of-type {margin-top: 1.5em;}
+
+                        /* headers */
+                        #invoice_signatures span {font-weight: bold;}
+
+                        /* SELLER */
+                        #seller_sign {
+                            display: table-cell;
+                            width: 50%;
+                            text-align: center;
+                        }
+
+                        /* BUYER */
+                        #buyer_sign {
+                            display: table-cell;
+                            width: 50%;
+                            text-align: center;
+                        }
+
+                        #custom_img {
+                            max-width: 50%;
+                        }
+
+
+                        /* ------------------------------------------------- */
+
+
+                        /* ONLINE PAYMANT BUTTON */
+                        .payment_button {display:block;float:right;text-align:right;height:43px;width:190px;z-index:999;}
+                        .payment_button img {display:block;float:right;text-align:right;width:190px;height:43px;z-index:999;}
+
+
+                        /* ------------------------------------------------- */
+
+
+                        /* HELPERS */
+                        .text_center {text-align:center;}
+                        .text_left {text-align:left;}
+                        .text_right {text-align:right;}
+                        .number,
+                        .digit {white-space:nowrap;text-align:right;}
+                        .nowrap, .no_wrap {white-space:nowrap;}
+                        .nowrap-lines {white-space: pre;}
+                        .hidden {display:none;}
+                        .full_width, .full-width {width:100%;}
+                        .half_width {width:50%;}
+                        .no_border {border:0;}
+                        .no-page-break, .nobreak {
+                            page-break-inside: avoid !important;
+                        }
+
+
+
+                        #rel_adv_table {
+                            width: 100%;
+                            margin-top: 0.35em;
+                        }
+                        #rel_adv_table th {
+                            border-right: 1px solid #FFFFFF;
+                        }
+                        #rel_adv_table th:last-of-type {
+                            border-right: 1px solid #DDDDDD;
+                        }
+                        #realted_invoices {
+                            background-color: transparent;
+                            border: 0px !important;
+                        }
+
+                        #exchange_currency,
+                        #exchange_currency td {
+                            width: 100%;
+                        }
+
+
+
+                        /* footer preview only - DO NOT CHANGE - changes don't work in print */
+                        #company_info_footer {
+                            border:0;
+                            padding:0;
+                            margin:0;
+                            vertical-align:bottom;
+                            padding-top:15px;
+                            padding-left:0px;
+                            padding-right:0px;
+                        }
+                        #company_info_footer .small_text.text_center {
+                            width:100%;
+                            padding-left: 22%;
+                            padding-right: 22%;
+                        }
+                        #company_info_footer .small_text.text_center span {
+                            max-width: 407px;
+                            display: block;
+                            overflow: hidden;
+                            height: 50px !important;
+                            line-height: 11.3px !important;
+                            font-family: arial,sans-serif,tahoma !important;
+                            font-size:9.85px !important;
+                            letter-spacing: normal !important;
+                        }
+
+                        #corrected_content {
+                            width: 100%;
+                            margin-top: 6pt;
+                            margin-bottom: 12pt;
+                        }
+
+                        #corrected_content th,
+                        #corrected_content td {
+                            width: 50%;
+                            vertical-align: top;
+                            text-align: left;
+                        }
+
+                        #corrected_content th {
+                            text-align: center;
+                        }
+
+                        /* EXTRA NOTES ON EXTRA PAGE */
+                        #extra_page {
+                            clear: both;
+                            display: block;
+                            text-align: left;
+                        }
+
+                        #name_col,
+                        .name_col.related_advance {
+                            text-align: left;
+                        }
+
+                        /* ------------------------------------------------- */
+                        /* payments list */
+                        #invoice_payments {
+                            text-align: left;
+                            margin-top: 0.5em;
+                        }
+
+                        #invoice_payments_title {
+                            width: 100%;
+                            box-sizing: border-box;
+                            border: 1px solid #DDDDDD;
+                            text-align: left !important;
+                            background-color: #DDDDDD;
+                            padding: 3px 5px 1px 5px;
+                            font-weight: bold;
+                        }
+
+                        #invoice_payments_list {
+                            box-sizing: border-box;
+                            width: 100%;
+                            display: block;
+                            border-top: 0px;
+                        }
+
+                        .invoice_payments_payment {
+                            display: block;
+                            box-sizing: border-box;
+                            width: 100%;
+                            border-bottom: 1px solid #DDDDDD;
+                            border-left: 1px solid #DDDDDD;
+                            border-right: 1px solid #DDDDDD;
+                            padding: 2px 5px;
+                        }
+
+                        .invoice_payments_payment > div {
+                            display: inline-block;
+                        }
+
+                        .invoice_payments_provider::before {
+                            content: '- ';
+                        }
+
+
+                    }
+
+                    @page {
+                        size: A4;
+                        margin: 0.5cm;
+                        margin-bottom: 0cm;
+                    }
+
+                    @media screen {
+                        .invoice_preview.invoice {
+                            width: 210mm;
+                            padding: 0 !important;
+                            padding-top: 0.5cm !important;
+                            border: solid 1px;
+                            background-color: white;
+                            box-shadow: rgba(0, 0, 0, 0.75) 1px 3px 5px 0px;
+                            font-size: 110%;
+                            min-width: 700px;
+                            border-width: 1px;
+                            border-style: solid;
+                            border-color: rgb(221, 221, 221);
+                            border-image: initial;
+                            padding: 20px 20px 0px;
+                            overflow: visible;
+                            margin: auto auto 20px;
+                        }
+                        .invoice_outline {margin-top:0.25in;margin-bottom:0.25in;
+                            margin-right:0.75cm;
+                            margin-left:0.75cm;
+                        }
+                    }
+
+                    @media print{
+
+                        nav {
+                            display:none
+                        }
+                        #activities{
+                            display:none
+                        }
+
+                        html, body {
+                            size: A4;
+                            padding-left: auto;
+                            margin-left: auto;
+                            padding-right: auto;
+                            margin-right: auto;
+                        }
+                        #facture{
+                            float: left;
+                            padding-left: auto;
+                            margin-left: auto;
+                            padding-right: auto;
+                            margin-right: auto;
+                        }
+
+
+                    }
+
+
+                    @media screen {
+                        .hidden-screen {
+                            display: none !important;
+                        }
+                        .show-screen {
+                            display: block !important;
+                        }
+                        section#description_footer {
+                            padding-top: 0;
+                            width:100%;
+
+                            text-align: center;
+                            vertical-align: bottom !important;
+                        }
+                        section#description_footer span {
+                            margin-left: auto;
+                            margin-right: auto;
+                            max-width: 407px;
+                            display: block;
+                            overflow: hidden;
+                            line-height: 11.3px !important;
+                            font-family: arial,sans-serif,tahoma !important;
+                            font-size: 9.85px !important;
+                            letter-spacing: normal !important;
+                            text-align: center;
+                        }
+
+                        section#description_footer span {
+                            height: 50px !important;
+                            text-align: center;
+                            vertical-align: bottom !important;
+                        }
+                        #description_footer{
+
+                            vertical-align: bottom !important;
+                        }
+
+                    }
+
+                </style>
+
+                <div class="invoice-responsive">
+
+                    <div id="invoice" class="invoice_preview invoice col-sm-12">
+
+                        <div class=" vat"><div class="invoice_outline standard1_droit">
+
+
+
+
+
+                                <section id="invoice_header">
+                                    <div id="logo">
+                                        <div id="logo_place">
+                                            {% if logo %}
+                                                <img src="{{ asset('imgProduit/') }}{{ logo.path }}" alt=""  style="width: 170px;">
+
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div id="info">
+                                        <p id="document_id">
+                                            <span id="document_type">Facture N° </span>
+                                            <span id="document_number">{{ facture.nf }}</span>
+                                        </p>
+                                        <p>
+                                        </p><p id="document_date"><span>Date de création : </span> {{ facture.datecreation|date('d-m-Y') }}</p>
+
+                                        <p id="document_selldate"><span>{{ facture.additionnelle }} :</span> {{ facture.dateadd|date('d-m-Y')  }}</p>
+
+                                        <p></p>
+                                    </div>
+
+                                </section>
+
+
+                                <!-- personnalisation: https://github.com/vosfactures/Formats/blob/master/partials/standard1.handlebars -->
+
+
+                                <section id="invoice_traders">
+                                    <div style="display:table-row">
+
+
+                                    </div>
+                                    <div style="display:table-row">
+                                        <div id="seller">
+                                            <div class="box">
+                                                <p id="seller_name">
+
+                                                    {{ facture.departements.nom }}
+
+                                                </p>
+                                                <p id="seller_address"> {% if  facture.departements.adresse %} {{ facture.departements.adresse}} {% endif %}
+                                                    {% if facture.departements.codepostal  %}{{ facture.departements.codepostal}}{% endif %}
+                                                    {% if facture.departements.ville %}, {{ facture.departements.ville}}{% endif %}</p>
+
+                                                {% if  facture.departements.nif  %}
+                                                    <p>
+                                                        <span id="seller_swift"><span> NIF:</span> {{  facture.departements.nif }}</span>
+                                                    </p>
+                                                {% endif %}
+                                                {% if  facture.departements.nrc  %}
+                                                    <p>
+                                                        <span id="seller_swift"><span> N° RC:</span> {{  facture.departements.nrc }}</span>
+                                                    </p>
+                                                {% endif %}
+
+                                                <p id="seller_email"><span> {% if  facture.departements.email  %}{{ facture.departements.email}}{% endif %} </span> &nbsp;&nbsp;{% if  facture.departements.siteweb  %}<span class="nowrap">{{ facture.departements.siteweb}} </span>{% endif %}</p>
+
+
+                                                <p id="seller_phone">{% if  facture.departements.telephone  %}<span><span>T :</span> {{ facture.departements.telephone}}</span>{% endif %}
+                                                    &nbsp;&nbsp; <span class="nowrap">{% if  facture.departements.fax  %}<span>F :</span> {{ facture.departements.fax}}</span> {% endif %}</p>
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                        <div id="buyer">
+
+                                            <div class="box">
+                                                <p>
+                                                    <a href="" class="incognito-link"> {{ facture.acheteur.nom}}</a>
+                                                </p>
+                                                <p id="seller_address"> {% if  facture.acheteur.adresse %} {{ facture.acheteur.adresse}} {% endif %}
+                                                    {% if facture.acheteur.codepostal  %}{{ facture.acheteur.codepostal}}{% endif %}
+                                                    {% if facture.acheteur.ville %}, {{ facture.acheteur.ville}}{% endif %}</p>
+
+                                                {% if  facture.acheteur.nif  %}
+                                                    <p>
+                                                        <span id="seller_swift"><span> NIF:</span> {{  facture.acheteur.nif }}</span>
+                                                    </p>
+                                                {% endif %}
+                                                {% if  facture.acheteur.nrc  %}
+                                                    <p>
+                                                        <span id="seller_swift"><span> N° RC:</span> {{  facture.acheteur.nrc }}</span>
+                                                    </p>
+                                                {% endif %}
+
+                                                <p id="seller_email"><span> {% if  facture.acheteur.email  %}{{ facture.acheteur.email}}{% endif %} </span> &nbsp;&nbsp;{% if  facture.acheteur.siteweb  %}<span class="nowrap">{{ facture.acheteur.siteweb}} </span>{% endif %}</p>
+
+
+                                                <p id="seller_phone">{% if  facture.acheteur.telephone  %}<span><span>T :</span> {{ facture.acheteur.telephone}}</span>{% endif %}
+                                                    &nbsp;&nbsp; <span class="nowrap">{% if  facture.acheteur.fax  %}<span>F :</span> {{ facture.acheteur.fax}}</span> {% endif %}</p>
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+
+                                <!-- si vous souhaitez personnaliser le tableau, vous pouvez le remplacer par https://github.com/vosfactures/Formats/blob/master/partials/positions_reductions.handlebars  -->
+                                <table class="main_inv_table full_width" id="pos_table">
+
+                                    <thead>
+                                    <tr>
+                                        <th class="width4 text_center name_col" id="name_col">
+                                            Désignation
+                                        </th>
+
+                                        <th class="width2 text_center code_col" id="code_col">
+                                            Réf.
+                                        </th>
+
+
+                                        <th class="width2 text_center no_wrap quantity_col" id="quantity_col">
+                                            Qté
+                                        </th>
+
+                                        {%  if facture.totalReduction > 0  %}
+                                            <th class="width3 text_center no_wrap price_net_col" id="price_net_col">
+                                                Réduction
+                                            </th>
+                                        {% endif %}
+
+                                        <th class="width3 text_center no_wrap price_net_col" id="price_net_col">
+                                            PU HT
+                                        </th>
+                                        <th class="width3 text_center total_price_net_col" id="total_price_net_col">
+                                            Total HT
+                                        </th>
+                                        <th class="width1 text_center no_wrap tax_col" id="tax_col">
+                                            TVA
+                                        </th>
+                                        <th class="width3 text_center tax_value_col" id="tax_value_col">
+                                            Montant TVA
+                                        </th>
+                                        <th class="width3 no_wrap text_center total_price_gross_col" id="total_price_gross_col">
+                                            Total TTC
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% set sumHT = 0 %}
+                                    {% set sumTTC = 0 %}
+                                    {% set sumTVA = 0 %}
+                                    {% set reduction = 0 %}
+                                    {% set totalreduct = 0 %}
+                                    {% set totalHTreduct = 0 %}
+                                    {% set totalttcreduct = 0 %}
+                                    {% set remise = 0 %}
+
+                                    {% set reduct =  0 %}
+                                    {% for produit in facture.ventes %}
+
+                                        {% set reduction = (produit.reduction * produit.totalHT)/100   %}
+                                        {% set totalreduct =  produit.totalHT - reduction  %}
+
+                                        {% if produit.tva %} {% set taxtva = produit.tva.valeur %}  {% else %} {% set taxtva = 0 %} {% endif %}
+
+                                        {% set TVA = taxtva /100 * totalreduct %}
+                                        {% set totalttc =  totalreduct + TVA  %}
+                                        {% set sumTVA = sumTVA + TVA %}
+                                        {% set sumHT = sumHT + totalreduct %}
+                                        {% set sumTTC = sumHT + sumTVA %}
+                                        {% set reduct = reduct +  produit.reduction %}
+                                        {% set totalHTreduct = totalHTreduct +  produit.totalHT %}
+                                        {% set remise = remise + (produit.puHT * produit.qte)/100   %}
+
+                                        <tr>
+
+                                            <td class="name_col">
+                                                <strong>
+                                                    <a class="incognito-link"> {{ produit.name }}</a>
+                                                </strong>
+                                                <span id="product_description_1" class="item_description">
+
+									</span>
+                                            </td>
+                                            <td class="code_col">
+                                                {{ produit.reference }}
+                                            </td>
+                                            <td class="code_col">
+                                                {{ produit.qte }}
+                                            </td>
+                                            {%  if facture.totalReduction > 0  %}
+                                                <td class="text_right no_wrap number price_net_col">
+                                                    {{ (produit.puHT - totalreduct)|number_format(2, ',', ' ')  }}<br>
+                                                    {{ produit.reduction  }}%
+                                                </td>
+                                            {% endif %}
+
+                                            <td class="text_right no_wrap number price_net_col">
+                                                {%  if facture.totalReduction > 0  %}
+                                                    {{ totalreduct|number_format(2, ',', ' ') }}<br>
+                                                    <del>{{ produit.puHT|number_format(2, ',', ' ') }}</del>
+                                                {% else %}
+                                                    {{ produit.puHT|number_format(2, ',', ' ') }}
+                                                {% endif %}
+                                            </td>
+                                            <td class="text_right no_wrap number total_price_net_col">
+                                                {{ totalreduct|number_format(2, ',', ' ') }}
+                                            </td>
+
+                                            <td class="text_right no_wrap number tax_col">
+                                                {% if produit.tva %}
+                                                    {{ produit.tva }}%
+                                                {% else %}
+                                                    0%
+                                                {% endif %}
+
+                                            </td>
+                                            <td class="text_right number no_wrap tax_value_col">
+                                                {{ TVA|number_format(2, ',', ' ') }}
+                                            </td>
+                                            <td class="text_right no_wrap number total_price_gross_col">
+                                                {{ totalttc|number_format(2, ',', ' ') }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    {% for ligne in facture.lignes %}
+
+
+                                        <tr>
+                                            <td colspan="100" class="text_left text_separator">{{ ligne.text }}</td>
+
+                                        </tr>
+                                    {% endfor %}
+
+                                    <tr class="clean no_border summary_row">
+                                        {%  if facture.totalReduction > 0  %}
+                                            <td class="empty name_col footer total"></td>
+                                        {% endif %}
+                                        <td class="empty name_col footer total"></td>
+                                        <td class="empty code_col footer total"></td>
+
+                                        <td class="empty quantity_col quantity_footer footer total"></td>
+
+
+                                        <td class="empty price_net_col price_gross_col price_gross_col-hide_tax footer total" style="display: none;"></td>
+
+                                        <td class="text_right no_border total footer total">
+                                            <strong>Total:  </strong>
+                                        </td>
+                                        <td class="text_right number total_price_net_col footer total">
+                                            {{ sumHT|number_format(2, ',', ' ')  }}
+                                        </td>
+
+                                        <td class="tax_col footer total">&nbsp;</td>
+                                        <td class="text_right number tax_value_col footer total">
+
+                                            {{ sumTVA|number_format(2, ',', ' ')  }}
+
+                                        </td>
+                                        <td class="width3 text_right number total_price_gross_col footer total">
+                                            {{ sumTTC|number_format(2, ',', ' ')  }}
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+
+
+                                <div class="clear"></div>
+
+                                <!-- si vous souhaitez personnaliser les totaux, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/totals_with_currency.handlebars  -->
+                                <table class="clean to_right totals_inv_table" style="page-break-inside: avoid !important;">
+                                    <tbody>
+
+                                    <tr>
+                                        <th>
+                                            Total HT
+                                        </th>
+                                        <td class="number">
+                                            {%  if facture.totalReduction > 0  %}
+
+                                                {{  totalHTreduct|number_format(2, ',', ' ') }} DA
+                                            {% else %}
+                                                {{  sumHT|number_format(2, ',', ' ') }} DA
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {%  if facture.totalReduction > 0  %}
+                                        <tr>
+                                            <th>
+                                                Remise ({{ reduct  }}%)
+                                            </th>
+                                            <td class="number">
+                                                {{ remise|number_format(2, ',', ' ') }} DA
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    {%  if facture.totalReduction > 0  %}
+                                        <tr>
+                                            <th>
+                                                Total HT remisé
+                                            </th>
+                                            <td class="number">
+                                                {{ sumHT|number_format(2, ',', ' ') }} DA
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <th>
+                                            Montant TVA
+                                        </th>
+                                        <td class="number">
+                                            {{ sumTVA|number_format(2, ',', ' ') }} DA
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            Total TTC
+                                        </th>
+                                        <td class="number">
+                                            {{ sumTTC|number_format(2, ',', ' ') }} DA
+                                        </td>
+                                    </tr>
+
+                                    </tbody></table>
+
+                                <div class="clear"></div>
+
+
+
+
+
+                                <div class="no-page-break">
+                                    <section id="summary">
+
+                                        <p id="to_pay">
+                                            À payer :
+                                            {% set apayer =  sumTTC  -  facture.montantpaye  %}
+
+                                            <span id="to_pay_amount"> {{ apayer|number_format(2, ',', ' ') }}  DA</span>
+                                            <span class="hidden vosfactures3_visible">  TTC
+			</span></p>
+
+
+                                        {% if facture.montantpaye %}
+                                            <p>
+                                                <strong>Montant payé :</strong> {{ facture.montantpaye|number_format(2, ',', ' ') }} DA
+                                            </p>
+                                        {% endif %}
+
+                                        <p><strong>Mode de règlement :</strong> {{ facture.moderegle }}</p>
+
+                                        <p><strong>Date limite de règlement :</strong> {{ facture.dateregle }} </p>
+
+
+
+
+
+
+                                    </section>
+
+
+                                    <section id="invoice_signatures">
+                                        <div id="seller_sign">
+                                            {% if facture.nomvendeur  %}
+                                                <p><span>Nom du vendeur</span></p>
+                                                <p>{{ facture.nomvendeur }}</p>
+                                            {% endif %}
+                                            <br>
+                                            {% if cachets %}
+                                                <img src="{{ asset('imgProduit/') }}{{ cachets.path }}" alt=""  width="180">
+                                            {% endif %}
+
+
+                                        </div>
+                                        <div id="buyer_sign">
+
+                                        </div>
+
+                                    </section>
+                                    {% if apayer == 0 %}
+                                        <img src="{{ asset('image/paid_mark_fr.jpg') }}">
+                                    {% endif %}
+
+                                </div>
+
+
+                            </div><!-- invoie outline -->
+
+
+
+
+
+                            <section id="description_footer">
+                                <div id="company_info_footer">
+        	<span>      {{ facture.departements.nom }},
+                {{ facture.departements.adresse }}, {{ facture.departements.ville }},
+
+                {{ facture.departements.codepostal }}
+
+
+
+                <br>
+
+
+
+
+
+</span>
+                                </div>
+                            </section>
+
+
+                        </div>
+
+                    </div>
+
+                </div> <!-- invoice-responsive -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+            <div class="row no_print">
+
+                <div class="col-sm-12">
+
+                    <nav class="navbar navbar-default buttons_panel hidden-print" role="navigation" style="z-index:1">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+
+                        <div class="collapse navbar-collapse navbar-ex1-collapse" style="width: 100%">
+
+
+
+                            <script type="text/javascript">
+                                function sm(name) {
+                                    $('.submenu').hide();
+                                    $('#' + name).show();
+                                    return false;
+                                }
+                            </script>
+
+                            <ul class="nav navbar-nav">
+
+                                <li>
+                                    <a href="{{ path('admin_factures_index') }}"><i class="fa fa-reply"></i><span class="hidden-sm"> &nbsp;&nbsp;Retour</span></a>
+                                </li>
+
+
+                                <li>
+
+                                    <a href="{{ path('admin_factures_envois', { 'id': facture.id }) }}"><i class="fa fa-envelope-o"></i> <span>&nbsp;&nbsp;Envoyer</span></a>
+
+                                </li>
+                                <li class="dropdown ">
+
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-print"></i><span class="hidden-sm">&nbsp;&nbsp; Imprimer</span> <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a target="_blank" href="#">Imprimer</a> </li>
+                                        <li><a target="_blank" href="#">Imprimer 2x</a> </li>
+                                        <li><a href="#" onclick="">Impression rapide</a></li>
+                                        <li class="wider"><a href="#">Original + copie </a></li>
+                                        <li id="lang_modal_button">
+                                            <a href="#" onclick="">Imprimer dans une autre langue&nbsp;&nbsp;<i class="flag bi-lang"></i></a>
+                                        </li>
+
+
+
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a target="_blank" href="#">Bordereau de livraison</a>
+                                        </li>
+
+
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="/invoices/new?kind=vat"><i class="fa fa-download"></i>&nbsp;&nbsp;Exporter <b class="caret"></b></a>
+
+                                    <ul class="dropdown-menu">
+
+
+                                        <li>
+                                            <a target="_blank" class="copy-after" title="Lien vers Aperçu (qui peut être envoyé au client au lieu d'envoyer le document en pièce jointe)" id="link_to_preview" href="">Lien vers Aperçu</a>
+                                            <i class="icon-copy" id="clippy" title="Copy to clipboard" onclick="invoiceUrlToClipboard()"></i>
+                                        </li>
+                                        <li><a href="{{ path('admin_factures_pdf', { 'id': facture.id }) }}">Télécharger en PDF</a>
+                                        </li>
+                                        <li>
+                                            <a title="Ajouter rapidement une facture de dépense. Vous pouvez aussi télécharger sous XML ou JSON. " href="#">Importer / ajouter aux dépenses</a>
+                                        </li>
+                                        <li>
+                                            <a target="_blank" href="#">Télécharger en XML</a>
+                                        </li>
+                                        <li>
+
+                                            <a target="_blank" href="#">Télécharger en JSON</a>
+                                        </li>
+
+
+                                    </ul>
+
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-cog"></i>&nbsp;&nbsp;Plus<b class="caret"></b></a>
+
+                                    <ul class="dropdown-menu">
+
+                                        <li><a href="#">Créer un doc. similaire</a></li>
+
+                                        <li><a href="#">Ajouter une dépense similaire</a></li>
+
+                                        <li><a href="#">Créer un nouveau doc.</a></li>
+
+
+
+                                        <li><a onclick="" href="#">Duplicata</a></li>
+
+
+                                        <li class="divider"></li>
+
+
+
+                                        <li><a href="#">Créer un "Reçu en Espèces"</a></li>
+
+
+
+                                        <li>
+                                            <a href="#">
+                                                <i class="icon icon-refresh" title="Document récurrent"></i>&nbsp;
+                                                Créer une récurrence
+                                            </a>	  					</li>
+
+
+                                        <li>
+                                            <a href="#" onclick=""><i class="icon-ban-circle"></i>&nbsp;Annuler (sans effacer) le document</a>
+
+                                        </li>
+
+
+                                    </ul>
+
+
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-truck"></i><span class="hidden-sm">&nbsp;&nbsp; Documents de gestion de stock</span> <b class="caret"></b></a>
+
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a data-confirm="Etes-vous sûr de vouloir créer un document de gestion de stock? " href="#">
+                                                Créer le document de gestion de stock correspondant
+                                            </a>				    </li>
+                                    </ul>
+                                </li>
+
+
+
+
+
+
+                            </ul>
+
+
+
+                            <ul class="nav navbar-nav navbar-right">
+
+                                <li class="first green">
+
+                                    <a href="{{ path('admin_factures_edit', { 'id': facture.id }) }}"><i class="fa fa-edit"></i><span class="hidden-sm"> &nbsp;&nbsp;Modifier</span></a>
+                                </li>
+                                <li class="first has_submenu menu_open">
+                                    <a onclick="window.location.href = $('#logo_edit_button').attr('href');" href="#"><i class="fa fa-picture-o"></i> <span class="hidden-sm">&nbsp;&nbsp;Modifier/supprimer le logo</span></a>
+                                </li>
+                                <li class="red last">
+
+                                    <a data-confirm="Etes vous sûr de vouloir effacer ce produit?" rel="nofollow" data-method="delete" href="#"><i class="fa fa-trash-o"></i><span class="hidden-sm ">&nbsp;&nbsp; Effacer</span></a>
+
+                                </li>
+
+                                <li class="status" style="margin-top: 13px;">
+
+
+
+                                    <div class="btn-group" style="    height: 20px; ">
+                                        <input id="inputTTC{{ facture.id }}" type="hidden" value="{{ sumTTC  }}">
+
+                                        {% if facture.etat == 'Créé' %}
+
+
+                                            <span id="etat{{ facture.id }}" data-toggle="dropdown" class="colored_select badge status-issued" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="textetat{{ facture.id }}">{{ facture.etat }}</span>
+
+                                                <span class="caret"></span>
+                                            </span>
+
+                                        {% elseif facture.etat =='Payé' %}
+
+                                            <span id="etat{{ facture.id }}"  data-toggle="dropdown" class="colored_select badge2 status-issued" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                    <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                    <span class="textetat{{ facture.id }}">{{ facture.etat }}</span>
+
+                                    <span class="caret"></span>
+		                        	</span>
+                                        {% elseif facture.etat =='Payé en partie' %}
+                                            {% set pourcentage = facture.montantpaye*100/ sumTTC %}
+
+                                            <div class="progress prog{{ facture.id }}">
+                                                <div id="etat{{ facture.id }}" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                                                     aria-valuemin="0" aria-valuemax="100" style="width:{{ pourcentage|round(1, 'floor')  }}%">
+                                                </div>
+
+                                            </div>
+                                            <span id="etat{{ facture.id }}" data-toggle="dropdown" class="colored_select badge status-issued progst" style="background: transparent; margin-top: -38px; border: none; box-shadow: none; color: white;     padding: 2px 8px;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="">{{ facture.etat }}</span>
+
+                                                <span class="caret"></span>
+                                            </span>
+
+                                        {% endif %}
+
+                                        <ul id="" class="dropdown-menu pull-right hidden-print" role="menu">
+
+                                            <li>
+                                                <a class="facture_créé" id="{{ facture.id }}">Créé</a>
+
+                                            </li>
+
+
+                                            <li>
+                                                <a class="facture_payé" id="{{ facture.id }}">Payé</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="partranche" id="{{ facture.id }}" type="{{ facture.type }}" data-toggle="modal" data-target="#exampleModal">Payé en partie</a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+
+
+
+                                </li>
+
+                            </ul>
+
+
+                        </div><!-- /.navbar-collapse -->
+
+                    </nav>
+
+                    <ul id="activities" class="list-group document-activity striped">
+
+                        <li class="list-group-item active" style="z-index:0;">
+                            <i class="fa fa-history"></i> <strong>Suivi du document </strong>
+                        </li>
+
+                        {% for suivi in suivi %}
+                            {% if suivi.type == 'Création' %}
+                                <li class="list-group-item">
+                                    <i class="fa fa-magic"></i>&nbsp;   {{ suivi.type }} (document)
+
+                                    <small class="pull-right">
+                                        {{ suivi.date|date('d-m-Y H:i')  }}
+
+                                        , par: {{ suivi.par }}
+
+                                    </small>
+                                    <p>
+                                        N° : {{ suivi.factures.nf }}, Date de création:  {{ suivi.factures.datecreation|date('d-m-Y')  }}, Date de vente: {{ suivi.factures.dateadd|date('d-m-Y')  }}, Acheteur: {{ suivi.factures.acheteur.nom }} {{ suivi.factures.acheteur.famille }} {{ suivi.factures.acheteur.prenom }}, Montant HT: {{ sumHT|number_format(2, ',', ' ') }} DA, TVA: (19)  {{ sumTVA|number_format(2, ',', ' ') }} DA, Montant TTC: {{ sumTTC|number_format(2, ',', ' ') }} DA, Montant payé: {{ suivi.factures.montantpaye|number_format(2, ',', ' ') }} DA, Etat: {{ suivi.factures.etat }}
+                                    </p>
+                                    Produits :
+                                    {% for produit in facture.ventes %}
+                                        {{ produit.name }} ({{ produit.totalTTC|number_format(2, ',', ' ') }} DA) ,
+
+
+                                    {% endfor %}
+                                </li>
+
+                            {% endif %}
+                            {% if suivi.type == 'Impression' %}
+                                <li class="list-group-item">
+                                    <i class="fa fa-print"></i>&nbsp; Impression (document)
+
+                                    <small class="pull-right">
+                                        {{ suivi.date|date('d-m-Y H:i')  }}, par: {{ suivi.par }}
+                                    </small>
+                                </li>
+
+                            {% endif %}
+                            {% if suivi.type == 'Modification_etat' %}
+                                {% if suivi.etat == 'Créé' %}
+
+                                    <li class="list-group-item">
+                                        <i class="fa fa-edit"></i>&nbsp; Modification de l'état
+
+                                        <small class="pull-right">
+                                            {{ suivi.date|date('d-m-Y H:i') }}, par: {{ suivi.par }}
+                                        </small>
+                                        <p>
+                                            Etat: {{ suivi.etat }},
+
+                                        </p>
+                                    </li>
+                                {% endif %}
+                                {% if suivi.etat == 'Payé' %}
+
+                                    <li class="list-group-item">
+                                        <i class="fa fa-edit"></i>&nbsp; Modification de l'état
+
+                                        <small class="pull-right">
+                                            {{ suivi.date|date('d-m-Y H:i') }}, par: {{ suivi.par }}
+                                        </small>
+                                        <p>
+
+                                            Etat: {{ suivi.etat }},
+                                            Montant payé: {{ suivi.prix|number_format(2, ',', ' ') }} DA
+                                        </p>
+                                    </li>
+                                {% endif %}
+                                {% if suivi.etat == 'parTranche' %}
+
+                                    <li class="list-group-item">
+                                        <i class="fa fa-edit"></i>&nbsp; Modification de l'état
+
+                                        <small class="pull-right">
+                                            {{ suivi.date|date('d-m-Y H:i') }}, par: {{ suivi.par }}
+                                        </small>
+                                        <p>
+
+                                            Etat: Payé en partie,
+                                            Montant payé: {{ suivi.prix|number_format(2, ',', ' ') }} DA
+                                        </p>
+                                    </li>
+                                {% endif %}
+
+                            {% endif %}
+                            {% if suivi.type == 'Modification' %}
+                                <li class="list-group-item">
+                                    <i class="fa fa-edit"></i>&nbsp; Modification (document)
+
+                                    <small class="pull-right">
+                                        {{ suivi.date|date('d-m-Y H:i')  }}, par: {{ suivi.par }}
+                                    </small>
+
+                                </li>
+                            {% endif %}
+
+
+
+
+                        {% endfor %}
+
+
+
+
+
+
+
+
+                    </ul>
+
+
+
+                </div> <!-- col-sm-12 -->
+
+
+            </div>
+
+            <br><br><br><br><br>
+
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
+
+
+    <script>
+        $('#print').click(function(){
+            var divToPrint=document.getElementById('invoice_body');
+
+            var newWin=window.open('','Print-Window');
+
+
+            newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+
+            newWin.document.close();
+
+            setTimeout(function(){newWin.close();},10);
+
+
+        });
+        $('.facture_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_factures_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat'+data.id).text('Créé');
+                    $('.prog'+data.id).remove();
+                    $('#etat'+data.id).removeAttr( 'style' );
+                    $('#etat'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat'+data.id).html('Créé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+        $('.facture_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_factures_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat'+data.id).text('Payé');
+                    $('.prog'+data.id).remove();
+                    $('#etat'+data.id).removeAttr( 'style' );
+                    $('#etat'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat'+data.id).removeClass().addClass( "progst colored_select badge2 status-issued" );
+                    $('#etat'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+    </script>
+
+
+
+{% endblock %}
+

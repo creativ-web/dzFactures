@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Ci</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ci.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ ci.type }}</td>
+            </tr>
+            <tr>
+                <th>Nf</th>
+                <td>{{ ci.nf }}</td>
+            </tr>
+            <tr>
+                <th>Datecreation</th>
+                <td>{% if ci.datecreation %}{{ ci.datecreation|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Lieu</th>
+                <td>{{ ci.lieu }}</td>
+            </tr>
+            <tr>
+                <th>Additionnelle</th>
+                <td>{{ ci.additionnelle }}</td>
+            </tr>
+            <tr>
+                <th>Dateadd</th>
+                <td>{% if ci.dateadd %}{{ ci.dateadd|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Moderegle</th>
+                <td>{{ ci.moderegle }}</td>
+            </tr>
+            <tr>
+                <th>Dateregle</th>
+                <td>{{ ci.dateregle }}</td>
+            </tr>
+            <tr>
+                <th>Objet</th>
+                <td>{{ ci.objet }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ ci.etat }}</td>
+            </tr>
+            <tr>
+                <th>Montantpaye</th>
+                <td>{{ ci.montantpaye }}</td>
+            </tr>
+            <tr>
+                <th>Paiementrecu</th>
+                <td>{% if ci.paiementrecu %}{{ ci.paiementrecu|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Dateenvois</th>
+                <td>{% if ci.dateenvois %}{{ ci.dateenvois|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Nc</th>
+                <td>{{ ci.nc }}</td>
+            </tr>
+            <tr>
+                <th>Nomvendeur</th>
+                <td>{{ ci.nomvendeur }}</td>
+            </tr>
+            <tr>
+                <th>Informations</th>
+                <td>{{ ci.informations }}</td>
+            </tr>
+            <tr>
+                <th>Editerpar</th>
+                <td>{{ ci.editerpar }}</td>
+            </tr>
+            <tr>
+                <th>Expedierpar</th>
+                <td>{{ ci.expedierpar }}</td>
+            </tr>
+            <tr>
+                <th>Receptionnerpar</th>
+                <td>{{ ci.receptionnerpar }}</td>
+            </tr>
+            <tr>
+                <th>Ncommande</th>
+                <td>{{ ci.ncommande }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_cis_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('admin_cis_edit', { 'id': ci.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

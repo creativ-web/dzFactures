@@ -1,0 +1,87 @@
+
+
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+    <div class="container">
+
+
+
+        <div class="row">
+            <div class="col-md-4" style="    margin-top: -25px;"><h2 style="position: relative; float: left;">Entrepôts</h2>
+            <span style=" margin-top: 18px; margin-left: 8px;position: absolute;color: #58b758; ">
+                <a style="color:#58b758; " href="{{ path('admin_zones_new') }}">Nouvel entrepôt</a>
+
+            </span>
+
+            </div>
+            <div class="col-md-2 ht"></div>
+            <div class="col-md-2 ttc"></div>
+            <div class="col-md-2 tva"></div>
+        </div>
+        <br>
+
+        <div id="list_table" class="row">
+
+            <table id="example2" class="display" cellspacing="0" width="100%" >
+                <thead>
+                <tr>
+
+                    <th>NOM DE L'ENTREPÔT</th>
+                    <th>PRODUITS EN STOCK</th>
+                    <th>DESCRIPTION</th>
+                    <th>TYPE</th>
+                    <th> </th>
+                </tr>
+                </thead>
+
+
+                <tbody>
+
+                {% for zone in zonnestocks %}
+                    <tr style="color:#526273; ">
+
+                        <td>{{ zone.nom }}</td>
+
+                        <td> <a>Afficher</a> </td>
+                        <td>{{ zone.description }} </td>
+                        <td> {{ zone.types }}</td>
+
+                        <td>
+                            <div class="btn-group pull-right">
+                                <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                    <i class="icon-cog"></i> <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a title="Afficher" class="cms_show" href="{{ path('admin_zones_show', { 'id': zone.id }) }}">Afficher</a></li>
+
+
+                                    <li><a class="cms_edit" href="{{ path('admin_zones_edit', { 'id': zone.id }) }}">Modifier</a></li>
+                                    <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="cms_delete " data-remote="true" rel="nofollow" data-method="delete" href="/products/9969583">Effacer</a></li>
+                                </ul>
+                            </div>
+
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+
+
+
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+

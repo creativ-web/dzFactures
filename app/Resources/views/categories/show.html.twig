@@ -1,0 +1,60 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <style>
+        body{
+            background-color: white;
+        }
+
+    </style>
+    <div class="container">
+
+
+
+            <div class="row">
+                <div class="col-xs-8">
+                    <h3 class="name">{{ categorie.nom }}</h3>
+                </div>
+                <div class="col-xs-4 pull-right text-right">
+                    <a class="btn-glow primary btn-sm top-btn" href="{{ path('admin_categories_edit', { 'id': categorie.id }) }}"><i class="icon-edit"></i>&nbsp;&nbsp;Modifier</a>
+                    <a data-confirm="Êtes-vous sûr de vouloir effacer ce contact? " class="btn-glow btn-sm danger top-btn" rel="nofollow" data-method="delete" href="{{ path('admin_categories_delete', { 'id': categorie.id }) }}"><i class="icon-trash"></i><span class="hidden-sm ">&nbsp;&nbsp; Effacer</span></a>
+                </div>
+            </div>
+
+
+            <div class="row profile">
+                <div class="col-sm-12">
+                    <div class="profile-box">
+                        <p>
+                            <strong>Description:</strong>
+                            {{ categorie.description }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-12 btns">
+                    <a class="btn-glow btn-sm danger top-btn" href="#">Produits dans la catégorie</a>
+
+                    <div class="pull-right">
+                        <a class="btn-glow btn-sm danger top-btn" href="{{ path('admin_categories_new') }}">Ajouter une autre catégorie</a>
+
+                        <a class="btn-glow primary btn-sm top-btn" href="{{ path('admin_categories_edit', { 'id': categorie.id }) }}"><i class="icon-edit"></i>&nbsp;&nbsp;Modifier</a>
+
+                        <a data-confirm="Êtes-vous sûr? " class="btn-glow btn-sm danger top-btn" rel="nofollow" data-method="delete" href="{{ path('admin_categories_delete', { 'id': categorie.id }) }}"><i class="icon-trash"></i><span class="hidden-sm ">&nbsp;&nbsp; Effacer</span></a>
+                    </div>
+
+                </div>
+            </div>
+
+    </div>
+    <br>
+    <br>      <br>
+    <br>      <br>
+    <br>        <br>
+    <br>      <br>
+    <br>      <br>
+    <br><br><br>
+{% endblock %}

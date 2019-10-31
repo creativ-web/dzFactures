@@ -1,0 +1,240 @@
+
+
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+    <style>
+        tbody{
+            text-align: left;
+            text-transform: none;
+        }
+        .alert-info {
+            background-color: #d9edf7;
+            border-color: #bce8f1;
+            color: #3a87ad;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+    </style>
+
+
+    <script type="text/javascript" src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js') }}"></script>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+                <a class="btn-glow hidden-xs hidden-sm primary btn-block 1add_new 1add_new_invoice" title="Nouvelle facture" href="{{ path('admin_categories_new') }}">Ajouter</a>
+
+            </nav>
+
+            <main class="col-sm-9 ml-sm-auto col-md-10 pt-3 content" role="main">
+
+
+                <section class="row text-center placeholders">
+                    <div class="row">
+                        <div class="col-md-4"><h2 style="position: relative; float: left;">Catégories</h2>
+
+
+                        </div>
+                        <div style="padding-top: 20px;"></div>
+                        <div class="btn-group pull-right">
+
+                            <button data-toggle="dropdown" class="btn glow dropdown-toggle" style="margin-left:10px">
+                                <i class="fa fa-cog"></i> <span class="caret"></span>
+                            </button>
+
+
+                            <ul class="dropdown-menu">
+
+                                <li role="presentation" class="dropdown-header">Importer des Produits depuis un fichier</li>
+
+                                <li><a href="/imports/new?kind=flexible_product_import">Importer des Produits depuis un fichier</a></li>
+
+                                <li role="presentation" class="divider"></li>
+                                <li role="presentation" class="dropdown-header">Imprimés</li>
+
+                                <li><a href="http://contact182.vosfactures.fr/products.xls">Exporter vers Excel</a></li>
+                                <li><a href="#" onclick="window.print();; return false;">Imprimer</a></li>
+
+                                <li role="presentation" class="divider"></li>
+                                <li role="presentation" class="dropdown-header">Affichage</li>
+
+
+                                <li><a onclick="$('#dynamic_columns_modal').modal(); return false;" href="#">Personnaliser l'affichage des colonnes</a></li>
+
+                            </ul>
+
+                        </div>
+
+
+                    </div>
+                    <br>
+                    {% if categories == null %}
+                    <div class="row">
+
+
+
+                        <div id="list_table" class="narrower">
+
+
+
+
+
+                            <style type="text/css" media="screen">
+                                .content.scroll-content {
+                                    width:auto !important;
+                                    float: none;
+                                }
+                            </style>
+
+                            <!-- blank state -->
+                            <div class="blank-state">
+
+                                <div class="center">
+
+                                    <p style="    font-size: 13px;">Afin d'ajouter une categorie, cliquer sur le bouton situé à gauche de l'écran</p>
+
+                                    <a class="btn-glow btn-block btn-lg primary btn-block 1add_new 1add_new_invoice" title="Nouvelle categorie" href="{{ path('admin_categories_new') }}">"Nouvelle categorie</a>
+
+                                </div>
+                            </div>
+                            <!-- end blank state -->
+
+
+                            <p class="text-center">
+
+
+                            </p>
+
+
+                        </div> <!-- list_table -->
+
+                        <script type="text/javascript">
+                            var SUMMATIONS_CACHED_VARIABLES = {
+                                initial_sums: {},
+                                invoice_values: {},
+                                price_keys: [],
+                                original_total_count: 0
+                            };
+                        </script>
+
+
+
+
+                        <script type="text/javascript">
+                            $(function(){
+                                //Firmlet.show_if_checked('#search_more_div', '#search_more');
+                            });
+                        </script>
+
+
+
+
+
+                    </div>
+                    {% else %}
+                    <div id="list_table" class="row">
+
+                        <table id="example2" class="display" cellspacing="0" width="100%" style="text-transform: uppercase;">
+                            <thead>
+                            <tr>
+                                <th>NOM</th>
+                                <th>PU H.T.</th>
+                                <th>PU T.T.C.</th>
+                                <th>DISPONIBILITÉ</th>
+                                <th></th>
+
+                            </tr>
+                            </thead>
+
+
+                            <tbody>
+
+
+                            {% for categorie in categories %}
+                                <tr style="color:#526273; ">
+
+
+
+
+                                    <td>
+
+                                        <img style="    width: 45px;" class="img-circle avatar hidden-phone hidden-xs" src="//s3-eu-west-1.amazonaws.com/assets.firmlet.com/assets/contact-img-5d7a272876f81b8726f00d85df136f41a2638477f192d2d87c2370302f66e974.png" alt="Contact img">
+                                        <span style="padding-left: 10px;  font-size: 12px;"> <a href="{{ path('admin_categories_show', { 'id': categorie.id }) }}" style="color: #526273;">{{ categorie.nom }} </a></span>
+                                    </td>
+                                    <td>{{ categorie.nom }}</td>
+                                    <td></td>
+                                    <td>
+
+                                    </td>
+
+
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                            <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                                <i class="fa fa-cog"></i> <i class="icon-cog"></i> <span class="caret"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu">
+                                                <li><a title="Afficher" class="cms_show" href="{{ path('admin_categories_show', { 'id': categorie.id }) }}">Afficher</a></li>
+
+
+                                                <li><a class="cms_edit" href="{{ path('admin_categories_edit', { 'id': categorie.id }) }}">Modifier</a></li>
+                                                <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="cms_delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_categories_delete', { 'id': categorie.id }) }}">Effacer</a></li>
+                                            </ul>
+                                        </div>
+
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <br><br>
+                        <div class="alert alert-info row" style="text-align:left; ">
+
+
+                            <i class="fa fa-lightbulb-o pull-right" style="    font-size: 27px;color: #4993c6;"></i>
+
+                            Vous pouvez créer autant de catégories que vous voulez - que ce soit des catégories produits, contacts ou documents (revenus et dépenses). <br><br>Par exemple, vous pouvez créer une catégorie "Saisonnier" ou "Employés" ou encore "Chantier untel" pour définir respectivement des revenus saisonniers, ou des dépenses liés à vos employés, ou encore suivre les revenus et achats liés à un chantier. <br><br>Une fois la catégorie créée, vous pourrez la choisir lors de la création ou modification d'un produit/contact/document. <br><br>Vous pouvez faire des recherches par catégorie, et générer des rapports de chiffre d'affaire et dépenses par catégorie. <br><br>Remarque: Lors d'une recherche par catégorie dans la liste de vos documents, le système prendra d'abord en compte la catégorie du document avant de prendre en compte la catégorie éventuelle des produits listés. <br><br>
+
+                        </div>
+                    </div>
+
+                </section>
+
+
+
+            </main>
+
+        </div>
+    </div>
+
+    <script>
+        $('#date').hide();
+
+        $("#periode").change(function() {
+
+            if ($('#option_searchs_periode').val() == 'more') {
+                $('#periode').hide();
+                $('#date').show();
+
+
+            }
+        });
+    </script>
+    {% endif %}
+{% endblock %}
+
+
+
+
+
+
+
+

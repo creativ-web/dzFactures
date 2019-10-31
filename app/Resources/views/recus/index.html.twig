@@ -1,0 +1,1496 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <script type="text/javascript" src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js') }}"></script>
+
+    <div class="container-fluid">
+
+
+        <div id="sidebar-nav" class="hidden-print at-scroll-content">
+
+            <a class="btn-glow hidden-xs hidden-sm primary btn-block 1add_new 1add_new_invoice" title="Nouvelle facture" href="{{ path('admin_recus_new') }}">Nouveau Reçu</a>
+
+
+            <div class="form" id="search_more_div" style="margin-top: 14px;">
+
+                <strong style="font-size: 12px;display:block;margin-bottom:8px;padding-bottom:3px;border-bottom:1px solid #ddd">Rechercher</strong>
+
+
+                {{ form_start(form) }}
+
+                {{ form_label(form.mot, "Mot-clé ou n° ") }}
+                {{ form_widget(form.mot,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.mot) }}
+
+                {{ form_label(form.type, "Type de document ") }}
+                {{ form_widget(form.type,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.type) }}
+                <div id="periode">
+                    {{ form_label(form.periode, "Période") }}
+                    {{ form_widget(form.periode,{'attr': {'class': 'form-control periode'}}) }}
+                    {{ form_errors(form.periode) }}
+                </div>
+                <div id="date">
+                    {{ form_label(form.du, "Date du") }}
+                    {{ form_widget(form.du,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.du) }}
+
+                    {{ form_label(form.au, "Date au") }}
+                    {{ form_widget(form.au,{'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.au) }}
+                </div>
+                {{ form_label(form.etat, "Etat") }}
+                {{ form_widget(form.etat,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.etat) }}
+
+                {{ form_label(form.zone, "Entrepôt") }}
+                {{ form_widget(form.zone,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.zone) }}
+
+                <input style="margin-top: 20px;" type="submit" value="Rechercher" title="Rechercher" class="btn-glow btn-block" onclick="$('#page').remove()">                        {{ form_end(form) }}
+
+
+
+
+            </div> <!-- search_more_div -->
+
+
+
+
+
+
+        </div>
+
+
+        <main class="col-sm-9 ml-sm-auto col-md-10 pt-3 content" role="main">
+
+
+            <section class="row text-center placeholders">
+                <div class="row">
+                    <div class="col-md-4"><h2 style="position: relative; float: left;">Revenus / Reçu</h2>
+
+
+                    </div>
+                    <div style="padding-top: 20px;"></div>
+                    <div class="btn-group pull-right">
+
+                        <button data-toggle="dropdown" class="btn glow dropdown-toggle" style="margin-left:10px">
+                            <i class="fa fa-cog"></i> <span class="caret"></span>
+                        </button>
+
+
+                        <ul class="dropdown-menu">
+                            <li><a onclick="$('#dynamic_columns_modal').modal(); return false;" href="#">Personnaliser l'affichage des colonnes</a></li>
+                        </ul>
+
+                    </div>
+                    <div class="btn-group pull-right" id="export_dropdown_menu">
+
+                        <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                            <i class="fa fa-download"></i> <span class="">Export</span> / <i class="icon-print"></i> <span class="">Imprimés</span> <span class="caret"></span>
+                        </button>
+
+                        <ul class="dropdown-menu">
+
+                            <li role="presentation" class="dropdown-header" id="export_dropdown_menu_header">Tous les documents listés seront exportés</li>
+                            <li role="presentation" class="divider"></li>
+                            {% if type == null  %}
+                                {% set type = 'tous' %}
+                            {% endif %}
+                            {% if etat == null  %}
+                                {% set etat = 'tous' %}
+                            {% endif %}
+                            {% if periode == null  %}
+                                {% set periode = 'tous' %}
+                            {% endif %}
+                            {% if mot == null  %}
+                                {% set mot = 'tous' %}
+                            {% endif %}
+                            {% if zone == null  %}
+                                {% set zone = 'tous' %}
+                            {% endif %}
+
+                            <li><a onclick="export_function('pdf');return false;" href="">Liste des documents (tableau) en format PDF</a></li>
+                            <li><a  href="{{ path('admin_factures_allpdf',{ 'type':type,'periode':periode,'etat':etat,'zone':zone,'du':du|date("d-m-Y"),'au':au|date("d-m-Y"),'mot':mot}) }}">Documents dans un fichier PDF </a></li>
+
+
+
+                        </ul>
+                    </div>
+
+                </div>
+                <br>
+                {% if recus is not defined   %}
+                    <div class="row">
+
+
+
+                        <div id="list_table" class="narrower">
+
+
+
+
+
+                            <style type="text/css" media="screen">
+                                .content.scroll-content {
+                                    width:auto !important;
+                                    float: none;
+                                }
+                            </style>
+
+                            <!-- blank state -->
+                            <div class="blank-state">
+
+                                <div class="center">
+
+                                    <p style="    font-size: 13px;">Afin de créer un nouveau document, cliquez sur le bouton. </p>
+
+                                    <a class="btn-glow btn-block btn-lg primary btn-block 1add_new 1add_new_invoice" title="Nouvelle facture" href="{{ path('admin_recus_new') }}">Nouveau Reçu</a>
+
+                                </div>
+                            </div>
+                            <!-- end blank state -->
+
+
+                            <p class="text-center">
+
+
+                            </p>
+
+
+                        </div> <!-- list_table -->
+
+                        <script type="text/javascript">
+                            var SUMMATIONS_CACHED_VARIABLES = {
+                                initial_sums: {},
+                                invoice_values: {},
+                                price_keys: [],
+                                original_total_count: 0
+                            };
+                        </script>
+
+
+
+
+                        <script type="text/javascript">
+                            $(function(){
+                                //Firmlet.show_if_checked('#search_more_div', '#search_more');
+                            });
+                        </script>
+
+
+
+
+
+                    </div>
+                {% else %}
+                    <div id="list_table" class="row">
+
+                        <table id="example2" class="display" cellspacing="0"  style="">
+                            <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>DOCUMENTS DE GESTION DE STOCK</th>
+                                <th>TOTAL HT</th>
+                                <th>MONTANT TTC</th>
+                                <th>CLIENT</th>
+                                <th>DATE DE CRÉATION</th>
+                                <th>PAIEMENT REÇU LE</th>
+                                <th>PRODUIT</th>
+                                <th>ETAT</th>
+                                <th>FACTURÉ</th>
+                                <th> </th>
+
+                            </tr>
+                            </thead>
+
+
+                            <tbody>
+                            {% set totalHT = 0 %}
+                            {% set totalTTC = 0 %}
+                            {% set facturesCount = 0 %}
+                            {% set proformasCount = 0 %}
+                            {% set recusCount = 0 %}
+                            {% set devisCount = 0 %}
+                            {% set bdcCount = 0 %}
+
+                            {% for facture in factures %}
+                                {% set facturesCount = facturesCount + 1 %}
+                                <tr>
+                                    <td>
+                                        <a  style="text-decoration: none;" href="{{ path('admin_factures_show', { 'id': facture.id }) }}">
+                            <span class="facture_mark" title="Facture">
+
+
+                            {{ facture.nf }}
+
+				            </span>
+                                        </a>
+
+                                        <a style="text-transform: none; padding-left: 5px;"href="{{ path('admin_factures_show', { 'id': facture.id }) }}">Facture</a></td>
+                                    <td></td>
+                                    <td>
+
+                                        {% set sumHT = 0 %}
+
+                                        {% set sumHT =  facture.totalHT %}
+                                        {% set totalHT = totalHT + facture.totalHT  %}
+                                        <a href="{{ path('admin_factures_show', { 'id': facture.id }) }}">{{ sumHT|number_format(2, ',', ' ')}} DA</a>
+
+                                    </td>
+                                    <td>
+                                        {% set sumTTC = 0 %}
+                                        {% set sumTTC = facture.totalTTC %}
+                                        {% set totalTTC = totalTTC + facture.totalTTC  %}
+
+                                        <a href="{{ path('admin_factures_show', { 'id': facture.id }) }}">{{ sumTTC|number_format(2, ',', ' ') }} DA</a>
+                                        <input id="inputTTC{{ facture.id }}" type="hidden" value="{{ sumTTC  }}">
+                                    </td>
+                                    <td>
+                                        {% if facture.acheteur.supp == 0 %}
+                                            <a href="{{ path('admin_Acheteurs_show', { 'id': facture.acheteur.id }) }}">{{ facture.acheteur.nom }}</a>
+                                        {% else %}
+                                            <a title="{{ facture.acheteur.nom }}">{{ facture.acheteur.nom }}</a>
+
+
+                                        {% endif %}
+                                    </td>
+                                    <td><a href="{{ path('admin_factures_show', { 'id': facture.id }) }}">{{ facture.datecreation|date("d/m/Y") }}</a></td>
+                                    <td><a href="{{ path('admin_factures_show', { 'id': facture.id }) }}">{{ facture.datecreation|date("d/m/Y") }}</a></td>
+                                    <td>
+                                        {% for facture in facture.ventes %}
+                                            {{ facture.name }},
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+
+                                        <div class="btn-group" style="    height: 20px; ">
+
+                                            {% if facture.etat == 'Créé' %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = facture.datecreation|date("d") + facture.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - facture.datecreation|date("d")  %}
+                                                    {% set colorretard = 'badge-retard' %}
+
+                                                {% endif %}
+
+
+
+                                                <span id="etat{{ facture.id }}" data-toggle="dropdown" class="colored_select badge status-issued {{ colorretard }}" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="textetat{{ facture.id }}">{{ facture.etat }}</span>
+
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ facture.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat'+{{ facture.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ facture.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ facture.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                                        <span class="caret"></span>
+                                            </span>
+
+                                            {% elseif facture.etat =='Payé' %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = facture.datecreation|date("d") + facture.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - facture.datecreation|date("d")  %}
+
+
+                                                {% endif %}
+                                                <span id="etat{{ facture.id }}"  data-toggle="dropdown" class="colored_select badge2 status-issued" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                    <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                    <span class="textetat{{ facture.id }}">{{ facture.etat }}</span>
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ facture.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat'+{{ facture.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ facture.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ facture.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                    <span class="caret"></span>
+		                        	</span>
+                                            {% elseif facture.etat =='Payé en partie' %}
+                                                {% set pourcentage = facture.montantpaye*100/ sumTTC %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = facture.datecreation|date("d") + facture.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - facture.datecreation|date("d")  %}
+
+
+                                                {% endif %}
+                                                <div class="progress prog{{ facture.id }}">
+                                                    <div id="etat{{ facture.id }}" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width:{{ pourcentage|round(1, 'floor')  }}%">
+                                                    </div>
+
+                                                </div>
+                                                <span id="etat{{ facture.id }}" data-toggle="dropdown" class="colored_select badge status-issued progst" style="background: transparent; margin-top: -38px; border: none; box-shadow: none; color: white;     padding: 2px 8px;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="">{{ facture.etat }}</span>
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ facture.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat'+{{ facture.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ facture.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ facture.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                                <span class="caret"></span>
+                                            </span>
+
+                                            {% endif %}
+
+                                            <ul id="" class="dropdown-menu pull-right hidden-print" role="menu">
+
+                                                <li>
+                                                    <a class="facture_créé" id="{{ facture.id }}">Créé</a>
+
+                                                </li>
+
+
+                                                <li>
+                                                    <a class="facture_payé" id="{{ facture.id }}">Payé</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="partranche" id="{{ facture.id }}" type="{{ facture.type }}" data-toggle="modal" data-target="#exampleModal">Payé en partie</a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                            <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                                <i class="fa fa-cog"></i> <span class="caret"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu">
+                                                <li><a title="Afficher" class="cms_show" href="{{ path('admin_factures_show', { 'id': facture.id }) }}">Afficher</a></li>
+
+
+                                                <li><a class="cms_edit" href="{{ path('admin_factures_edit', { 'id': facture.id }) }}">Modifier</a></li>
+                                                <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_factures_delete', { 'facture': facture.id }) }}">Effacer</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+
+                            {% for proforma in proformas %}
+                                {% set proformasCount = proformasCount + 1 %}
+                                <tr>
+                                    <td>{{ proforma.nf }} <a style="text-transform: none;"href="{{ path('admin_proformas_show', { 'id': proforma.id }) }}">Proforma</a> </td>
+                                    <td></td>
+                                    <td>
+                                        {% set sumHT =  proforma.totalHT %}
+                                        {% set totalHT = totalHT + proforma.totalHT  %}
+
+                                        <a href="{{ path('admin_proformas_show', { 'id': proforma.id }) }}"> {{ sumHT|number_format(2, ',', ' ')}} DA</a>
+                                    </td>
+                                    <td>
+                                        {% set sumTTC = proforma.totalTTC %}
+                                        {% set totalTTC = totalTTC + proforma.totalTTC  %}
+
+                                        <a href="{{ path('admin_proformas_show', { 'id': proforma.id }) }}"> {{ sumTTC|number_format(2, ',', ' ') }} DA</a>
+                                        <input id="inputTTC{{ proforma.id }}" type="hidden" value="{{ sumTTC }}">
+
+                                    </td>
+                                    <td>
+                                        {% if proforma.acheteur.supp == 0 %}
+                                            <a href="{{ path('admin_Acheteurs_show', { 'id': proforma.acheteur.id }) }}">{{ proforma.acheteur.nom }}</a>
+                                        {% else %}
+                                            <a title="{{ proforma.acheteur.nom }}">{{ proforma.acheteur.nom }}</a>
+
+
+                                        {% endif %}
+                                    </td>
+                                    <td><a href="{{ path('admin_proformas_show', { 'id': proforma.id }) }}"> {{ proforma.datecreation|date("d/m/Y") }}</a></td>
+                                    <td><a href="{{ path('admin_proformas_show', { 'id': proforma.id }) }}"> {{ proforma.datecreation|date("d/m/Y") }}</a></td>
+                                    <td>
+                                        {% for proforma in proforma.ventes %}
+                                            {{ proforma.name }},
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+
+
+                                        <div class="btn-group" style="    height: 20px; ">
+                                            {% if proforma.etat == 'Créé' %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = proforma.datecreation|date("d") + proforma.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - proforma.datecreation|date("d")  %}
+                                                    {% set colorretard = 'badge-retard' %}
+
+                                                {% endif %}
+
+
+
+                                                <span id="etat_proforma{{ proforma.id }}" data-toggle="dropdown" class="colored_select badge status-issued {{ colorretard }}" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="textetat{{ proforma.id }}">{{ proforma.etat }}</span>
+
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ proforma.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat_proforma'+{{ proforma.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ proforma.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ proforma.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                                        <span class="caret"></span>
+                                            </span>
+
+                                            {% elseif proforma.etat =='Payé' %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = proforma.datecreation|date("d") + proforma.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - proforma.datecreation|date("d")  %}
+
+
+                                                {% endif %}
+                                                <span id="etat_proforma{{ proforma.id }}"  data-toggle="dropdown" class="colored_select badge2 status-issued" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                    <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                    <span class="textetat{{ proforma.id }}">{{ proforma.etat }}</span>
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ proforma.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat_proforma'+{{ proforma.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ proforma.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ proforma.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                    <span class="caret"></span>
+		                        	</span>
+                                            {% elseif proforma.etat =='Payé en partie' %}
+                                                {% set pourcentage = proforma.montantpaye*100/ sumTTC %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = proforma.datecreation|date("d") + proforma.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - proforma.datecreation|date("d")  %}
+
+
+                                                {% endif %}
+                                                <div class="progress prog{{ proforma.id }}">
+                                                    <div id="etat_proforma{{ proforma.id }}" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width:{{ pourcentage|round(1, 'floor')  }}%">
+                                                    </div>
+
+                                                </div>
+                                                <span id="etat_proforma{{ proforma.id }}" data-toggle="dropdown" class="colored_select badge status-issued progst" style="background: transparent; margin-top: -38px; border: none; box-shadow: none; color: white;     padding: 2px 8px;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="">{{ proforma.etat }}</span>
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ proforma.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat_proforma'+{{ proforma.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ proforma.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ proforma.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                                <span class="caret"></span>
+                                            </span>
+
+                                            {% endif %}
+
+                                            <ul id="" class="dropdown-menu pull-right hidden-print" role="menu">
+
+                                                <li>
+                                                    <a class="proforma_créé" id="{{ proforma.id }}">Créé</a>
+                                                </li>
+
+
+                                                <li>
+                                                    <a class="proforma_payé" id="{{ proforma.id }}">Payé</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="partranche_proforma" id="{{ proforma.id }}" type="{{ proforma.type }}" data-toggle="modal" data-target="#exampleModal">Payé en partie</a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+
+
+
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                            <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                                <i class="fa fa-cog"></i> <span class="caret"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu">
+                                                <li><a title="Afficher" class="cms_show" href="{{ path('admin_proformas_show', { 'id': proforma.id }) }}">Afficher</a></li>
+
+
+                                                <li><a class="cms_edit" href="{{ path('admin_proformas_edit', { 'id': proforma.id }) }}">Modifier</a></li>
+                                                <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_proformas_delete', { 'proforma': proforma.id }) }}">Effacer</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+                            {% for recu in recus %}
+                                {% set recusCount = recusCount + 1 %}
+                                <tr>
+
+                                    <td>
+                                        <a href="{{ path('admin_recus_show', { 'id': recu.id }) }}" style="text-decoration: none;"> <span class="reçu_mark" title="Reçu">
+                            {{ recu.nf }}
+                                  </span></a>
+                                        <a style="text-transform: none; padding-left: 5px;"href="{{ path('admin_recus_show', { 'id': recu.id }) }}">Reçu</a>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        {% set sumHT = 0 %}
+                                        {% set sumHT =  recu.totalHT %}
+                                        {% set totalHT = totalHT + recu.totalHT  %}
+                                        <a href="{{ path('admin_recus_show', { 'id': recu.id }) }}"> {{ sumHT}} DA</a>
+                                    </td>
+                                    <td>
+                                        {% set sumTTC = recu.totalTTC %}
+                                        {% set totalTTC = totalTTC + recu.totalTTC  %}
+
+                                        <a href="{{ path('admin_recus_show', { 'id': recu.id }) }}"> {{ sumTTC }} DA </a>
+                                    </td>
+                                    <td>
+                                        {% if recu.acheteur.supp == 0 %}
+                                            <a href="{{ path('admin_Acheteurs_show', { 'id': recu.acheteur.id }) }}">{{ recu.acheteur.nom }}</a>
+                                        {% else %}
+                                            <a title="{{ recu.acheteur.nom }}">{{ recu.acheteur.nom }}</a>
+
+
+                                        {% endif %}
+                                    </td>
+
+                                    <td> <a href="{{ path('admin_recus_show', { 'id': recu.id }) }}"> {{ recu.datecreation|date("d/m/Y") }}</a></td>
+                                    <td> <a href="{{ path('admin_recus_show', { 'id': recu.id }) }}"> {{ recu.datecreation|date("d/m/Y") }}</a></td>
+                                    <td>
+                                        {% for recu in recu.ventes %}
+                                            {{ recu.name }},
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" style="    height: 20px; ">
+                                            {% if recu.etat == 'Créé' %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = recu.datecreation|date("d") + recu.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - recu.datecreation|date("d")  %}
+                                                    {% set colorretard = 'badge-retard' %}
+
+                                                {% endif %}
+
+
+
+                                                <span id="etat_recu{{ recu.id }}" data-toggle="dropdown" class="colored_select badge status-issued {{ colorretard }}" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="textetat{{ recu.id }}">{{ recu.etat }}</span>
+
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ recu.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat_recu'+{{ recu.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ recu.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ recu.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                                        <span class="caret"></span>
+                                            </span>
+
+                                            {% elseif recu.etat =='Payé' %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = recu.datecreation|date("d") + recu.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - recu.datecreation|date("d")  %}
+
+
+                                                {% endif %}
+                                                <span id="etat_recu{{ recu.id }}"  data-toggle="dropdown" class="colored_select badge2 status-issued" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                    <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                    <span class="textetat{{ recu.id }}">{{ recu.etat }}</span>
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ recu.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat_recu'+{{ recu.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ recu.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ recu.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                    <span class="caret"></span>
+		                        	</span>
+                                            {% elseif recu.etat =='Payé en partie' %}
+                                                {% set pourcentage = recu.montantpaye*100/ sumTTC %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = recu.datecreation|date("d") + recu.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - recu.datecreation|date("d")  %}
+
+
+                                                {% endif %}
+                                                <div class="progress prog{{ recu.id }}">
+                                                    <div id="etat_recu{{ recu.id }}" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width:{{ pourcentage|round(1, 'floor')  }}%">
+                                                    </div>
+
+                                                </div>
+                                                <span id="etat_recu{{ recu.id }}" data-toggle="dropdown" class="colored_select badge status-issued progst" style="background: transparent; margin-top: -38px; border: none; box-shadow: none; color: white;     padding: 2px 8px;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="">{{ recu.etat }}</span>
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ recu.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat_recu'+{{ recu.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ recu.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ recu.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                                <span class="caret"></span>
+                                            </span>
+
+                                            {% endif %}
+
+                                            <ul id="" class="dropdown-menu pull-right hidden-print" role="menu">
+
+                                                <li>
+                                                    <a class="recu_créé" id="{{ recu.id }}">Créé</a>
+                                                </li>
+
+
+                                                <li>
+                                                    <a class="recu_payé" id="{{ recu.id }}">Payé</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="partranche_recu" id="{{ recu.id }}" type="{{ recu.type }}" data-toggle="modal" data-target="#exampleModal">Payé en partie</a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                            <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                                <i class="fa fa-cog"></i> <span class="caret"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu">
+                                                <li><a title="Afficher" class="cms_show" href="{{ path('admin_recus_show', { 'id': recu.id }) }}">Afficher</a></li>
+
+
+                                                <li><a class="cms_edit" href="{{ path('admin_recus_edit', { 'id': recu.id }) }}">Modifier</a></li>
+                                                <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_recus_delete', { 'recu': recu.id }) }}">Effacer</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+                            {% for devis in devis %}
+
+                                {% set devisCount = devisCount + 1 %}
+                                <tr>
+                                    <td>{{ devis.nf }} <a style="text-transform: none;"href="{{ path('admin_devis_show', { 'id': devis.id }) }}">Devi</a></td>
+                                    <td></td>
+                                    <td>
+                                        {% set sumHT = 0 %}
+                                        {% set sumHT =  devis.totalHT %}
+                                        {% set totalHT = totalHT + devis.totalHT  %}
+
+                                        <a href="{{ path('admin_devis_show', { 'id': devis.id }) }}">   {{ sumHT}} DA </a>
+                                    </td>
+                                    <td>
+                                        {% set sumTTC = 0 %}
+                                        {% set sumTTC = devis.totalTTC %}
+                                        {% set totalTTC = totalTTC + devis.totalTTC  %}
+
+                                        <a href="{{ path('admin_devis_show', { 'id': devis.id }) }}"> {{ sumTTC }} DA</a>
+                                    </td>
+                                    <td>
+                                        {% if devis.acheteur.supp == 0 %}
+                                            <a href="{{ path('admin_Acheteurs_show', { 'id': devis.acheteur.id }) }}">{{ devis.acheteur.nom }}</a>
+                                        {% else %}
+                                            <a title="{{ devis.acheteur.nom }}">{{ devis.acheteur.nom }}</a>
+
+
+                                        {% endif %}
+                                    </td>
+
+                                    <td> <a href="{{ path('admin_devis_show', { 'id': devis.id }) }}">{{ devis.datecreation|date("d/m/Y") }}</a></td>
+                                    <td> <a href="{{ path('admin_devis_show', { 'id': devis.id }) }}">{{ devis.datecreation|date("d/m/Y") }}</a></td>
+                                    <td>
+                                        {% for devis in devis.ventes %}
+                                            {{ devis.name }},
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" style="    height: 20px; ">
+                                            {% if devis.etat == 'Créé' %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = devis.datecreation|date("d") + devis.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - devis.datecreation|date("d")  %}
+                                                    {% set colorretard = 'badge-retard' %}
+
+                                                {% endif %}
+
+
+
+                                                <span id="etat_devis{{ devis.id }}" data-toggle="dropdown" class="colored_select badge status-issued {{ colorretard }}" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="textetat{{ devis.id }}">{{ devis.etat }}</span>
+
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ recu.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat_devis'+{{ devis.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ devis.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ devis.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                                        <span class="caret"></span>
+                                            </span>
+
+                                            {% elseif devis.etat =='Payé' %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = devis.datecreation|date("d") + devis.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - devis.datecreation|date("d")  %}
+
+
+                                                {% endif %}
+                                                <span id="etat_devis{{ devis.id }}"  data-toggle="dropdown" class="colored_select badge2 status-issued" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                    <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                    <span class="textetat{{ devis.id }}">{{ devis.etat }}</span>
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ devis.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat_devis'+{{ devis.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ devis.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ devis.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                    <span class="caret"></span>
+		                        	</span>
+                                            {% elseif devis.etat =='Payé en partie' %}
+                                                {% set pourcentage = devis.montantpaye *100/ sumTTC %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = devis.datecreation|date("d") + devis.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - devis.datecreation|date("d")  %}
+
+
+                                                {% endif %}
+                                                <div class="progress prog{{ devis.id }}">
+                                                    <div id="etat_devis{{ devis.id }}" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width:{{ pourcentage|round(1, 'floor')  }}%">
+                                                    </div>
+
+                                                </div>
+                                                <span id="etat_devis{{ devis.id }}" data-toggle="dropdown" class="colored_select badge status-issued progst" style="background: transparent; margin-top: -38px; border: none; box-shadow: none; color: white;     padding: 2px 8px;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="">{{ devis.etat }}</span>
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ devis.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat_devis'+{{ devis.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ devis.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ devis.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                                <span class="caret"></span>
+                                            </span>
+
+                                            {% endif %}
+
+                                            <ul id="" class="dropdown-menu pull-right hidden-print" role="menu">
+
+                                                <li>
+                                                    <a class="devis_créé" id="{{ devis.id }}">Créé</a>
+                                                </li>
+
+
+                                                <li>
+                                                    <a class="devis_payé" id="{{ devis.id }}">Payé</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="partranche_devis" id="{{ devis.id }}" type="{{ devis.type }}" data-toggle="modal" data-target="#exampleModal">Payé en partie</a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                            <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                                <i class="fa fa-cog"></i> <span class="caret"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu">
+                                                <li><a title="Afficher" class="cms_show" href="{{ path('admin_devis_show', { 'id': devis.id }) }}">Afficher</a></li>
+
+
+                                                <li><a class="cms_edit" href="{{ path('admin_devis_edit', { 'id': devis.id }) }}">Modifier</a></li>
+                                                <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_devis_delete', { 'devi': devis.id }) }}">Effacer</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+                            {% for bdc in bdc %}
+                                {% set bdcCount = bdcCount + 1 %}
+                                <tr>
+                                    <td>{{ bdc.nf }} <a style="text-transform: none;"href="{{ path('admin_bdc_show', { 'id': bdc.id }) }}">Bon de Commande</a></td>
+                                    <td></td>
+                                    <td>
+                                        {% set sumHT = 0 %}
+                                        {% set sumHT =  bdc.totalHT %}
+                                        {% set totalHT = totalHT + bdc.totalHT  %}
+
+                                        <a href="{{ path('admin_bdc_show', { 'id': bdc.id }) }}">   {{ sumHT}} DA </a>
+                                    </td>
+                                    <td>
+                                        {% set sumTTC = 0 %}
+                                        {% set sumTTC = bdc.totalTTC %}
+                                        {% set totalTTC = totalTTC + bdc.totalTTC  %}
+
+                                        <a href="{{ path('admin_bdc_show', { 'id': bdc.id }) }}"> {{ sumTTC }} DA</a>
+                                    </td>
+                                    <td>
+                                        {% if bdc.acheteur.supp == 0 %}
+                                            <a href="{{ path('admin_Acheteurs_show', { 'id': bdc.acheteur.id }) }}">{{ bdc.acheteur.nom }}</a>
+                                        {% else %}
+                                            <a title="{{ bdc.acheteur.nom }}">{{ bdc.acheteur.nom }}</a>
+
+
+                                        {% endif %}
+
+                                    </td>                                        <td> <a href="{{ path('admin_bdc_show', { 'id': bdc.id }) }}">{{ bdc.datecreation|date("d/m/Y") }}</a></td>
+                                    <td> <a href="{{ path('admin_bdc_show', { 'id': bdc.id }) }}">{{ bdc.datecreation|date("d/m/Y") }}</a></td>
+                                    <td>
+                                        {% for bdc in bdc.ventes %}
+                                            {{ bdc.name }},
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" style="    height: 20px; ">
+                                            {% if bdc.etat == 'Créé' %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = bdc.datecreation|date("d") + bdc.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - bdc.datecreation|date("d")  %}
+                                                    {% set colorretard = 'badge-retard' %}
+
+                                                {% endif %}
+
+
+
+                                                <span id="etat_bdc{{ bdc.id }}" data-toggle="dropdown" class="colored_select badge status-issued {{ colorretard }}" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="textetat{{ bdc.id }}">{{ bdc.etat }}</span>
+
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ bdc.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat_bdc'+{{ bdc.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ bdc.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ bdc.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                                        <span class="caret"></span>
+                                            </span>
+
+                                            {% elseif bdc.etat =='Payé' %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = bdc.datecreation|date("d") + bdc.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - bdc.datecreation|date("d")  %}
+
+
+                                                {% endif %}
+                                                <span id="etat_bdc{{ bdc.id }}"  data-toggle="dropdown" class="colored_select badge2 status-issued" style="background-position: -100px 0;" data-original-title="" title="">
+
+                                    <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                    <span class="textetat{{ bdc.id }}">{{ bdc.etat }}</span>
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ bdc.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat_bdc'+{{ bdc.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ bdc.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ bdc.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                    <span class="caret"></span>
+		                        	</span>
+                                            {% elseif bdc.etat =='Payé en partie' %}
+                                                {% set pourcentage = bdc.montantpaye*100/ sumTTC %}
+                                                {% set retard = 0 %}
+                                                {% set colorretard = 0 %}
+                                                {% set limitedate = bdc.datecreation|date("d") + bdc.dateregle  %}
+                                                {% if limitedate < "now"|date("d") %}
+                                                    {% set retard =  "now"|date("d") - bdc.datecreation|date("d")  %}
+
+
+                                                {% endif %}
+                                                <div class="progress prog{{ bdc.id }}">
+                                                    <div id="etat_bdc{{ bdc.id }}" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width:{{ pourcentage|round(1, 'floor')  }}%">
+                                                    </div>
+
+                                                </div>
+                                                <span id="etat_bdc{{ bdc.id }}" data-toggle="dropdown" class="colored_select badge status-issued progst" style="background: transparent; margin-top: -38px; border: none; box-shadow: none; color: white;     padding: 2px 8px;" data-original-title="" title="">
+
+                                                <i id="" style="" title="Envoyé le " class="icon-envelope-alt">&nbsp;</i>
+                                                <span class="">{{ bdc.etat }}</span>
+                                                    {% if limitedate < "now"|date("d") %}
+
+                                                        <div class="tooltip fade bottom in" id="info{{ bdc.id }}" style="top: 19px; left: 14px; display: none; "><div class="tooltip-arrow"></div><div class="tooltip-inner">En retard: <br>{{ retard }} jours</div></div>
+
+                                                    {% endif %}
+                                                    <script>
+                                                                     $('span#etat_bdc'+{{ bdc.id }}).hover(
+
+                                                                         function () {
+                                                                             $('#info'+{{ bdc.id }}).show();
+                                                                         }, function () {
+                                                                             $('#info'+{{ bdc.id }}).hide();
+
+                                                                         });
+                                                        </script>
+                                                <span class="caret"></span>
+                                            </span>
+
+                                            {% endif %}
+
+                                            <ul id="" class="dropdown-menu pull-right hidden-print" role="menu">
+
+                                                <li>
+                                                    <a class="bdc_créé" id="{{ bdc.id }}">Créé</a>
+                                                </li>
+
+
+                                                <li>
+                                                    <a class="bdc_payé" id="{{ bdc.id }}">Payé</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="partranche_bdc" id="{{ bdc.id }}" type="{{ bdc.type }}" data-toggle="modal" data-target="#exampleModal">Payé en partie</a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                            <button data-toggle="dropdown" class="btn glow dropdown-toggle">
+                                                <i class="fa fa-cog"></i> <span class="caret"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu">
+                                                <li><a title="Afficher" class="cms_show" href="{{ path('admin_bdc_show', { 'id': bdc.id }) }}">Afficher</a></li>
+
+
+                                                <li><a class="cms_edit" href="{{ path('admin_bdc_edit', { 'id': bdc.id }) }}">Modifier</a></li>
+                                                <li><a data-confirm="Êtes-vous sûr de vouloir effacer?" class="delete " data-remote="true" rel="nofollow" data-method="delete" href="{{ path('admin_bdc_delete', { 'bon': bdc.id }) }}">Effacer</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+                            <tr>
+                                <td></td>
+
+
+                                <td id="total_count">
+                                    {% set totalCount = facturesCount + proformasCount + recusCount + devisCount + bdcCount %}
+                                    <span class="text-muted ">Total:  {{ totalCount }}</span>
+                                </td>
+
+                                <td id="total_price_net" style="width: 100px;">
+                                    <strong id="total_price_net_values">{{ totalHT|number_format(2, ',', ' ') }} DA<br></strong>
+
+                                    <strong id="total_price_net_sum"></strong>
+                                </td>
+
+                                <td id="total_price_gross" style="width: 100px;" class="digit">
+                                    <strong id="total_price_gross_values">{{ totalTTC|number_format(2, ',', ' ') }} DA<br></strong>
+
+                                    <strong id="total_price_gross_sum"></strong>
+                                </td>
+
+                                <td id="total_price_gross" style="" class="digit">
+
+                                </td>
+
+                                <td></td>
+
+                                <td></td>
+
+                                <td></td>
+
+                                <td></td>
+
+                                <td></td>
+
+                                <td></td>
+
+
+
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                {% endif %}
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        {{ form_start(form2) }}
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" style="color: #29323d;font-size: 18px; float: left;">Montant payé</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                {{ form_label(form2.type, " ") }}
+                                {{ form_widget(form2.type,{'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form2.type) }}
+
+
+                                {{ form_label(form2.id, " ") }}
+                                {{ form_widget(form2.id,{'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form2.id) }}
+
+                                {{ form_label(form2.prix, " ") }}
+                                {{ form_widget(form2.prix,{'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form2.prix) }}
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                            </div>
+                        </div>
+                        {{ form_end(form2) }}
+                    </div>
+                </div>
+            </section>
+
+
+
+        </main>
+    </div>
+
+
+    <script>
+        $('#date').hide();
+
+        $("#periode").change(function() {
+
+            if ($('#option_searchs_periode').val() == 'more') {
+                $('#periode').hide();
+                $('#date').show();
+
+
+            }
+        });
+        $('.facture_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_factures_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat'+data.id).text('Créé');
+                    $('.prog'+data.id).remove();
+                    $('#etat'+data.id).removeAttr( 'style' );
+                    $('#etat'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat'+data.id).html('Créé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+        $('.facture_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_factures_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat'+data.id).text('Payé');
+                    $('.prog'+data.id).remove();
+                    $('#etat'+data.id).removeAttr( 'style' );
+                    $('#etat'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat'+data.id).removeClass().addClass( "progst colored_select badge2 status-issued" );
+                    $('#etat'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+
+
+        $('.proforma_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_proformas_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat_proforma'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat_proforma'+data.id).text('Créé');
+                    $('.prog_proforma'+data.id).remove();
+                    $('#etat_proforma'+data.id).removeAttr( 'style' );
+                    $('#etat_proforma'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_proforma'+data.id).html('Créé <span class="caret"> </span>');
+                }
+            });
+
+
+        });
+        $('.proforma_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_proformas_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat_proforma'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat_proforma'+data.id).text('Payé');
+                    $('.prog_proforma'+data.id).remove();
+                    $('#etat_proforma'+data.id).removeAttr( 'style' );
+                    $('#etat_proforma'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_proforma'+data.id).removeClass().addClass( "progst_proforma colored_select badge2 status-issued" );
+                    $('#etat_proforma'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+        $('.devis_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_devis_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat_devis'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat_devis'+data.id).text('Créé');
+                    $('.prog_devis'+data.id).remove();
+                    $('#etat_devis'+data.id).removeAttr( 'style' );
+                    $('#etat_devis'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_devis'+data.id).html('Créé <span class="caret"> </span>');
+                }
+            });
+
+
+        });
+        $('.devis_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_devis_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat_devis'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat_devis'+data.id).text('Payé');
+                    $('.prog_devis'+data.id).remove();
+                    $('#etat_devis'+data.id).removeAttr( 'style' );
+                    $('#etat_devis'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_devis'+data.id).removeClass().addClass( "progst_devis colored_select badge2 status-issued" );
+                    $('#etat_devis'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+        $('.recu_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_recus_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat_recu'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat_recu'+data.id).text('Créé');
+                    $('.prog_recu'+data.id).remove();
+                    $('#etat_recu'+data.id).removeAttr( 'style' );
+                    $('#etat_recu'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_recu'+data.id).html('Créé <span class="caret"> </span>');
+                }
+            });
+
+
+        });
+        $('.recu_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_recus_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat_recu'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat_recu'+data.id).text('Payé');
+                    $('.prog_recu'+data.id).remove();
+                    $('#etat_recu'+data.id).removeAttr( 'style' );
+                    $('#etat_recu'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_recu'+data.id).removeClass().addClass( "progst_recu colored_select badge2 status-issued" );
+                    $('#etat_recu'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+
+
+        $('.bdc_créé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_bonscommandes_etat',{id:$(this).attr('id'), etat:'Créé', ttc:0}),
+                success: function (data) {
+                    $('#etat_bdc'+data.id).removeClass().addClass( "colored_select badge status-issued" );
+                    $('.textetat_bdc'+data.id).text('Créé');
+                    $('.prog_bdc'+data.id).remove();
+                    $('#etat_bdc'+data.id).removeAttr( 'style' );
+                    $('#etat_bdc'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_bdc'+data.id).html('Créé <span class="caret"> </span>');
+                }
+            });
+
+
+        });
+        $('.bdc_payé').click(function(){
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_bonscommandes_etat',{id:$(this).attr('id'), etat:'Payé', ttc:$('#inputTTC'+$(this).attr('id')).val()}),
+                success: function (data) {
+
+                    $('#etat_bdc'+data.id).removeClass().addClass( "colored_select badge2 status-issued" );
+                    $('.textetat_bdc'+data.id).text('Payé');
+                    $('.prog_bdc'+data.id).remove();
+                    $('#etat_bdc'+data.id).removeAttr( 'style' );
+                    $('#etat_bdc'+data.id).css( 'background-position: -100px 0;' );
+                    $('#etat_bdc'+data.id).removeClass().addClass( "progst_bdc colored_select badge2 status-issued" );
+                    $('#etat_bdc'+data.id).html('Payé <span class="caret"> </span>');
+
+
+                }
+            });
+
+
+        });
+
+
+        $('.partranche').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+
+        $('.partranche_proforma').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+
+        $('.partranche_recu').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+        $('.partranche_devis').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+        $('.partranche_bdc').click(function(){
+
+            $('#partranche_id').val($(this).attr('id'))
+
+            $('#partranche_type').val($(this).attr('type'))
+
+        });
+        $(document).ready(function(){
+
+
+
+            $(".delete").click(function(){
+                if (!confirm("Êtes-vous sûr de vouloir effacer ce document?")){
+                    return false;
+                }
+            });
+
+
+
+            $("#filtre_recus_zone").change(function() {
+
+                $( "#filtre_recus_valzone" ).val($( "#filtre_recus_zone" ).val());
+                if(!$('#filtre_recus_zone').val() ){
+                    $( "#filtre_recus_valzone" ).val('tous');
+                }
+
+            });
+            $( "#filtre_recus_valzone" ).val('tous');
+
+        });
+
+    </script>
+
+{% endblock %}

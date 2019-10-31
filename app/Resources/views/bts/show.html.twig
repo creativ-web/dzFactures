@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Bt</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ bt.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ bt.type }}</td>
+            </tr>
+            <tr>
+                <th>Nf</th>
+                <td>{{ bt.nf }}</td>
+            </tr>
+            <tr>
+                <th>Datecreation</th>
+                <td>{% if bt.datecreation %}{{ bt.datecreation|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Lieu</th>
+                <td>{{ bt.lieu }}</td>
+            </tr>
+            <tr>
+                <th>Additionnelle</th>
+                <td>{{ bt.additionnelle }}</td>
+            </tr>
+            <tr>
+                <th>Dateadd</th>
+                <td>{% if bt.dateadd %}{{ bt.dateadd|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Moderegle</th>
+                <td>{{ bt.moderegle }}</td>
+            </tr>
+            <tr>
+                <th>Dateregle</th>
+                <td>{{ bt.dateregle }}</td>
+            </tr>
+            <tr>
+                <th>Objet</th>
+                <td>{{ bt.objet }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ bt.etat }}</td>
+            </tr>
+            <tr>
+                <th>Montantpaye</th>
+                <td>{{ bt.montantpaye }}</td>
+            </tr>
+            <tr>
+                <th>Paiementrecu</th>
+                <td>{% if bt.paiementrecu %}{{ bt.paiementrecu|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Dateenvois</th>
+                <td>{% if bt.dateenvois %}{{ bt.dateenvois|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Nc</th>
+                <td>{{ bt.nc }}</td>
+            </tr>
+            <tr>
+                <th>Nomvendeur</th>
+                <td>{{ bt.nomvendeur }}</td>
+            </tr>
+            <tr>
+                <th>Informations</th>
+                <td>{{ bt.informations }}</td>
+            </tr>
+            <tr>
+                <th>Editerpar</th>
+                <td>{{ bt.editerpar }}</td>
+            </tr>
+            <tr>
+                <th>Expedierpar</th>
+                <td>{{ bt.expedierpar }}</td>
+            </tr>
+            <tr>
+                <th>Receptionnerpar</th>
+                <td>{{ bt.receptionnerpar }}</td>
+            </tr>
+            <tr>
+                <th>Ncommande</th>
+                <td>{{ bt.ncommande }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_bts_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('admin_bts_edit', { 'id': bt.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

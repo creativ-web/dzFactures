@@ -1,0 +1,1188 @@
+
+
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+    <style>
+        .aa{
+            padding: 1.5rem;
+            margin-right: 0;
+            margin-bottom: 0;
+            margin-left: 0;
+            border: solid 1px #dddddd;
+
+        }
+        #1 option[label]{
+            float: left;
+            color: red;
+        }
+        .panel-success>.panel-heading{
+            background: linear-gradient(to bottom, #fff 0%, #f6f6f6 19%, #ededed 100%);
+            border-color: #dddddd;
+            color: #000;
+        }
+        .panel-success {
+            border-color: #dddddd;
+
+        }
+        .panel-title{
+            font-size: 12px;
+        }
+        .forms{
+            margin-bottom: 10px;
+        }
+
+        .fa-close{
+            -webkit-border-radius: 100px;
+            font-size: 1.1em;
+            color: white;
+            border-radius: 100px;
+            line-height: 0.9em;
+            padding: 5px 6px;
+            margin-top: 20px;
+            cursor: pointer;
+            background: linear-gradient(to bottom, #f85032 0%, #f16f5c 19%, #f6290c 55%, #f02f17 71%, #e73827 100%);
+        }
+
+        form .row{
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <div class="container">
+<div class="form1">
+
+        {{ form_start(form) }}
+
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Documents de gestion de stock</h2>
+            </div>
+            <div class="col-sm-5">
+
+                {{ form_label(form.type, "Type ") }} <span class="requis">*</span>
+                {{ form_widget(form.type,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.type) }}
+            </div>
+            <div class=" col-sm-4 col-xs-6 ">
+
+                {{ form_label(form.nf, "N° ") }} <span class="requis">*</span>
+
+                {% for nf in nf %}
+                    {% set id =  nf.id +1   %}
+                    {{ form_widget(form.nf,{'attr': {'class': 'form-control','value':id}}) }}
+                    {{ form_errors(form.nf) }}
+                {% else %}
+                    {{ form_widget(form.nf,{'attr': {'class': 'form-control','value':1}}) }}
+                    {{ form_errors(form.nf) }}
+                {% endfor %}
+
+
+
+
+            </div>
+            <div class="col-sm-2 ">
+
+                {{ form_label(form.dateadd, "Date d'entrée ") }}
+                {{ form_widget(form.dateadd,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.dateadd) }}
+            </div>
+            <div class="col-sm-4 col-xs-6">
+
+                {{ form_label(form.zonnestocks, "Entrepôt") }} <span class="requis">*</span>
+                {{ form_widget(form.zonnestocks,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.zonnestocks) }}
+            </div>
+
+        </div>
+        <hr>
+
+
+
+        <div class="row ">
+            <div class="departement_view">
+
+
+            </div>
+
+            <div class="departement_form">
+            <div class="col-md-5 col-sm-12 col-xs-12 ">
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                        <h2>Client</h2>
+                        {{ form_label(form.departements.id, " ") }} <span class="requis"> </span>
+                        {{ form_widget(form.departements.id,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.departements.id) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.departements.nom, "Nom") }} <span class="requis">*</span>
+                        {{ form_widget(form.departements.nom,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.departements.nom) }}
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.departements.nifselect, " ") }}
+                        {{ form_widget(form.departements.nifselect,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.departements.nifselect) }}
+                    </div>
+                    <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.departements.nif, " ") }}
+                        {{ form_widget(form.departements.nif,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.departements.nif) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.departements.adresse, "N° et nom de rue") }}
+                        {{ form_widget(form.departements.adresse,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.departements.adresse) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.departements.codepostal, "Code postal") }}
+                        {{ form_widget(form.departements.codepostal,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.departements.codepostal) }}
+                    </div>
+                    <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.departements.ville, "Ville") }}
+                        {{ form_widget(form.departements.ville,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.departements.ville) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.departements.iban, "IBAN") }}
+                        {{ form_widget(form.departements.iban,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.departements.iban) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.departements.banque, "Banque") }}
+                        {{ form_widget(form.departements.banque,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.departements.banque) }}
+                    </div>
+                    <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.departements.bic, "BIC") }}
+                        {{ form_widget(form.departements.bic,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.departements.bic) }}
+                    </div>
+
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+
+                        <button class="btn pull-right btn-link btn-xs dropdown-toggle" type="button" data-toggle="dropdown" id="show_more2" onclick="$('#more2').fadeIn('fast');$('#show_more2').hide();return false;" style="display: block;">
+                            Plus  <span class="caret"></span>
+                        </button>
+
+                    </div>
+
+                </div>
+                <div id="more2" class="more" style="display: block;">
+
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(form.departements.email, "Adresse email") }}
+                            {{ form_widget(form.departements.email,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.departements.email) }}
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(form.departements.siteweb, "Site web") }}
+                            {{ form_widget(form.departements.siteweb,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.departements.siteweb) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(form.departements.fax, "Fax") }}
+                            {{ form_widget(form.departements.fax,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.departements.fax) }}
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(form.departements.telephone, "Téléphone") }}
+                            {{ form_widget(form.departements.telephone,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.departements.telephone) }}
+                        </div>
+                    </div>
+                    <button class="btn pull-right btn-link btn-xs dropdown-toggle" type="button" data-toggle="dropdown" id="show_more2" onclick="$('#more2').hide();$('#show_more2').fadeIn('fast');return false;">
+                        Moins <i class="icon-sort-up"></i>
+                    </button>
+
+                </div>
+            </div>
+            </div>
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+            </div>
+            <div class="col-md-5 col-sm-12 col-xs-12 form-group">
+
+                <h2>Fournisseur</h2>
+                {{ form_label(form.acheteur.id, " ") }}
+                {{ form_widget(form.acheteur.id,{'attr': {'class': 'form-control select2'}}) }}
+                {{ form_errors(form.acheteur.id) }}
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.acheteur.nom, "Nom") }} <span class="requis">*</span>
+                        {{ form_widget(form.acheteur.nom,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.acheteur.nom) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.acheteur.nifselect, " ") }}
+                        {{ form_widget(form.acheteur.nifselect,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.acheteur.nifselect) }}
+                    </div>
+                    <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.acheteur.nif, " ") }}
+                        {{ form_widget(form.acheteur.nif,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.acheteur.nif) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.acheteur.adresse, "N° et nom de rue") }}
+                        {{ form_widget(form.acheteur.adresse,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.acheteur.adresse) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.acheteur.codepostal, "Code postal") }}
+                        {{ form_widget(form.acheteur.codepostal,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.acheteur.codepostal) }}
+                    </div>
+                    <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                        {{ form_label(form.acheteur.ville, "Ville") }}
+                        {{ form_widget(form.acheteur.ville,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.acheteur.ville) }}
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+
+                        <button class="btn pull-right btn-link btn-xs dropdown-toggle" type="button" data-toggle="dropdown" id="show_more3" onclick="$('#more3').fadeIn('fast');$('#show_more3').hide();return false;" style="display: block;">
+                            Plus  <span class="caret"></span>
+                        </button>
+
+                    </div>
+
+                </div>
+                <div id="more3" class="more" style="display: block;">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(form.acheteur.email, "Adresse email") }}
+                            {{ form_widget(form.acheteur.email,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.acheteur.email) }}
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(form.acheteur.siteweb, " Site internet") }}
+                            {{ form_widget(form.acheteur.siteweb,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.acheteur.siteweb) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(form.acheteur.fax, "Fax") }}
+                            {{ form_widget(form.acheteur.fax,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.acheteur.fax) }}
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            {{ form_label(form.acheteur.telephone, " Téléphone") }}
+                            {{ form_widget(form.acheteur.telephone,{'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.acheteur.telephone) }}
+                        </div>
+
+                    </div>
+                    <button class="btn pull-right btn-link btn-xs dropdown-toggle" type="button" data-toggle="dropdown" id="show_more2" onclick="$('#more3').hide();$('#show_more3').fadeIn('fast');return false;">
+                        Moins <i class="icon-sort-up"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <hr>
+            <div class="col-sm-4">
+                {{ form_label(form.editerpar, "Edité par") }}
+                {{ form_widget(form.editerpar,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.editerpar) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_label(form.expedierpar, "Expédié par") }}
+                {{ form_widget(form.expedierpar,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.expedierpar) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_label(form.receptionnerpar, "Réceptionné par") }}
+                {{ form_widget(form.receptionnerpar,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.receptionnerpar) }}
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-xs-12 ">
+                {{ form_label(form.informations, "Commentaires") }}
+                {{ form_widget(form.informations,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.informations) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+
+                {{ form_label(form.datecreation, "Date de création ") }}
+                {{ form_widget(form.datecreation,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.datecreation) }}
+            </div>
+            <div class="col-sm-2">
+
+                {{ form_label(form.ncommande, "Numéro de la commande") }}
+                {{ form_widget(form.ncommande,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.ncommande) }}
+            </div>
+        </div>
+      <br> <br>
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><strong>Produits</strong></h3>
+            </div>
+
+
+            <div class="panel-body">
+
+
+                {% macro tagCollectionItem(achats) %}
+
+
+
+                    <div class="row forms {{ achats.vars.id }}">
+                        <hr>
+
+                        <div class="col-md-4">
+                            {% block datalist_widget %}
+                                <span style="font-size: 11px;"> Nom</span>
+                                {{ form_widget(achats.produits,{'attr': {'class': 'form-control select', 'autocomplete':'off'}}) }}
+
+                            {% endblock %}
+                            {{ form_errors(achats.produits) }}
+
+                            <script type="text/javascript">
+                                $(".select").select2({
+                                    allowClear: true,
+                                    placeholder: " ",
+                                });
+
+
+                            </script>
+
+                        </div>
+                        <div class="col-md-1">
+                            <span style="font-size: 11px;"> Réf</span>
+                            {{ form_widget(achats.reference,{'attr': {'class': 'form-control REF'}}) }}
+                        </div>
+
+                        <div class="col-md-1">
+                            <span style="font-size: 11px;">Qté</span>
+                            {{ form_widget(achats.qte,{'attr': {'class': 'form-control QTE'}}) }}
+                        </div>
+                        <div class="col-md-1">
+                            <span style="font-size: 11px;">Unité</span>
+                            {{ form_widget(achats.unite,{'attr': {'class': 'form-control unite'}}) }}
+                        </div>
+                        <div class="col-md-1">
+                            <span style="font-size: 11px;"> Taxe % (achat)</span>
+
+                            {{ form_widget(achats.tva2,{'attr': {'class': 'form-control TVA','value': ' '}}) }}
+
+                        </div>
+                        <div class="col-md-1">
+                            <span style="font-size: 11px;"> Prix HT (achat)</span>
+                            {{ form_widget(achats.prixHT,{'attr': {'class': 'form-control PU'}}) }}
+                        </div>
+                        <div class="col-md-1">
+                            <span style="font-size: 11px;"> Prix TTC (achat)</span>
+                            {{ form_widget(achats.prixTTC,{'attr': {'class': 'form-control PUTTC'}}) }}
+                        </div>
+
+                        <div class="col-md-1">
+                            <span style="font-size: 11px;">Total HT (achat)</span>
+                            {{ form_widget(achats.totalHTa,{'attr': {'class': 'form-control totalHT'}}) }}
+                        </div>
+                        <div class="col-md-1">
+                            <span style="font-size: 11px;">Total TTC(achat)</span>
+                            {{ form_widget(achats.totalTTCa,{'attr': {'class': 'form-control totalTTC'}}) }}
+                        </div>
+                        <div class="col-md-1 ">
+
+                        </div>
+
+                    </div>
+                    <button class="btn pull-right btn-link btn-xs dropdown-toggle show_part2_{{ achats.vars.id }}" type="button" data-toggle="dropdown" id="show_more2" onclick="$('#more2').fadeIn('fast');$('#show_more2').hide();return false;" style="display: block;">
+                        Prix (vente)  <span class="caret"></span>
+                    </button>
+                    <div class="row">
+                   <div  class="part2_{{ achats.vars.id }}">
+                        <div class="col-xs-8 col-sm-5">
+                            <span style="font-size: 11px;">Commentaire</span>
+                            {{ form_widget(achats.description,{'attr': {'class': 'form-control description'}}) }}
+                        </div>
+
+                        <div class="col-sm-2"></div>
+
+                        <div class="col-xs-1 visible-xs">
+
+                        </div>
+
+                        <div class="col-xs-3 col-sm-1">
+                            <span style="font-size: 11px;"> Taxe</span>
+                            {{ form_widget(achats.tva,{'attr': {'class': 'form-control TVA2'}}) }}
+                        </div>
+
+                        <div class="col-xs-6 col-sm-1 required">
+                            <span style="font-size: 11px;"> PU HT</span>
+                            {{ form_widget(achats.puHT,{'attr': {'class': 'form-control prixHT'}}) }}
+                        </div>
+
+                        <div class="col-xs-6 col-sm-1">
+                            <span style="font-size: 11px;"> PU TTC</span>
+                            {{ form_widget(achats.puTTC,{'attr': {'class': 'form-control prixTC'}}) }}
+                        </div>
+
+                        <div class="col-xs-6 col-sm-1">
+                            <span style="font-size: 11px;">Total HT</span>
+                            {{ form_widget(achats.totalHT,{'attr': {'class': 'form-control totalHTa'}}) }}
+                        </div>
+
+                        <div class="col-xs-6 col-sm-1">
+                            <span style="font-size: 11px;">Total TTC</span>
+                            {{ form_widget(achats.totalTTC,{'attr': {'class': 'form-control totalTTCa'}}) }}
+                        </div>
+                   </div>
+
+                    </div>
+                    <button id="" class="pull-right btn btn-link btn-xs dropdown-toggle hide_part2_{{ achats.vars.id }}" type="button" data-toggle="dropdown">
+                        Cacher <i class="fa fa-sort-up"></i>
+                    </button>
+                    <script type="text/javascript" src="{{ asset('js/table_produits.js') }}"></script>
+                {% endmacro %}
+
+
+                <div class="tags" data-prototype="{{ _self.tagCollectionItem(form.achats.vars.prototype)|e }}">
+                    {% for form in form.achats %}
+                        {{ _self.tagCollectionItem(achats) }}
+
+                    {% endfor %}
+
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <div class="invoice_summary col-sm-4 col-sm-offset-8">
+                <table class="table">
+                    <tbody><tr class="curr_s netto ">
+                        <th>Total HT</th>
+                        <td id="sum_net"> </td>
+                        <td style="width:1%;" class="_curr1">DZD</td>
+                        <td>
+                            <div class="dropdown mini_dropdown">
+                                <a class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    <li><a href="javascript:show_select_currency();">Changer de devise</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="curr_s ">
+                        <th>Total TVA</th>
+
+                        <td id="sum_tva"> </td>
+                        <td class="_curr1"> DZD</td>
+                        <td></td>
+                    </tr>
+
+                    <tr class="curr_s more_discount1 hidden" style="display: none;">
+                        <th class="">Réduction</th>
+                        <td class="" id="sum_discount">0,00</td>
+                        <td class="_curr1"> DZD</td>
+                        <td>
+
+                        </td>
+                    </tr>
+
+                    <tr class="curr_s">
+                        <th class="bold">Total TTC</th>
+                        <td id="sum_ttc" class="bold"> </td>
+                        <td class="_curr1">
+                            DZD
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr>
+
+                    <tr class="curr_s more_discount1 hidden" >
+                        <th class="bold ">Total TTC après réductions</th>
+                        <td id="sum_after_discount" class="bold "></td>
+                        <td class="_curr1"> DZD</td>
+                    </tr>
+
+
+
+                    </tbody></table>
+
+
+
+            </div> <!-- invoice_summary -->
+
+        </div>
+
+
+
+
+        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Sauvegarder</button> ou <a href="{{ path('admin_documents_index') }}">Annuler</a>
+
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+</div>
+    </div>
+    <br> <br> <br>
+
+    <script type="text/javascript" src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/select2.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/departement.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/document_type.js') }}"></script>
+
+    <script type="text/javascript">
+
+
+        $(".select2").select2({
+            allowClear: true,
+            placeholder: " ",
+        });
+        $('.select2').change(function(){
+            $('#documents_acheteur_nom').val('');
+            $('#documents_acheteur_nifselect').val('');
+            $('#documents_acheteur_nif').val('');
+            $('#documents_acheteur_adresse').val('');
+            $('#documents_acheteur_codepostal').val('');
+            $('#documents_acheteur_ville').val('');
+            $('#documents_acheteur_email').val('');
+            $('#documents_acheteur_siteweb').val('');
+            $('#documents_acheteur_fax').val();
+            $('#documents_acheteur_telephone').val('');
+            $.ajax({
+                type:'GET',
+                url:'http://gestion.creativ-dz.com/admin/factures/acheteur/'+$('#documents_acheteur_id').val(),
+                success: function (data) {
+                    $('#documents_acheteur_nom').val(data.nom);
+                    $('#documents_acheteur_nifselect').val(data.nifselect);
+                    $('#documents_acheteur_nif').val(data.nif);
+                    $('#documents_acheteur_adresse').val(data.adresse);
+                    $('#documents_acheteur_codepostal').val(data.codepostal);
+                    $('#documents_acheteur_ville').val(data.ville);
+                    $('#documents_acheteur_email').val(data.email);
+                    $('#documents_acheteur_siteweb').val(data.siteweb);
+                    $('#documents_acheteur_fax').val(data.fax);
+                    $('#documents_acheteur_telephone').val(data.telephone);
+                }
+            });
+
+
+        });
+    </script>
+
+
+    <script>
+
+
+
+        var $collectionHolder;
+        // setup an "add a tag" link
+        var $addTagLink = $('<a href="#" class="add_tag_link"><button type="button" class="btn btn-secondary"><i class="fa fa-plus" aria-hidden="true"></i> PRODUIT</button></a>');
+        var $newLinkLi = $('<ul></ul>').append($addTagLink);
+
+
+        jQuery(document).ready(function() {
+
+            $('#more2').hide();
+            $('#more3').hide();
+
+
+
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('div.tags');
+
+            $collectionHolder.find('div').each(function() {
+                addTagFormDeleteLink($(this));
+            });
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder, $newLinkLi);
+
+
+            });
+            addTagForm($collectionHolder, $newLinkLi);
+
+        });
+
+
+
+
+        function addTagForm($collectionHolder, $newLinkLi) {
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormLi = $("<div id='"+index+ "'></div>").append(newForm);
+
+            $newLinkLi.before($newFormLi);
+
+
+
+            $('#1 hr').remove();
+
+
+
+            $('.part2_documents_achats_'+index).hide();
+            $('.hide_part2_documents_achats_'+index).hide();
+
+            $('.show_part2_documents_achats_'+index).on('click', function(e) {
+
+                $('.part2_documents_achats_'+index).fadeIn('fast');
+                $('.part2_documents_achats_'+index).show();
+
+                $('.show_part2_documents_achats_'+index).hide();
+                $('.hide_part2_documents_achats_'+index).show();
+
+            });
+
+            $('.hide_part2_documents_achats_'+index).on('click', function(e) {
+
+                $('.part2_documents_achats_'+index).fadeIn('fast');
+                $('.part2_documents_achats_'+index).hide();
+
+                $('.show_part2_documents_achats_'+index).show();
+                $('.hide_part2_documents_achats_'+index).hide();
+
+            });
+
+
+
+
+            $('#documents_achats_'+index+'_produits').change(function(){
+                $.ajax({
+                    type:'GET',
+                    url:'http://localhost/stockedin/web/admin/documents/prod/'+$(this).val()+'/'+$('#documents_achats_'+index+'_qte').val()+'/'+$('#documents_achats_'+index+'_tva option:selected').val()+'/'+$('#documents_achats_'+index+'_tva2 option:selected').val(),
+                    success: function (data) {
+
+                        $('#documents_achats_'+index+'_reference').each(function(){
+
+                            $(this).val(data.reference);
+
+                        });
+                        $('#documents_achats_'+index+'_puHT').each(function(){
+
+                            $(this).val(data.puHT);
+
+                        });
+                        $('#documents_achats_'+index+'_prixHT').each(function(){
+
+                            $(this).val(data.prixHT);
+
+                        });
+
+                        $('#documents_achats_'+index+'_puTTC').each(function(){
+
+                            $(this).val(data.TTC);
+
+                        });
+                        $('#documents_achats_'+index+'_totalTTCa').each(function(){
+
+                            $(this).val(data.TTC2);
+
+                        });
+                        $('#documents_achats_'+index+'_prixTTC').each(function(){
+
+                            $(this).val(data.TTC2);
+
+                        });
+
+                        $('#documents_achats_'+index+'_totalHT').each(function(){
+                            $(this).val(data.totalHT);
+
+                        });
+                        $('#documents_achats_'+index+'_totalHTa').each(function(){
+                            $(this).val(data.totalHTa);
+
+                        });
+                        $('#documents_achats_'+index+'_tva').each(function(){
+
+                            $(this).attr('value',data.totalTVA);
+
+
+                        });
+
+
+                        $('#documents_achats_'+index+'_totalTTC').each(function(){
+
+                            $(this).val(data.TTC);
+
+                        });
+
+
+
+                        var sum = 0;
+                        $(".totalHT").each(function() {
+                            sum += parseInt(+this.value);
+                        });
+                        $('#sum_net').text(sum);
+
+                        var sumTVA = 0;
+                        $(".TVA").each(function() {
+                            sumTVA += parseInt(+data.totalTVA2);
+                        });
+                        $('#sum_tva').text(sumTVA);
+
+
+                        var sumTTC = 0;
+                        $(".totalTTC").each(function() {
+                            sumTTC += parseInt(+this.value);
+                        });
+                        $('#sum_ttc').text(sumTTC);
+                    }
+                });
+
+
+            });
+
+            $('#documents_achats_'+index+'_qte').change(function(){
+                $.ajax({
+                    type:'GET',
+                    url:'http://localhost/stockedin/web/admin/documents/qte/'+$(this).val()+'/'+$('#documents_achats_'+index+'_puHT').val()+'/'+$('#documents_achats_'+index+'_tva option:selected').val()+'/'+$('#documents_achats_'+index+'_totalHT').val(),
+                    success: function (data) {
+
+
+                        $('#documents_achats_'+index+'_totalHT').each(function(){
+
+                            $(this).val(data.totalHT);
+
+                        });
+
+
+                        $('#documents_achats_'+index+'_tva').each(function(){
+
+                            $(this).attr('value',data.totalTVA);
+
+
+                        });
+
+
+                        $('#documents_achats_'+index+'_totalTTC').each(function(){
+
+                            $(this).val(data.TTC);
+
+                        });
+
+
+                        var sum = 0;
+                        $(".totalHT").each(function() {
+                            sum += parseInt(+this.value);
+                        });
+                        $('#sum_net').text(sum);
+
+                        var sumTVA = 0;
+                        $(".TVA").each(function() {
+                            sumTVA += parseInt(+data.totalTVA);
+                        });
+                        $('#sum_tva').text(sumTVA);
+
+                        var sumTTC = 0;
+                        $(".totalTTC").each(function() {
+                            sumTTC += parseInt(+this.value);
+                        });
+                        $('#sum_ttc').text(sumTTC);
+
+                    }
+                });
+
+
+
+            });
+
+            $('#documents_achats_'+index+'_qte').change(function(){
+                $.ajax({
+                    type:'GET',
+                    url:'http://localhost/stockedin/web/admin/documents/qte/'+$(this).val()+'/'+$('#documents_achats_'+index+'_prixHT').val()+'/'+$('#documents_achats_'+index+'_tva2 option:selected').val()+'/'+$('#documents_achats_'+index+'_totalHTa').val(),
+                    success: function (data) {
+
+
+                        $('#documents_achats_'+index+'_totalHTa').each(function(){
+
+                            $(this).val(data.totalHT);
+
+                        });
+
+
+                        $('#documents_achats_'+index+'_tva2').each(function(){
+
+                            $(this).attr('value',data.totalTVA);
+
+
+                        });
+
+
+                        $('#documents_achats_'+index+'_totalTTCa').each(function(){
+
+                            $(this).val(data.TTC);
+
+                        });
+
+
+                        var sum = 0;
+                        $(".totalHT").each(function() {
+                            sum += parseInt(+this.value);
+                        });
+                        $('#sum_net').text(sum);
+
+                        var sumTVA = 0;
+                        $(".TVA").each(function() {
+                            sumTVA += parseInt(+data.totalTVA);
+                        });
+                        $('#sum_tva').text(sumTVA);
+
+                        var sumTTC = 0;
+                        $(".totalTTC").each(function() {
+                            sumTTC += parseInt(+this.value);
+                        });
+                        $('#sum_ttc').text(sumTTC);
+
+                    }
+                });
+
+
+
+            });
+
+            $('#documents_achats_'+index+'_puHT').change(function(){
+                $.ajax({
+                    type:'GET',
+                    url:'http://localhost/stockedin/web/admin/documents/qte/'+$('#documents_achats_'+index+'_qte').val()+'/'+$('#documents_achats_'+index+'_puHT').val()+'/'+$('#documents_achats_'+index+'_tva option:selected').val()+'/'+$('#documents_achats_'+index+'_totalHT').val(),
+                    success: function (data) {
+
+
+
+                        $('#documents_achats_'+index+'_totalHT').each(function(){
+
+                            $(this).val(data.totalHT);
+
+                        });
+
+                        $('#documents_achats_'+index+'_tva').each(function(){
+
+                            $(this).attr('value',data.totalTVA);
+
+
+                        });
+                        $('#documents_achats_'+index+'_puTTC').each(function(){
+
+                            $(this).val(data.TTC);
+
+
+                        });
+                        $('#documents_achats_'+index+'_totalTTC').each(function(){
+
+                            $(this).val(data.TTC);
+
+
+                        });
+
+                        var sum = 0;
+                        $(".totalHT").each(function() {
+                            sum += parseInt(+this.value);
+                        });
+                        $('#sum_net').text(sum);
+
+                        var sumTVA = 0;
+                        $(".TVA").each(function() {
+                            sumTVA += parseInt(+data.totalTVA);
+                        });
+                        $('#sum_tva').text(sumTVA);
+
+
+                        var sumTTC = 0;
+                        $(".totalTTC").each(function() {
+                            sumTTC += parseInt(+this.value);
+                        });
+                        $('#sum_ttc').text(sumTTC);
+
+                    }
+                });
+
+            });
+
+            $('#documents_achats_'+index+'_tva').change(function(){
+                $.ajax({
+                    type:'GET',
+                    url:'http://localhost/stockedin/web/admin/documents/qte/'+$('#documents_achats_'+index+'_qte').val()+'/'+$('#documents_achats_'+index+'_puHT').val()+'/'+$('#documents_achats_'+index+'_tva option:selected').val()+'/'+$('#documents_achats_'+index+'_totalHT').val(),
+                    success: function (data) {
+
+
+
+                        $('#documents_achats_'+index+'_totalHT').each(function(){
+
+                            $(this).val(data.totalHT);
+
+                        });
+
+                        $('#documents_achats_'+index+'_tva').each(function(){
+
+                            $(this).attr('value',data.totalTVA);
+
+
+                        });
+                        $('#documents_achats_'+index+'_puTTC').each(function(){
+
+                            $(this).val(data.TTC);
+
+
+                        });
+                        $('#documents_achats_'+index+'_totalTTC').each(function(){
+
+                            $(this).val(data.TTC);
+
+
+                        });
+
+                        var sum = 0;
+                        $(".totalHT").each(function() {
+                            sum += parseInt(+this.value);
+                        });
+                        $('#sum_net').text(sum);
+
+                        var sumTVA = 0;
+                        $(".TVA").each(function() {
+                            sumTVA += parseInt(+data.totalTVA);
+                        });
+                        $('#sum_tva').text(sumTVA);
+
+
+                        var sumTTC = 0;
+                        $(".totalTTC").each(function() {
+                            sumTTC += parseInt(+this.value);
+                        });
+                        $('#sum_ttc').text(sumTTC);
+
+                    }
+                });
+
+            });
+
+            $('#documents_achats_'+index+'_prixHT').change(function(){
+                $.ajax({
+                    type:'GET',
+                    url:'http://localhost/stockedin/web/admin/documents/qte/'+$('#documents_achats_'+index+'_qte').val()+'/'+$('#documents_achats_'+index+'_prixHT').val()+'/'+$('#documents_achats_'+index+'_tva2 option:selected').val()+'/'+$('#documents_achats_'+index+'_totalHTa').val(),
+                    success: function (data) {
+
+
+
+                        $('#documents_achats_'+index+'_totalHTa').each(function(){
+
+                            $(this).val(data.totalHT);
+
+                        });
+                        $('#documents_achats_'+index+'_tva2').each(function(){
+
+                            $(this).attr('value',data.totalTVA);
+
+
+                        });
+                        $('#documents_achats_'+index+'_prixTTC').each(function(){
+
+                            $(this).val(data.TTC);
+
+
+                        });
+
+                        $('#documents_achats_'+index+'_totalTTCa').each(function(){
+
+                            $(this).val(data.TTC);
+
+
+                        });
+
+
+                        var sum = 0;
+                        $(".totalHT").each(function() {
+                            sum += parseInt(+this.value);
+                        });
+                        $('#sum_net').text(sum);
+
+                        var sumTVA = 0;
+                        $(".TVA").each(function() {
+                            sumTVA += parseInt(+data.totalTVA);
+                        });
+                        $('#sum_tva').text(sumTVA);
+
+
+                        var sumTTC = 0;
+                        $(".totalTTC").each(function() {
+                            sumTTC += parseInt(+this.value);
+                        });
+                        $('#sum_ttc').text(sumTTC);
+
+                    }
+                });
+
+            });
+
+            $('#documents_achats_'+index+'_tva2').change(function(){
+                $.ajax({
+                    type:'GET',
+                    url:'http://localhost/stockedin/web/admin/documents/qte/'+$('#documents_achats_'+index+'_qte').val()+'/'+$('#documents_achats_'+index+'_prixHT').val()+'/'+$('#documents_achats_'+index+'_tva2 option:selected').val()+'/'+$('#documents_achats_'+index+'_totalHTa').val(),
+                    success: function (data) {
+
+
+
+                        $('#documents_achats_'+index+'_totalHTa').each(function(){
+
+                            $(this).val(data.totalHT);
+
+                        });
+                        $('#documents_achats_'+index+'_tva2').each(function(){
+
+                            $(this).attr('value',data.totalTVA);
+
+
+                        });
+                        $('#documents_achats_'+index+'_prixTTC').each(function(){
+
+                            $(this).val(data.TTC);
+
+
+                        });
+
+                        $('#documents_achats_'+index+'_totalTTCa').each(function(){
+
+                            $(this).val(data.TTC);
+
+
+                        });
+
+
+                        var sum = 0;
+                        $(".totalHT").each(function() {
+                            sum += parseInt(+this.value);
+                        });
+                        $('#sum_net').text(sum);
+
+                        var sumTVA = 0;
+                        $(".TVA").each(function() {
+                            sumTVA += parseInt(+data.totalTVA);
+                        });
+                        $('#sum_tva').text(sumTVA);
+
+
+                        var sumTTC = 0;
+                        $(".totalTTC").each(function() {
+                            sumTTC += parseInt(+this.value);
+                        });
+                        $('#sum_ttc').text(sumTTC);
+
+                    }
+                });
+
+            });
+
+
+
+            var $removeFormA = $('<a class="del"><i class="fa fa-close" aria-hidden="true" style=""></i></a>');
+            $('.documents_achats_'+index).append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $('#'+index).remove();
+
+                var sum = 0;
+                $(".totalHT").each(function() {
+                    sum += parseInt(+this.value);
+                });
+                $('#sum_net').text(sum);
+
+                var sumTTC = 0;
+                $(".totalTTC").each(function() {
+                    sumTTC += parseInt(+this.value);
+                });
+                $('#sum_ttc').text(sumTTC);
+
+                var sumTVA = 0;
+                $(".TVA").each(function() {
+                    sumTVA += parseInt(+$(".TVA").attr('value'));
+                });
+                $('#sum_tva').text(sumTVA);
+
+
+
+
+            });
+        }
+
+
+
+
+    </script>
+
+
+
+{% endblock %}
+
+

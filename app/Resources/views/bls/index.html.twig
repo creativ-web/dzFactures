@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Bls list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Nf</th>
+                <th>Datecreation</th>
+                <th>Lieu</th>
+                <th>Additionnelle</th>
+                <th>Dateadd</th>
+                <th>Moderegle</th>
+                <th>Dateregle</th>
+                <th>Objet</th>
+                <th>Etat</th>
+                <th>Montantpaye</th>
+                <th>Paiementrecu</th>
+                <th>Dateenvois</th>
+                <th>Nc</th>
+                <th>Nomvendeur</th>
+                <th>Informations</th>
+                <th>Editerpar</th>
+                <th>Expedierpar</th>
+                <th>Receptionnerpar</th>
+                <th>Ncommande</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bl in bls %}
+            <tr>
+                <td><a href="{{ path('admin_bls_show', { 'id': bl.id }) }}">{{ bl.id }}</a></td>
+                <td>{{ bl.type }}</td>
+                <td>{{ bl.nf }}</td>
+                <td>{% if bl.datecreation %}{{ bl.datecreation|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ bl.lieu }}</td>
+                <td>{{ bl.additionnelle }}</td>
+                <td>{% if bl.dateadd %}{{ bl.dateadd|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ bl.moderegle }}</td>
+                <td>{{ bl.dateregle }}</td>
+                <td>{{ bl.objet }}</td>
+                <td>{{ bl.etat }}</td>
+                <td>{{ bl.montantpaye }}</td>
+                <td>{% if bl.paiementrecu %}{{ bl.paiementrecu|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if bl.dateenvois %}{{ bl.dateenvois|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ bl.nc }}</td>
+                <td>{{ bl.nomvendeur }}</td>
+                <td>{{ bl.informations }}</td>
+                <td>{{ bl.editerpar }}</td>
+                <td>{{ bl.expedierpar }}</td>
+                <td>{{ bl.receptionnerpar }}</td>
+                <td>{{ bl.ncommande }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_bls_show', { 'id': bl.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_bls_edit', { 'id': bl.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_bls_new') }}">Create a new bl</a>
+        </li>
+    </ul>
+{% endblock %}

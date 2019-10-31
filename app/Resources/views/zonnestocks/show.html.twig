@@ -1,0 +1,40 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <h2>Gestion de stock</h2>
+    <div class="row">
+    <div class="col-md-12 section">
+
+
+
+        <p>
+            <b>Nom de l'entrepôt:</b>
+            {{ zonnestock.nom }}
+        </p>
+
+        <p>
+            <b>Description:</b>
+            {{ zonnestock.description }}
+        </p>
+
+        <p>
+            <b>Type:</b>
+            {{ zonnestock.types }}
+        </p>
+
+    </div>
+        </div>
+    <br>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+
+            <a href="{{ path('admin_zones_edit', { 'id': zonnestock.id }) }}"><button  class="btn btn-success"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Modifier</button></a>
+            ou
+            <a href="{{ path('admin_zones_index') }}"> Annuler </a>
+        </div>
+    </div>
+    <br>  <br>  <br>  <br>  <br>  <br>  <br>  <br>  <br>  <br>  <br>  <br>  <br>  <br>  <br>  <br>
+</div>
+{% endblock %}

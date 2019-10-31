@@ -1,0 +1,37 @@
+
+{% extends "FOSUserBundle::layout.html.twig" %}
+{% block body %}
+
+
+    <script type="text/javascript" src="{{ asset('vendors/jquery/dist/jquery.min.js') }}"></script>
+
+
+    {% if app.request.hasPreviousSession %}
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+
+                    {{ message }}
+
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    <div>
+
+        <a class="hiddenanchor" id="signup"></a>
+        <a class="hiddenanchor" id="signin"></a>
+
+        <div class="login_wrapper">
+            <div class="animate form login_form">
+                <section class="login_content">
+                    {% block fos_user_content %}
+                        {% include "FOSUserBundle:Registration:register_content.html.twig" %}
+                    {% endblock fos_user_content %}
+                </section>
+            </div>
+
+
+        </div>
+    </div>
+
+{% endblock %}
+

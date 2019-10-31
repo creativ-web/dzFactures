@@ -1,0 +1,526 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <style>
+        body{
+            background: white;
+        }
+        .btn-default {
+            color: #333333;
+            background-color: #ffffff;
+            border-color: #cccccc;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 1.428571429;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+    </style>
+    <div class="container">
+
+        <h2 style="margin-top: 0;">Ajouter un produit</h2>
+
+        {{ form_start(edit_form) }}
+
+
+        <div class="row">
+            <div class="required col-sm-8">
+                {{ form_label(edit_form.name, "Nom ") }} <span class="requis">*</span>
+                {{ form_widget(edit_form.name,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(edit_form.name) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="required col-sm-4 col-xs-6">
+                {{ form_label(edit_form.reference, "Référence") }}
+                {{ form_widget(edit_form.reference,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(edit_form.reference) }}
+            </div>
+            <div class="required col-sm-4 col-xs-6">
+                {{ form_label(edit_form.categories, "Catégorie") }}
+                {{ form_widget(edit_form.categories,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(edit_form.categories) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="required col-sm-2">
+                {{ form_label(edit_form.puHT, "PU HT") }} <span class="requis">*</span>
+                {{ form_widget(edit_form.puHT,{'attr': {'class': 'form-control HT'}}) }}
+                {{ form_errors(edit_form.puHT) }}
+            </div>
+            <div class="col-sm-2">
+                {{ form_label(edit_form.tva, "TVA") }}
+                {{ form_widget(edit_form.tva,{'attr': {'class': 'form-control TVA'}}) }}
+                {{ form_errors(edit_form.tva) }}
+            </div>
+            <div class="col-sm-2">
+                {{ form_label(edit_form.puTTC, "PU TTC") }}
+                {{ form_widget(edit_form.puTTC,{'attr': {'class': 'form-control TTC'}}) }}
+                {{ form_errors(edit_form.puTTC) }}
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+        <div class="row">
+            <div class="required col-sm-8">
+                {{ form_label(edit_form.description, "Description") }}
+                {{ form_widget(edit_form.description,{'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(edit_form.description) }}
+            </div>
+        </div>
+
+
+        <br><br><br>
+        <div class="row">
+
+            <div class="panel-group col-sm-12 new-accordion" id="accordion">
+
+                <div class="panel panel-default panel-sm">
+
+                    <div class="panel-heading">
+
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="panel-title collapsed" style="display:block" >
+                            <i id="more_options_icon1" class="icon-chevron-down"></i>
+                            <span id="more_options_link1">Plus d'options</span>
+                        </a>
+
+                    </div> <!-- panel-heading -->
+
+                    <div id="collapseOne" class="more_options panel-collapse collapse" style="height: 0px;">
+
+                        <div class="panel-body">
+
+
+
+                            <div class="checkbox label_inline not_service">
+                                <input name="product[limited]" type="hidden" value="0"><input type="checkbox" value="1" checked="checked" name="product[limited]" id="product_limited">
+                                <label for="product_limited">Restriction de quantité (en vente si stock positif)</label>
+										<span class="help-block">
+											 L'option "Restriction de quantité" vous empêchera de vendre ce produit si sa quantité en stock est égale ou inférieure à 0.
+										</span>
+                            </div>
+
+                            <div id="limited" class="not_service">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        {{ form_label(edit_form.qte, "Quantité disponible") }}
+                                        {{ form_widget(edit_form.qte,{'attr': {'class': 'form-control'}}) }}
+                                        {{ form_errors(edit_form.qte) }}
+                                    </div>
+                                </div> <!-- row -->
+                            </div>
+                            <div class="row">
+                                <div class="required col-sm-2">
+                                    {{ form_label(edit_form.prixHT, "Prix d'achat HT") }}
+                                    {{ form_widget(edit_form.prixHT,{'attr': {'class': 'form-control HT2'}}) }}
+                                    {{ form_errors(edit_form.prixHT) }}
+                                </div>
+                                <div class="col-sm-2">
+                                    {{ form_label(edit_form.tva2, "TVA") }}
+                                    {{ form_widget(edit_form.tva2,{'attr': {'class': 'form-control TVA2'}}) }}
+                                    {{ form_errors(edit_form.tva2) }}
+                                </div>
+                                <div class="required col-sm-2">
+                                    {{ form_label(edit_form.prixTTC, "Prix d'achat TTC") }}
+                                    {{ form_widget(edit_form.prixTTC,{'attr': {'class': 'form-control TTC2'}}) }}
+                                    {{ form_errors(edit_form.prixTTC) }}
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6">
+                                    {{ form_widget(edit_form.activlot) }}
+                                    {{ form_errors(edit_form.activlot) }}
+                                    {{ form_label(edit_form.activlot, "Lot - le produit est composé de plusieurs articles") }}
+                                </div>
+                            </div>
+                            <br>
+
+
+                            <div id="package1" style="display: block">
+                                {% macro tagCollectionItem2(lots) %}
+
+
+                                    <td  style="font-size: 13px;">
+                                        {{ form_widget(lots.produits,{'attr': {'class': 'form-control '}}) }}
+
+                                    </td>
+                                    <td  style="font-size: 13px;">
+                                        {{ form_widget(lots.qte,{'attr': {'class': 'form-control '}}) }}
+                                    </td>
+                                    <hr>
+
+                                {% endmacro %}
+
+                                <table class="tagsLot  dataTable no-footer" data-prototype="{{ _self.tagCollectionItem2(edit_form.lots.vars.prototype)|e('html_attr') }}">
+
+                                    <thead>
+                                    <tr role="row">
+                                        <th class="sorting_desc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="descending" aria-label="NOM: activate to sort column ascending" style="width: 180px;">
+                                            Produit</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="PU H.T.: activate to sort column ascending" style="width: 159px;">QUANTITÉ</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for lots in edit_form.lots %}
+
+                                            {{ _self.tagCollectionItem2(lots) }}
+
+
+
+                                    {% endfor %}
+
+
+                                    </tbody>
+
+                                </table>
+
+
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2">
+                                    {{ form_label(edit_form.unite, "Unité") }}
+                                    {{ form_widget(edit_form.unite,{'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(edit_form.unite) }}
+                                </div>
+                                <div class="col-sm-5 col-md-4">
+                                    {{ form_label(edit_form.qtedefault, "Quantité vendue par défaut") }} <span class="requis">*</span>
+                                    {{ form_widget(edit_form.qtedefault,{'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(edit_form.qtedefault) }}
+                                </div>
+
+                            </div>
+                            <!-- if -->
+                            <br>
+
+                            <div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div> <!-- panel-body -->
+
+                </div> <!-- collapseOne -->
+
+            </div> <!-- panel -->
+
+
+        </div>
+        <div class="row">
+            <div class="required col-sm-2">
+                {{ form_label(edit_form.images, "Ajouter une pièce jointe") }}
+                {{ form_widget(edit_form.images,{'attr': {'class': ''}}) }}
+                {{ form_errors(edit_form.images) }}
+            </div>
+        </div>
+        <br>
+        <hr>
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+
+                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Sauvegarder</button>
+                ou
+                <a href="{{ path('admin_produits_index') }}"> Annuler </a>
+            </div>
+        </div>
+
+        <br>
+
+
+        {{ form_end(edit_form) }}
+    </div>
+    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/select2.js') }}"></script>
+
+
+    <script type="text/javascript">
+
+        $(".stockName").each(function() {
+            $id = $(this).attr('value');
+            $snom = $(this).attr('selected');
+
+
+
+
+        });
+
+
+        $("td.sname").each(function(index) {
+
+            $(this).attr( 'class','sname'+index);
+
+            $('#commandes_commandesbundle_produits_diffprix_'+index+'_zonnestocks').hide();
+            $(this).append($('#commandes_commandesbundle_produits_diffprix_'+index+'_zonnestocks option:selected').text())
+
+            $('#commandes_commandesbundle_produits_diffprix_'+index+'_puHT').change(function(){
+
+
+                $.ajax({
+                    type:'GET',
+                    url: Routing.generate('admin_produits_cttc',{ht:$('#commandes_commandesbundle_produits_diffprix_'+index+'_puHT').val(),tvaid:$('#commandes_commandesbundle_produits_diffprix_'+index+'_tva').val()}),
+
+                    success: function (data) {
+
+                        $('#commandes_commandesbundle_produits_diffprix_'+index+'_puTTC').val(data.TTC)
+
+                    }
+                });
+
+
+            });
+
+            $('#commandes_commandesbundle_produits_diffprix_'+index+'_tva').change(function(){
+
+
+                $.ajax({
+                    type:'GET',
+                    url: Routing.generate('admin_produits_cttc',{ht:$('#commandes_commandesbundle_produits_diffprix_'+index+'_puHT').val(),tvaid:$('#commandes_commandesbundle_produits_diffprix_'+index+'_tva').val()}),
+
+                    success: function (data) {
+
+                        $('#commandes_commandesbundle_produits_diffprix_'+index+'_puTTC').val(data.TTC)
+
+                    }
+                });
+
+
+            });
+
+
+        });
+
+        $('#commandes_commandesbundle_produits_moretva_valeur').hide();
+        $('#commandes_commandesbundle_produits_moretva2_valeur').hide();
+        $(".select").select2({
+            tags: "true",
+            tokenSeparators: [',', ' ']
+        });
+        var valeur = 0;
+
+
+        $('.HT, .TVA').change(function(){
+
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_produits_cttc',{ht:$('.HT').val(),tvaid:$('.TVA').val()}),
+
+                success: function (data) {
+
+                    $('input.TTC').val(data.TTC)
+
+                }
+            });
+
+        });
+
+        $('.HT2, .TVA2').change(function(){
+
+            $.ajax({
+                type:'GET',
+                url: Routing.generate('admin_produits_cttc',{ht:$('.HT2').val(),tvaid:$('.TVA2').val()}),
+
+                success: function (data) {
+
+                    $('input.TTC2').val(data.TTC)
+
+                }
+            });
+
+        });
+        $('#tablezonne').hide();
+
+        $('#commandes_commandesbundle_produits_dp').click(function(){
+            $('#tablezonne').fadeIn("slow");
+            if (this.checked) {
+                $('#tablezonne').show();
+            }else {
+                $('#tablezonne').hide();
+            }
+        });
+
+
+        $('#commandes_commandesbundle_produits_tva_id').append($('<option>', {
+            value: 'disabled',
+            text: 'Inactif'
+        }));
+        $('#commandes_commandesbundle_produits_moretva_id').append($('<option>', {
+            value: 'more',
+            text: 'Autre...'
+        }));
+        $('#commandes_commandesbundle_produits_tva2').append($('<option>', {
+            value: 'disabled',
+            text: 'Inactif'
+        }));
+        $('#commandes_commandesbundle_produits_tva2').append($('<option>', {
+            value: 'more',
+            text: 'Autre...'
+        }));
+
+        jQuery(document).ready(function() {
+
+
+
+            $('#accord').click();
+            $('.produit').hide();
+
+            if($('#commandes_commandesbundle_produits_dp').attr('checked')){
+
+                $('#tablezonne').show()
+            }
+
+
+            var $collectionHolder;
+            // setup an "add a tag" link
+            var $addTagLink = $('');
+            var $newLinkLi = $('<ul></ul>').append($addTagLink);
+            var $id;
+            var $snom;
+
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('table.tags');
+
+
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder, $newLinkLi);
+
+
+            });
+
+
+
+
+        });
+
+
+
+    </script>
+    <script>
+        /////////////////  Lots ///////////////
+
+
+        $('#commandes_commandesbundle_produits_activlot').click(function(){
+            $('#package1').fadeIn("slow");
+            if (this.checked) {
+                $('.package1').show();
+
+
+
+            }else {
+                $('#package1').hide();
+            }
+        });
+
+
+
+        var $collectionHolder2;
+
+        // setup an "add a tag" link
+        var $addTagLink2 = $('<a href="#" class="add_tag_link2"><button type="submit" class="btn"><i class="fa fa-plus"></i> Ajouter</button></a>');
+        var $newLinkLi2 = $('<div></div>').append($addTagLink2);
+
+        jQuery(document).ready(function() {
+            // Get the ul that holds the collection of tags
+            $collectionHolder2 = $('table.tagsLot');
+            $collectionHolder2.find('tbody > tr').each(function() {
+                addTagFormDeleteLink2($(this));
+            });
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder2.append($newLinkLi2);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder2.data('index', $collectionHolder2.find(':input').length);
+
+            $addTagLink2.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm2($collectionHolder2, $newLinkLi2);
+            });
+
+
+        });
+
+        function addTagForm2($collectionHolder2, $newLinkLi2) {
+            // Get the data-prototype explained earlier
+            var prototype2 = $collectionHolder2.data('prototype');
+
+            // get the new index
+            var index2 = $collectionHolder2.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm2 = prototype2.replace(/__name__/g, index2);
+
+            // increase the index with one for the next item
+            $collectionHolder2.data('index', index2 + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormLi2 = $('<tr class="form"></tr>').append(newForm2);
+
+            $newLinkLi2.before($newFormLi2);
+
+            addTagFormDeleteLink2($newFormLi2);
+        }
+
+
+
+        function addTagFormDeleteLink2($tagFormLi2) {
+
+            var $removeFormA2 = $('<button class="btn btn-default remove-product-btn" style="   margin-top: 6px; color: #333333;background-color: #ffffff;border-color: #cccccc;"><i class="fa fa-close" aria-hidden="true" style=""></i></button>');
+            $tagFormLi2.append($removeFormA2);
+
+            $removeFormA2.on('click', function(e) {
+
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $tagFormLi2.remove();
+
+
+            });
+
+        }
+
+
+    </script>
+{% endblock %}
