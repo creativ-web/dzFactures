@@ -160,7 +160,7 @@ class FacturesController extends Controller
             if($parametres->getParamGestion()->getTablesystem() == 'activer'){
                 $factures = $em->getRepository('CommandesBundle:Factures')->search2($mot,$etat,$zone, $type,$du, $au, $user);
             }else{
-                $factures = $em->getRepository('CommandesBundle:Factures')->searchSanstable($mot,$etat,$zone, $type,$du, $au, $user);
+                $factures = $em->getRepository('CommandesBundle:Factures')->search2($mot,$etat,$zone, $type,$du, $au, $user);
             }
 
 
@@ -465,6 +465,8 @@ class FacturesController extends Controller
 
 
 
+
+
                 }
 
 
@@ -482,6 +484,56 @@ class FacturesController extends Controller
             $facture->setUser($user);
             $em->persist($facture);
             $em->flush();
+
+
+            if($parametres->getParamGestion()->getAutobl() == 'create_bl') {
+                $bl = new Bls();
+
+
+
+
+                $bl->setDepartements($facture->getDepartements());
+                $bl->setAcheteur($facture->getAcheteur());
+
+                $bl->setType('bl');
+                $bl->setNf($facture->getNf());
+                $bl->setCreele(new \DateTime("now"));
+                $bl->setLieu($facture->getLieu());
+                $bl->setAdditionnelle($facture->getAdditionnelle());
+                $bl->setDateadd($facture->getDateadd());
+                $bl->setDatecreation(new \DateTime("now"));
+                $bl->setFactures($facture);
+                $bl->setUser($facture->getUser());
+                $em->persist($bl);
+                $em->flush();
+
+                $vente = new Ventes();
+
+                $questionForms = $facture->getVentes();
+
+                foreach ($questionForms as $questionForm)
+                {
+
+
+                        $vente->setProduits($questionForm->getProduits());
+                        $vente->setQte($questionForm->getQte());
+                        $vente->setReference($questionForm->getReference());
+                        $vente->setPuHT($questionForm->getPuHT());
+                        $vente->setTva($questionForm->getTva());
+                        $vente->setTotalHT($questionForm->getTotalHT());
+                        $vente->setPuTTC($questionForm->getPuTTC());
+                        $vente->setUser($this->getUser());
+                        $vente->setBls($bl);
+                        $em->persist($vente);
+                        $em->flush();
+
+
+
+                }
+
+            }
+
+
 
             $em = $this->getDoctrine()->getManager();
             $suivi = new SuiviFacts();
@@ -575,10 +627,18 @@ class FacturesController extends Controller
             $printer -> close();
 
             */
+
+
+
+
             return $this->redirectToRoute('admin_factures_index');
 
 
+
+
         }
+
+
 
         if($parametres->getParamGestion()->getGaleriephotos() == 'activer'){
             return $this->render('factures/newgalerie.html.twig', array(
