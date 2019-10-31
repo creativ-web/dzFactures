@@ -1,0 +1,151 @@
+.info {
+
+    width: 100%;
+    color: #333333;
+}
+#logo{
+    width: 430px;
+}
+
+#seller{
+    width: 430px;
+    color: #333333;
+    font-size: 13px;
+}
+#buyer{
+    width: 100%;
+    color: #333333;
+    font-weight: bold;
+    font-size: 13px;
+    font-family: Arial;
+}
+
+#document_type{
+    font-weight: bold;
+}
+
+p{padding-bottom: 4px;
+    margin: 0;}
+
+
+
+@media all{
+
+    /* TABLE WITH PRODUCTS */
+    th.width0,
+    td.width0{width:1%;}
+    th.width1,
+    td.width1{width:2%;}
+    th.width2,
+    td.width2{width:5%;}
+    th.width3,
+    td.width3{width:7%;}
+    th.width4,
+    td.width4{width:25%;}
+
+    .main_inv_table th, .advanced_header_titles th {
+        background-color: #DDDDDD;
+        border-bottom: 1px solid #DDDDDD;
+        border-right: 1px solid #FFFFFF;
+        color: #000000;
+        vertical-align: middle;
+    }
+
+    .main_inv_table th:first-of-type, #rel_adv_table th:first-of-type {border-left: 1px solid #DDDDDD;}
+    .main_inv_table th:last-of-type, #rel_adv_table th:last-of-type {border-right: 1px solid #DDDDDD;}
+    table.main_inv_table .no_border td {border:0;}
+    table.main_inv_table td {
+        border:1px solid #DDDDDD;
+        vertical-align: top;
+    }
+
+    .main_inv_table td,
+    .main_inv_table th,
+    #positions_summary td {
+        padding:2px 5px;
+    }
+
+
+    /* ------------------------------------------------- */
+
+
+    /* TABLE WOTH TOTALS */
+    table.to_right{width:100%;}
+    table.to_right th{text-align:right;}
+    table.to_right td{width:15%;text-align:right;}
+    .totals_inv_table td, .totals_inv_table th {padding:1px 5px;}
+    .totals_inv_table {
+        margin-top: 0.5em;
+    }
+
+
+
+    /* ------------------------------------------------- */
+
+
+    /* HELPERS */
+    .text_center {text-align:center;}
+    .text_left {text-align:left;}
+    .text_right {text-align:right;}
+    .number,
+    .digit {white-space:nowrap;text-align:right;}
+    .nowrap, .no_wrap {white-space:nowrap;}
+    .nowrap-lines {white-space: pre;}
+    .hidden {display:none;}
+    .full_width, .full-width {width:100%;}
+    .half_width {width:50%;}
+    .no_border {border:0;}
+    .no-page-break, .nobreak {
+        page-break-inside: avoid !important;
+    }
+
+
+
+    #rel_adv_table {
+        width: 100%;
+        margin-top: 0.35em;
+    }
+    #rel_adv_table th {
+        border-right: 1px solid #FFFFFF;
+    }
+    #rel_adv_table th:last-of-type {
+        border-right: 1px solid #DDDDDD;
+    }
+
+    #corrected_content th,
+    #corrected_content td {
+        width: 50%;
+        vertical-align: top;
+        text-align: left;
+    }
+
+    #corrected_content th {
+        text-align: center;
+    }
+
+
+
+    #name_col,
+    .name_col {
+        text-align: left;
+    }
+
+
+}
+
+
+.totals_inv_table{
+    width: 1000px;
+    padding-left: 490px;
+}
+
+#invoice_signatures{
+    padding-top: 30px;
+    padding-left: 150px;
+    font-weight: bold;
+}
+
+#description_footer{
+    font-size: 11px;
+
+}
