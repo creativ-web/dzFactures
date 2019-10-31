@@ -1,0 +1,37 @@
+admin_achats_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Achats:index" }
+    methods:  GET
+
+admin_achats_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Achats:show" }
+    methods:  GET
+
+admin_achats_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Achats:new" }
+    methods:  [GET, POST]
+
+admin_achats_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Achats:edit" }
+    methods:  [GET, POST]
+
+admin_achats_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Achats:delete" }
+    methods:  DELETE
+
+
+
+admin_achats_cttc:
+    path:     /cttc/{ht}/{tvaid}
+    defaults: { _controller: CommandesBundle:Achats:cttc }
+    options:
+                expose: true
+admin_achats_cht:
+    path:     /cht/{ttc}/{tvaid}
+    defaults: { _controller: CommandesBundle:Achats:cht }
+    options:
+                expose: true

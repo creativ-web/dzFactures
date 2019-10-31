@@ -1,0 +1,49 @@
+admin_pis_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Pis:index" }
+    methods:  GET
+
+admin_pis_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Pis:show" }
+    methods:  GET
+
+admin_pis_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Pis:new" }
+    methods:  [GET, POST]
+
+admin_pis_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Pis:edit" }
+    methods:  [GET, POST]
+
+admin_pis_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Pis:delete" }
+    methods:  DELETE
+
+admin_pis_prod:
+    path:     /prod/{prod}/{qte}/{tva}/{tva2}
+    defaults: { _controller: CommandesBundle:Pis:prod }
+    options:
+                expose: true
+
+admin_pis_qte:
+    path:     /qte/{qte}/{pu}/{pua}/{tva}/{tva2}
+    defaults: { _controller: CommandesBundle:Pis:qte }
+    options:
+                expose: true
+
+admin_pis_getacheteur:
+    path:     /acheteur/{acheteur}
+    defaults: { _controller: CommandesBundle:Pis:acheteur }
+    options:
+                expose: true
+
+
+admin_pis_getuser:
+    path:     /user/{user}
+    defaults: { _controller: CommandesBundle:Pis:user }
+    options:
+                expose: true

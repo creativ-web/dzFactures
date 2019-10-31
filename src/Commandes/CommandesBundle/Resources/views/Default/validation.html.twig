@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="right_col" role="main">
+
+    <div class="">
+        <div class="page-title">
+
+
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Commande <small><a href="{{ path('panier') }}">Retour au panier</a></small></h2>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+
+                        <section class="content invoice">
+                            <!-- title row -->
+                            <div class="row">
+                                <div class="col-xs-12 invoice-header">
+
+                                    <h1>
+                                        <img class="scale-with-grid" src="{{ asset('images/logo.png') }}" alt="ceativ-dz" style="" >
+                                        <small class="pull-right">Date: {{ commande.date|date('d/m/20y') }}</small>
+                                    </h1>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- info row -->
+                            <div class="row invoice-info">
+                                <div class="col-sm-4 invoice-col">
+
+                                    À
+                                    <address>
+                                        <strong>Sarl Creativ Web</strong>
+                                        <br>12 Rue Hail El Moudjahidin
+                                        <br>Oran, 31000
+                                        <br>Tél: +213 (0) 541 93 41 77
+                                        <br>Email: Contact@creativ-dz.com
+                                    </address>
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-sm-4 invoice-col">
+                                    De
+                                    <address>
+                                        <strong>Sarl Creativ Web</strong>
+                                        <br>12 Rue Hail El Moudjahidin
+                                        <br>Oran, 31000
+                                        <br>Tél: +213 (0) 541 93 41 77
+                                        <br>Email:
+                                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                                            {{  app.user.email }}
+                                        {% endif %}
+                                    </address>
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-sm-4 invoice-col">
+
+                                    <b>Commande #007612</b>
+
+                                    <br>
+                                    <br>
+                                    <b>Order ID:</b> 4F3S8J
+                                    <br>
+                                    <b>Payment Due:</b> 2/22/2014
+                                    <br>
+                                    <b>Account:</b> 968-34567
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+
+                            <!-- Table row -->
+                            <div class="row">
+                                <div class="col-xs-12 table">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 5%;">Quantité</th>
+                                            <th style="width: 20%;">Produit</th>
+
+
+
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                 {% for produit in commande.commande.produit %}
+                                        <tr>
+                                            <td>{{ produit.quantite }}</td>
+                                            <td>{{ produit.reference }}</td>
+
+                                        </tr>
+                                 {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+
+
+
+                            <!-- this row will not appear when printing -->
+                            <div class="row no-print">
+                                <div class="col-xs-12">
+                                    <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Imprimer</button>
+
+
+
+                                    <form action="{{ path('validationCommande', { 'id' : commande.id }) }}" method="POST"/>
+                                    <input name="token" type="hidden" value="{{ commande.commande.token }}" />
+                                    <input name="date" type="hidden" value="{{ commande.date|date('dmyhms') }}" />
+                                    <button type="submit" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Commander</button>
+                                    </form>
+
+
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!-- /page content -->
+    {% endblock %}

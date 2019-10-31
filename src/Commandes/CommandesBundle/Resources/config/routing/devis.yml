@@ -1,0 +1,96 @@
+admin_devis_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Devis:index" }
+    methods:  [GET, POST]
+
+admin_devis_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Devis:show" }
+    methods:  GET
+
+admin_devis_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Devis:new" }
+    methods:  [GET, POST]
+
+admin_devis_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Devis:edit" }
+    methods:  [GET, POST]
+
+admin_devis_delete:
+    path:     /{devi}/delete
+    defaults: { _controller: "CommandesBundle:Devis:delete" }
+    methods:  GET
+
+admin_devis_getuser:
+    path:     /user/{user}
+    defaults: { _controller: CommandesBundle:Devis:user }
+    options:
+                expose: true
+
+admin_devis_getacheteur:
+    path:     /acheteur/{acheteur}
+    defaults: { _controller: CommandesBundle:Devis:acheteur }
+    options:
+                expose: true
+admin_devis_prod:
+    path:     /prod/{prod}/{qte}/{tva}/{reduction}
+    defaults: { _controller: CommandesBundle:Devis:prod }
+    options:
+                expose: true
+admin_devis_qte:
+    path:     /qte/{qte}/{pu}/{tva}/{totalht}/{reduction}
+    defaults: { _controller: CommandesBundle:Devis:qte }
+    options:
+                expose: true
+admin_devis_datalist:
+    path:     /datalist/
+    defaults: { _controller: CommandesBundle:Devis:datalist }
+    options:
+                expose: true
+
+
+admin_devis_etat:
+    path:     /devis/{id}/{etat}/{ttc}
+    defaults: { _controller: CommandesBundle:Devis:etat }
+    options:
+                expose: true
+
+
+admin_devis_pdf:
+    path:     /{id}/pdf
+    defaults: { _controller: "CommandesBundle:Devis:pdf" }
+    methods:  [GET, POST]
+
+admin_devis_allpdf:
+    path:     /allpdf/{type}/{periode}/{etat}/{zone}/{du}/{au}/{mot}
+    defaults: { _controller: "CommandesBundle:Devis:allpdf" }
+    methods:  [GET, POST]
+
+admin_devis_envois:
+    path:     /{id}/envois
+    defaults: { _controller: "CommandesBundle:Devis:envois" }
+    methods:  [GET, POST]
+
+
+admin_devis_getAllprods:
+    path:     /produit
+    defaults: { _controller: CommandesBundle:Devis:autocomplete }
+    methods:  [GET, POST]
+    options:
+                expose: true
+
+
+admin_devis_getAcheteur:
+    path:     /Acheteur
+    defaults: { _controller: CommandesBundle:Devis:acheteurcomplete }
+    methods:  [GET, POST]
+    options:
+                expose: true
+
+admin_devis_getdep:
+    path:     /dep/{dep}
+    defaults: { _controller: CommandesBundle:Devis:dep }
+    options:
+                expose: true

@@ -1,0 +1,24 @@
+admin_tables_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Tables:index" }
+    methods:  GET
+
+admin_tables_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Tables:show" }
+    methods:  GET
+
+admin_tables_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Tables:new" }
+    methods:  [GET, POST]
+
+admin_tables_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Tables:edit" }
+    methods:  [GET, POST]
+
+admin_tables_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Tables:delete" }
+    methods:  DELETE

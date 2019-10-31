@@ -1,0 +1,1014 @@
+<style>
+    @page {
+
+
+        margin-top: 1.54cm;
+        margin-bottom: 1.54cm;
+        margin-left: 1.175cm;
+        margin-right: 1.175cm;
+        font-family: arial,sans-serif,tahoma !important;
+        odd-header-name: html_myHeader1;
+        even-header-name: html_myHeader2;
+        odd-footer-name: html_myFooter1;
+        even-footer-name: html_myFooter2;
+
+    }
+    .newpage {
+        page-break-before: right;
+        page: newpage;
+
+    }
+    #seller_sign{
+        font-family: arial,sans-serif,tahoma !important;
+    }
+
+    .info {
+
+        width: 100%;
+
+        font-family: arial,sans-serif,tahoma !important;
+    }
+    #logo{
+        width: 430px;
+        font-family: arial,sans-serif,tahoma !important;
+    }
+
+    #seller{
+        width: 430px;
+        font-size: 14px;
+        font-family: arial,sans-serif,tahoma !important;
+    }
+    #buyer{
+        width: 100%;
+
+        font-weight: bold;
+        font-size: 14px;
+        font-family: arial,sans-serif,tahoma !important;
+    }
+    #document_type{
+        font-weight: bold;
+    }
+    p{padding-bottom: 4px;
+        margin: 0;}
+
+    @media all{
+        /* TABLE WITH PRODUCTS */
+
+        .main_inv_table th, .advanced_header_titles th {
+            background-color: #DDDDDD;
+            border-bottom: 1px solid #DDDDDD;
+            border-right: 1px solid #FFFFFF;
+            color: #000000;
+            vertical-align: middle;
+        }
+        .main_inv_table th:first-of-type, #rel_adv_table th:first-of-type {border-left: 1px solid #DDDDDD;}
+        .main_inv_table th:last-of-type, #rel_adv_table th:last-of-type {border-right: 1px solid #DDDDDD;}
+        table.main_inv_table .no_border td {border:0;}
+        table.main_inv_table td {
+            border:1px solid #DDDDDD;
+            vertical-align: top;
+        }
+        .main_inv_table td,
+        .main_inv_table th,
+        #positions_summary td {
+            padding:2px 5px;
+        }
+        /* TABLE WOTH TOTALS */
+        table.to_right{width:100%;}
+        table.to_right th{text-align:right;}
+        table.to_right td{width:15%;text-align:right;}
+        .totals_inv_table td, .totals_inv_table th {padding:1px 5px;}
+        .totals_inv_table {
+            margin-top: 0.5em;
+        }
+        /* HELPERS */
+        .text_center {text-align:center;}
+        .text_left {text-align:left;}
+        .text_right {text-align:right;}
+        .number,
+        .digit {white-space:nowrap;text-align:right;}
+        .nowrap, .no_wrap {white-space:nowrap;}
+        .nowrap-lines {white-space: pre;}
+        .hidden {display:none;}
+        .full_width, .full-width {width:100%;}
+        .half_width {width:50%;}
+        .no_border {border:0;}
+        .no-page-break, .nobreak {
+            page-break-inside: avoid !important;
+        }
+        #rel_adv_table {
+            width: 100%;
+            margin-top: 0.35em;
+        }
+        #rel_adv_table th {
+            border-right: 1px solid #FFFFFF;
+        }
+        #rel_adv_table th:last-of-type {
+            border-right: 1px solid #DDDDDD;
+        }
+
+        #corrected_content th,
+        #corrected_content td {
+            width: 50%;
+            vertical-align: top;
+            text-align: left;
+        }
+
+        #corrected_content th {
+            text-align: center;
+        }
+
+
+
+        #name_col,
+        .name_col {
+            text-align: left;
+        }
+
+
+    }
+
+    #invoice_signatures{
+        padding-top: 30px;
+        padding-left: 150px;
+        font-weight: bold;
+    }
+    #description_footer{
+        font-size: 11px;
+
+    }
+    #pos_table{
+        font-size: 13px;
+        font-family: arial,sans-serif,tahoma !important;
+
+    }
+    table{
+        font-family: arial,sans-serif,tahoma !important;
+
+    }
+    #summary{
+        font-family: arial,sans-serif,tahoma !important;
+        font-size: 13px;
+    }
+</style>
+<html>
+<body>
+{% for facture in factures %}
+
+ <div class="newpage">
+     <page>
+         <table>
+             <tr>
+                 <td width="400">
+                     <div id="logo">
+                         <div id="logo_place">
+                             {% for logo in logo %}
+                                 <img src="{{ asset('imgProduit/') }}{{ logo.path }}" width="165" height="53">
+                             {% endfor %}
+                         </div>
+                     </div>
+                 </td>
+                 <td>
+                     <div class="info">
+                         <p id="document_id"><span id="document_type">Facture N° </span><span id="document_number">{{ facture.nf }}</span></p>
+                         <p id="document_date"><span>Date de création : </span> {{ facture.datecreation|date('d-m-Y') }}</p>
+                         <p id="document_selldate"><span>{{ facture.additionnelle }} :</span> {{ facture.dateadd|date('d-m-Y')  }}</p>
+                     </div>
+                 </td>
+             </tr>
+         </table>
+         <br><br><br>
+         <table>
+             <tr>
+                 <td width="400">
+                     <div id="seller">
+                         <p >{{ facture.departements.nom }}</p>
+                         <p > {{ facture.departements.adresse}} {{ facture.departements.codepostal}}, {{ facture.departements.ville}}</p>
+                         <p><span ><span>{{ facture.departements.nifselect}}:</span> {{  facture.departements.nif }}</span></p>
+                         <p><span>{{ facture.departements.email}} </span> &nbsp;&nbsp; <span class="nowrap">{{ facture.departements.siteweb}} </span></p>
+                         <p><span><span>Tél :</span> {{ facture.departements.telephone}}</span> &nbsp;&nbsp; <span class="nowrap"><span>Fax :</span> {{ facture.departements.fax}}</span></p>
+                     </div>
+                 </td>
+                 <td>
+                     <div id="buyer">
+                         <p>{{ facture.acheteur.nom}}</p>
+                         <p class="buyer_address">{{ facture.acheteur.adresse}}<br>{{ facture.acheteur.codepostal}} {{ facture.acheteur.pays}}, {{ facture.acheteur.ville}}</p>
+                         <p class="buyer_taxno"><span>{{ facture.acheteur.nifselect}} </span>{{ facture.acheteur.nif}}</p>
+                     </div>
+                 </td>
+             </tr>
+         </table>
+         <br><br><br><br>
+         <table class="main_inv_table full_width" id="pos_table">
+             <thead>
+             <tr>
+                 <th class="width4 text_center name_col" id="name_col">Désignation</th>
+                 <th class="width2 text_center code_col" id="code_col">Réf.</th>
+                 <th class="width2 text_center no_wrap quantity_col" id="quantity_col">Qté</th>
+                 <th class="width3 text_center no_wrap price_net_col" id="price_net_col">PU HT</th>
+                 <th class="width3 text_center no_wrap  total_price_net_col" id="total_price_net_col">Total HT</th>
+                 <th class="width1 text_center no_wrap tax_col" id="tax_col">TVA</th>
+                 <th class="width3 text_center tax_value_col" id="tax_value_col">Montant TVA</th>
+                 <th class="width3 no_wrap text_center total_price_gross_col" id="total_price_gross_col">Total TTC</th>
+             </tr>
+             </thead>
+             <tbody>
+             {% set sumHT = 0 %}
+             {% set sumTTC = 0 %}
+             {% set sumTVA = 0 %}
+             {% for produit in facture.ventes %}
+                 {% set TVA = produit.tva.valeur/100 * produit.totalHT %}
+                 {% set sumHT = sumHT + produit.totalHT %}
+                 {% set sumTTC = sumTTC + produit.totalTTC %}
+                 {% set sumTVA = sumTVA + TVA %}
+                 <tr>
+                     <td class="name_col">
+                         <strong>{{ produit.name }}</strong>
+                         <span id="product_description_1" class="item_description"></span>
+                     </td>
+                     <td class="code_col">{{ produit.reference }}</td>
+                     <td class="text_right quantity_col">{{ produit.qte }}</td>
+                     <td class="text_right no_wrap number price_net_col">{{ produit.puHT|number_format(2, ',', ' ') }}</td>
+                     <td class="text_right no_wrap number total_price_net_col">{{ produit.totalHT|number_format(2, ',', ' ') }}</td>
+                     <td class="text_right no_wrap number tax_col">{{ produit.tva }}%</td>
+                     <td class="text_right number no_wrap tax_value_col">{{ TVA|number_format(2, ',', ' ') }}</td>
+                     <td class="text_right no_wrap number total_price_gross_col">{{ produit.totalTTC|number_format(2, ',', ' ') }}</td>
+                 </tr>
+             {% endfor %}
+             {% for ligne in facture.lignes %}
+
+
+                 <tr>
+                     <td colspan="8" class="text_left text_separator">{{ ligne.text }}</td>
+
+                 </tr>
+             {% endfor %}
+             <tr class="clean no_border summary_row" style="border: none;">
+                 <td class="empty nr_col footer total" style="border: none;"></td>
+                 <td class="empty name_col footer total" style="border: none;"></td>
+                 <td class="empty code_col footer total" style="border: none;"></td>
+                 <td class="text_right no_border total footer total" style="border: none;"><strong>Total:  </strong></td>
+                 <td class="text_right number total_price_net_col footer total"style="border: none;">{{ sumHT|number_format(2, ',', ' ') }}</td>
+                 <td class="tax_col footer total" style="border: none;">&nbsp;</td>
+                 <td class="text_right number tax_value_col footer total" style="border: none;">{{ sumTVA|number_format(2, ',', ' ') }}</td>
+                 <td class="width3 text_right number total_price_gross_col footer total" style="border: none;">{{ sumTTC|number_format(2, ',', ' ') }}</td>
+             </tr>
+
+             </tbody>
+         </table>
+         <table class="clean to_right totals_inv_table" width="100%" style="font-size: 13px;">
+             <tbody><tr>
+                 <th>
+                     Total HT
+                 </th>
+                 <td class="number">
+                     {{ sumHT|number_format(2, ',', ' ') }} DA
+                 </td>
+             </tr>
+             <tr>
+                 <th>
+                     Montant TVA
+                 </th>
+                 <td class="number">
+                     {{ sumTVA|number_format(2, ',', ' ') }} DA
+                 </td>
+             </tr>
+             <tr>
+                 <th>
+                     Total TTC
+                 </th>
+                 <td class="number">
+                     {{ sumTTC|number_format(2, ',', ' ') }} DA
+                 </td>
+             </tr>
+             </tbody></table>
+         <div class="no-page-break">
+             <div id="summary">
+                 <p id="to_pay">
+                     À payer :
+                     {% set apayer =  sumTTC  -  facture.montantpaye  %}
+                     <span id="to_pay_amount"> {{ apayer }}  DA</span>
+                     <span class="hidden vosfactures3_visible">  TTC
+			</span></p>
+                 <p><strong>Montant payé :</strong> {{ facture.montantpaye }} DA</p>
+                 <p><strong>Mode de règlement :</strong> {{ facture.moderegle }}</p>
+                 <p><strong>Date limite de règlement :</strong> {{ facture.dateregle }} </p>
+             </div>
+             <div id="invoice_signatures">
+                 <div id="seller_sign">
+                     <p><span>Nom du vendeur</span></p>
+                     <p>{{ facture.nomvendeur }}</p>
+                 </div>
+                 <div id="buyer_sign"></div>
+             </div>
+         </div>
+
+     </page>
+     <htmlpagefooter name="myFooter1" style="display:none" class="newpage">
+
+             <table width="100%">
+                 <tr>
+
+                     <td  align="left" style="text-align: left;font-size: 11px; font-weight: normal;">
+                         Facture <br>
+                         Page {PAGENO}/{nbpg}
+                     </td>
+                     <td align="center" style=" font-size: 11px; font-weight: normal;">
+                         {{ facture.departements.nom }},
+                         {{ facture.departements.adresse }}, {{ facture.departements.ville }},
+
+                         {{ facture.departements.codepostal }}
+                     </td>
+                 </tr>
+             </table>
+
+     </htmlpagefooter>
+
+ </div>
+
+
+
+
+{% endfor %}
+
+{% for proforma in proformas %}
+
+    <div class="newpage">
+        <page>
+            <table>
+                <tr>
+                    <td width="400">
+                        <div id="logo">
+                            <div id="logo_place">
+                                {% for logo in logo %}
+                                    <img src="{{ asset('imgProduit/') }}{{ logo.path }}">
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="info">
+                            <p id="document_id"><span id="document_type">Facture Proforma N° </span><span id="document_number">{{ proforma.nf }}</span></p>
+                            <p id="document_date"><span>Date de création : </span> {{ proforma.datecreation|date('d-m-Y') }}</p>
+                            <p id="document_selldate"><span>{{ proforma.additionnelle }} :</span> {{ proforma.dateadd|date('d-m-Y')  }}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br><br><br>
+            <table>
+                <tr>
+                    <td width="400">
+                        <div id="seller">
+                            <p >{{ proforma.departements.nom }}</p>
+                            <p > {{ proforma.departements.adresse}} {{ proforma.departements.codepostal}}, {{ proforma.departements.ville}}</p>
+                            <p><span ><span>{{ proforma.departements.nifselect}}:</span> {{  proforma.departements.nif }}</span></p>
+                            <p><span>{{ proforma.departements.email}} </span> &nbsp;&nbsp; <span class="nowrap">{{ proforma.departements.siteweb}} </span></p>
+                            <p><span><span>Tél :</span> {{ proforma.departements.telephone}}</span> &nbsp;&nbsp; <span class="nowrap"><span>Fax :</span> {{ proforma.departements.fax}}</span></p>
+                        </div>
+                    </td>
+                    <td>
+                        <div id="buyer">
+                            <p>{{ proforma.acheteur.nom}}</p>
+                            <p class="buyer_address">{{ proforma.acheteur.adresse}}<br>{{ proforma.acheteur.codepostal}} {{ proforma.acheteur.pays}}, {{ proforma.acheteur.ville}}</p>
+                            <p class="buyer_taxno"><span>{{ proforma.acheteur.nifselect}} </span>{{ proforma.acheteur.nif}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br><br><br><br>
+            <table class="main_inv_table full_width" id="pos_table">
+                <thead>
+                <tr>
+                    <th class="width4 text_center name_col" id="name_col">Désignation</th>
+                    <th class="width2 text_center code_col" id="code_col">Réf.</th>
+                    <th class="width2 text_center no_wrap quantity_col" id="quantity_col">Qté</th>
+                    <th class="width3 text_center no_wrap price_net_col" id="price_net_col">PU HT</th>
+                    <th class="width3 text_center no_wrap  total_price_net_col" id="total_price_net_col">Total HT</th>
+                    <th class="width1 text_center no_wrap tax_col" id="tax_col">TVA</th>
+                    <th class="width3 text_center tax_value_col" id="tax_value_col">Montant TVA</th>
+                    <th class="width3 no_wrap text_center total_price_gross_col" id="total_price_gross_col">Total TTC</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set sumHT = 0 %}
+                {% set sumTTC = 0 %}
+                {% set sumTVA = 0 %}
+                {% for produit in proforma.ventes %}
+                    {% set TVA = produit.tva.valeur/100 * produit.totalHT %}
+                    {% set sumHT = sumHT + produit.totalHT %}
+                    {% set sumTTC = sumTTC + produit.totalTTC %}
+                    {% set sumTVA = sumTVA + TVA %}
+                    <tr>
+                        <td class="name_col">
+                            <strong>{{ produit.name }}</strong>
+                            <span id="product_description_1" class="item_description"></span>
+                        </td>
+                        <td class="code_col">{{ produit.reference }}</td>
+                        <td class="text_right quantity_col">{{ produit.qte }}</td>
+                        <td class="text_right no_wrap number price_net_col">{{ produit.puHT|number_format(2, ',', ' ') }}</td>
+                        <td class="text_right no_wrap number total_price_net_col">{{ produit.totalHT|number_format(2, ',', ' ') }}</td>
+                        <td class="text_right no_wrap number tax_col">{{ produit.tva }}%</td>
+                        <td class="text_right number no_wrap tax_value_col">{{ TVA|number_format(2, ',', ' ') }}</td>
+                        <td class="text_right no_wrap number total_price_gross_col">{{ produit.totalTTC|number_format(2, ',', ' ') }}</td>
+                    </tr>
+                {% endfor %}
+                <tr class="clean no_border summary_row" style="border: none;">
+                    <td class="empty nr_col footer total" style="border: none;"></td>
+                    <td class="empty name_col footer total" style="border: none;"></td>
+                    <td class="empty code_col footer total" style="border: none;"></td>
+                    <td class="text_right no_border total footer total" style="border: none;"><strong>Total:  </strong></td>
+                    <td class="text_right number total_price_net_col footer total"style="border: none;">{{ sumHT|number_format(2, ',', ' ') }}</td>
+                    <td class="tax_col footer total" style="border: none;">&nbsp;</td>
+                    <td class="text_right number tax_value_col footer total" style="border: none;">{{ sumTVA|number_format(2, ',', ' ') }}</td>
+                    <td class="width3 text_right number total_price_gross_col footer total" style="border: none;">{{ sumTTC|number_format(2, ',', ' ') }}</td>
+                </tr>
+
+                </tbody>
+            </table>
+            <table class="clean to_right totals_inv_table" width="100%" style="font-size: 13px;">
+                <tbody><tr>
+                    <th>
+                        Total HT
+                    </th>
+                    <td class="number">
+                        {{ sumHT|number_format(2, ',', ' ') }} DA
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Montant TVA
+                    </th>
+                    <td class="number">
+                        {{ sumTVA|number_format(2, ',', ' ') }} DA
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Total TTC
+                    </th>
+                    <td class="number">
+                        {{ sumTTC|number_format(2, ',', ' ') }} DA
+                    </td>
+                </tr>
+                </tbody></table>
+            <div class="no-page-break">
+                <div id="summary">
+                    <p id="to_pay">
+                        À payer :
+                        {% set apayer =  sumTTC  -  proforma.montantpaye  %}
+                        <span id="to_pay_amount"> {{ apayer }}  DA</span>
+                        <span class="hidden vosfactures3_visible">  TTC
+			</span></p>
+                    <p><strong>Montant payé :</strong> {{ proforma.montantpaye }} DA</p>
+                    <p><strong>Mode de règlement :</strong> {{ proforma.moderegle }}</p>
+                    <p><strong>Date limite de règlement :</strong> {{ proforma.dateregle }} </p>
+                </div>
+                <div id="invoice_signatures">
+                    <div id="seller_sign">
+                        <p><span>Nom du vendeur</span></p>
+                        <p>{{ proforma.nomvendeur }}</p>
+                    </div>
+                    <div id="buyer_sign"></div>
+                </div>
+            </div>
+
+        </page>
+        <htmlpagefooter name="myFooter1" style="display:none" class="newpage">
+
+            <table width="100%">
+                <tr>
+
+                    <td  align="left" style="text-align: left;font-size: 11px; font-weight: normal;">
+                        Proforma <br>
+                        Page {PAGENO}/{nbpg}
+                    </td>
+                    <td align="center" style=" font-size: 11px; font-weight: normal;">
+                        {{ proforma.departements.nom }},
+                        {{ proforma.departements.adresse }}, {{ proforma.departements.ville }},
+
+                        {{ proforma.departements.codepostal }}
+                    </td>
+                </tr>
+            </table>
+
+        </htmlpagefooter>
+
+    </div>
+
+
+
+
+{% endfor %}
+
+{% for recu in recus %}
+
+    <div class="newpage">
+        <page>
+            <table>
+                <tr>
+                    <td width="400">
+                        <div id="logo">
+                            <div id="logo_place">
+                                {% for logo in logo %}
+                                    <img src="{{ asset('imgProduit/') }}{{ logo.path }}">
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="info">
+                            <p id="document_id"><span id="document_type">Reçu N° </span><span id="document_number">{{ recu.nf }}</span></p>
+                            <p id="document_date"><span>Date de création : </span> {{ recu.datecreation|date('d-m-Y') }}</p>
+                            <p id="document_selldate"><span>{{ recu.additionnelle }} :</span> {{ recu.dateadd|date('d-m-Y')  }}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br><br><br>
+            <table>
+                <tr>
+                    <td width="400">
+                        <div id="seller">
+                            <p >{{ recu.departements.nom }}</p>
+                            <p > {{ recu.departements.adresse}} {{ recu.departements.codepostal}}, {{ recu.departements.ville}}</p>
+                            <p><span ><span>{{ recu.departements.nifselect}}:</span> {{  recu.departements.nif }}</span></p>
+                            <p><span>{{ recu.departements.email}} </span> &nbsp;&nbsp; <span class="nowrap">{{ recu.departements.siteweb}} </span></p>
+                            <p><span><span>Tél :</span> {{ recu.departements.telephone}}</span> &nbsp;&nbsp; <span class="nowrap"><span>Fax :</span> {{ recu.departements.fax}}</span></p>
+                        </div>
+                    </td>
+                    <td>
+                        <div id="buyer">
+                            <p>{{ recu.acheteur.nom}}</p>
+                            <p class="buyer_address">{{ recu.acheteur.adresse}}<br>{{ recu.acheteur.codepostal}} {{ recu.acheteur.pays}}, {{ recu.acheteur.ville}}</p>
+                            <p class="buyer_taxno"><span>{{ recu.acheteur.nifselect}} </span>{{ recu.acheteur.nif}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br><br><br><br>
+            <table class="main_inv_table full_width" id="pos_table">
+                <thead>
+                <tr>
+                    <th class="width4 text_center name_col" id="name_col">Désignation</th>
+                    <th class="width2 text_center code_col" id="code_col">Réf.</th>
+                    <th class="width2 text_center no_wrap quantity_col" id="quantity_col">Qté</th>
+                    <th class="width3 text_center no_wrap price_net_col" id="price_net_col">PU HT</th>
+                    <th class="width3 text_center no_wrap  total_price_net_col" id="total_price_net_col">Total HT</th>
+                    <th class="width1 text_center no_wrap tax_col" id="tax_col">TVA</th>
+                    <th class="width3 text_center tax_value_col" id="tax_value_col">Montant TVA</th>
+                    <th class="width3 no_wrap text_center total_price_gross_col" id="total_price_gross_col">Total TTC</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set sumHT = 0 %}
+                {% set sumTTC = 0 %}
+                {% set sumTVA = 0 %}
+                {% for produit in recu.ventes %}
+                    {% set TVA = produit.tva.valeur/100 * produit.totalHT %}
+                    {% set sumHT = sumHT + produit.totalHT %}
+                    {% set sumTTC = sumTTC + produit.totalTTC %}
+                    {% set sumTVA = sumTVA + TVA %}
+                    <tr>
+                        <td class="name_col">
+                            <strong>{{ produit.name }}</strong>
+                            <span id="product_description_1" class="item_description"></span>
+                        </td>
+                        <td class="code_col">{{ produit.reference }}</td>
+                        <td class="text_right quantity_col">{{ produit.qte }}</td>
+                        <td class="text_right no_wrap number price_net_col">{{ produit.puHT|number_format(2, ',', ' ') }}</td>
+                        <td class="text_right no_wrap number total_price_net_col">{{ produit.totalHT|number_format(2, ',', ' ') }}</td>
+                        <td class="text_right no_wrap number tax_col">{{ produit.tva }}%</td>
+                        <td class="text_right number no_wrap tax_value_col">{{ TVA|number_format(2, ',', ' ') }}</td>
+                        <td class="text_right no_wrap number total_price_gross_col">{{ produit.totalTTC|number_format(2, ',', ' ') }}</td>
+                    </tr>
+                {% endfor %}
+                <tr class="clean no_border summary_row" style="border: none;">
+                    <td class="empty nr_col footer total" style="border: none;"></td>
+                    <td class="empty name_col footer total" style="border: none;"></td>
+                    <td class="empty code_col footer total" style="border: none;"></td>
+                    <td class="text_right no_border total footer total" style="border: none;"><strong>Total:  </strong></td>
+                    <td class="text_right number total_price_net_col footer total"style="border: none;">{{ sumHT|number_format(2, ',', ' ') }}</td>
+                    <td class="tax_col footer total" style="border: none;">&nbsp;</td>
+                    <td class="text_right number tax_value_col footer total" style="border: none;">{{ sumTVA|number_format(2, ',', ' ') }}</td>
+                    <td class="width3 text_right number total_price_gross_col footer total" style="border: none;">{{ sumTTC|number_format(2, ',', ' ') }}</td>
+                </tr>
+
+                </tbody>
+            </table>
+            <table class="clean to_right totals_inv_table" width="100%" style="font-size: 13px;">
+                <tbody><tr>
+                    <th>
+                        Total HT
+                    </th>
+                    <td class="number">
+                        {{ sumHT|number_format(2, ',', ' ') }} DA
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Montant TVA
+                    </th>
+                    <td class="number">
+                        {{ sumTVA|number_format(2, ',', ' ') }} DA
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Total TTC
+                    </th>
+                    <td class="number">
+                        {{ sumTTC|number_format(2, ',', ' ') }} DA
+                    </td>
+                </tr>
+                </tbody></table>
+            <div class="no-page-break">
+                <div id="summary">
+                    <p id="to_pay">
+                        À payer :
+                        {% set apayer =  sumTTC  -  recu.montantpaye  %}
+                        <span id="to_pay_amount"> {{ apayer }}  DA</span>
+                        <span class="hidden vosfactures3_visible">  TTC
+			</span></p>
+                    <p><strong>Montant payé :</strong> {{ recu.montantpaye }} DA</p>
+                    <p><strong>Mode de règlement :</strong> {{ recu.moderegle }}</p>
+                    <p><strong>Date limite de règlement :</strong> {{ recu.dateregle }} </p>
+                </div>
+                <div id="invoice_signatures">
+                    <div id="seller_sign">
+                        <p><span>Nom du vendeur</span></p>
+                        <p>{{ recu.nomvendeur }}</p>
+                    </div>
+                    <div id="buyer_sign"></div>
+                </div>
+            </div>
+
+        </page>
+        <htmlpagefooter name="myFooter1" style="display:none" class="newpage">
+
+            <table width="100%">
+                <tr>
+
+                    <td  align="left" style="text-align: left;font-size: 11px; font-weight: normal;">
+                        Reçu <br>
+                        Page {PAGENO}/{nbpg}
+                    </td>
+                    <td align="center" style=" font-size: 11px; font-weight: normal;">
+                        {{ recu.departements.nom }},
+                        {{ recu.departements.adresse }}, {{ recu.departements.ville }},
+
+                        {{ recu.departements.codepostal }}
+                    </td>
+                </tr>
+            </table>
+
+        </htmlpagefooter>
+
+    </div>
+
+
+
+
+{% endfor %}
+
+{% for devi in devis %}
+
+    <div class="newpage">
+        <page>
+            <table>
+                <tr>
+                    <td width="400">
+                        <div id="logo">
+                            <div id="logo_place">
+                                {% for logo in logo %}
+                                    <img src="{{ asset('imgProduit/') }}{{ logo.path }}">
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="info">
+                            <p id="document_id"><span id="document_type">Devi N° </span><span id="document_number">{{ devi.nf }}</span></p>
+                            <p id="document_date"><span>Date de création : </span> {{ devi.datecreation|date('d-m-Y') }}</p>
+                            <p id="document_selldate"><span>{{ devi.additionnelle }} :</span> {{ devi.dateadd|date('d-m-Y')  }}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br><br><br>
+            <table>
+                <tr>
+                    <td width="400">
+                        <div id="seller">
+                            <p >{{ devi.departements.nom }}</p>
+                            <p > {{ devi.departements.adresse}} {{ devi.departements.codepostal}}, {{ devi.departements.ville}}</p>
+                            <p><span ><span>{{ devi.departements.nifselect}}:</span> {{  devi.departements.nif }}</span></p>
+                            <p><span>{{ devi.departements.email}} </span> &nbsp;&nbsp; <span class="nowrap">{{ devi.departements.siteweb}} </span></p>
+                            <p><span><span>Tél :</span> {{ devi.departements.telephone}}</span> &nbsp;&nbsp; <span class="nowrap"><span>Fax :</span> {{ devi.departements.fax}}</span></p>
+                        </div>
+                    </td>
+                    <td>
+                        <div id="buyer">
+                            <p>{{ devi.acheteur.nom}}</p>
+                            <p class="buyer_address">{{ devi.acheteur.adresse}}<br>{{ devi.acheteur.codepostal}} {{ devi.acheteur.pays}}, {{ devi.acheteur.ville}}</p>
+                            <p class="buyer_taxno"><span>{{ devi.acheteur.nifselect}} </span>{{ devi.acheteur.nif}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br><br><br><br>
+            <table class="main_inv_table full_width" id="pos_table">
+                <thead>
+                <tr>
+                    <th class="width4 text_center name_col" id="name_col">Désignation</th>
+                    <th class="width2 text_center code_col" id="code_col">Réf.</th>
+                    <th class="width2 text_center no_wrap quantity_col" id="quantity_col">Qté</th>
+                    <th class="width3 text_center no_wrap price_net_col" id="price_net_col">PU HT</th>
+                    <th class="width3 text_center no_wrap  total_price_net_col" id="total_price_net_col">Total HT</th>
+                    <th class="width1 text_center no_wrap tax_col" id="tax_col">TVA</th>
+                    <th class="width3 text_center tax_value_col" id="tax_value_col">Montant TVA</th>
+                    <th class="width3 no_wrap text_center total_price_gross_col" id="total_price_gross_col">Total TTC</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set sumHT = 0 %}
+                {% set sumTTC = 0 %}
+                {% set sumTVA = 0 %}
+                {% for produit in devi.ventes %}
+                    {% set TVA = produit.tva.valeur/100 * produit.totalHT %}
+                    {% set sumHT = sumHT + produit.totalHT %}
+                    {% set sumTTC = sumTTC + produit.totalTTC %}
+                    {% set sumTVA = sumTVA + TVA %}
+                    <tr>
+                        <td class="name_col">
+                            <strong>{{ produit.name }}</strong>
+                            <span id="product_description_1" class="item_description"></span>
+                        </td>
+                        <td class="code_col">{{ produit.reference }}</td>
+                        <td class="text_right quantity_col">{{ produit.qte }}</td>
+                        <td class="text_right no_wrap number price_net_col">{{ produit.puHT|number_format(2, ',', ' ') }}</td>
+                        <td class="text_right no_wrap number total_price_net_col">{{ produit.totalHT|number_format(2, ',', ' ') }}</td>
+                        <td class="text_right no_wrap number tax_col">{{ produit.tva }}%</td>
+                        <td class="text_right number no_wrap tax_value_col">{{ TVA|number_format(2, ',', ' ') }}</td>
+                        <td class="text_right no_wrap number total_price_gross_col">{{ produit.totalTTC|number_format(2, ',', ' ') }}</td>
+                    </tr>
+                {% endfor %}
+                <tr class="clean no_border summary_row" style="border: none;">
+                    <td class="empty nr_col footer total" style="border: none;"></td>
+                    <td class="empty name_col footer total" style="border: none;"></td>
+                    <td class="empty code_col footer total" style="border: none;"></td>
+                    <td class="text_right no_border total footer total" style="border: none;"><strong>Total:  </strong></td>
+                    <td class="text_right number total_price_net_col footer total"style="border: none;">{{ sumHT|number_format(2, ',', ' ') }}</td>
+                    <td class="tax_col footer total" style="border: none;">&nbsp;</td>
+                    <td class="text_right number tax_value_col footer total" style="border: none;">{{ sumTVA|number_format(2, ',', ' ') }}</td>
+                    <td class="width3 text_right number total_price_gross_col footer total" style="border: none;">{{ sumTTC|number_format(2, ',', ' ') }}</td>
+                </tr>
+
+                </tbody>
+            </table>
+            <table class="clean to_right totals_inv_table" width="100%" style="font-size: 13px;">
+                <tbody><tr>
+                    <th>
+                        Total HT
+                    </th>
+                    <td class="number">
+                        {{ sumHT|number_format(2, ',', ' ') }} DA
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Montant TVA
+                    </th>
+                    <td class="number">
+                        {{ sumTVA|number_format(2, ',', ' ') }} DA
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Total TTC
+                    </th>
+                    <td class="number">
+                        {{ sumTTC|number_format(2, ',', ' ') }} DA
+                    </td>
+                </tr>
+                </tbody></table>
+            <div class="no-page-break">
+                <div id="summary">
+                    <p id="to_pay">
+                        À payer :
+                        {% set apayer =  sumTTC  -  devi.montantpaye  %}
+                        <span id="to_pay_amount"> {{ apayer }}  DA</span>
+                        <span class="hidden vosfactures3_visible">  TTC
+			</span></p>
+                    <p><strong>Montant payé :</strong> {{ devi.montantpaye }} DA</p>
+                    <p><strong>Mode de règlement :</strong> {{ devi.moderegle }}</p>
+                    <p><strong>Date limite de règlement :</strong> {{ devi.dateregle }} </p>
+                </div>
+                <div id="invoice_signatures">
+                    <div id="seller_sign">
+                        <p><span>Nom du vendeur</span></p>
+                        <p>{{ devi.nomvendeur }}</p>
+                    </div>
+                    <div id="buyer_sign"></div>
+                </div>
+            </div>
+
+        </page>
+        <htmlpagefooter name="myFooter1" style="display:none" class="newpage">
+
+            <table width="100%">
+                <tr>
+
+                    <td  align="left" style="text-align: left;font-size: 11px; font-weight: normal;">
+                        Devi <br>
+                        Page {PAGENO}/{nbpg}
+                    </td>
+                    <td align="center" style=" font-size: 11px; font-weight: normal;">
+                        {{ devi.departements.nom }},
+                        {{ devi.departements.adresse }}, {{ devi.departements.ville }},
+
+                        {{ devi.departements.codepostal }}
+                    </td>
+                </tr>
+            </table>
+
+        </htmlpagefooter>
+
+    </div>
+
+
+
+
+{% endfor %}
+
+{% for bdc in bdc %}
+
+    <div class="newpage">
+        <page>
+            <table>
+                <tr>
+                    <td width="400">
+                        <div id="logo">
+                            <div id="logo_place">
+                                {% for logo in logo %}
+                                    <img src="{{ asset('imgProduit/') }}{{ logo.path }}">
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="info">
+                            <p id="document_id"><span id="document_type">Bon de Commande N° </span><span id="document_number">{{ bdc.nf }}</span></p>
+                            <p id="document_date"><span>Date de création : </span> {{ bdc.datecreation|date('d-m-Y') }}</p>
+                            <p id="document_selldate"><span>{{ bdc.additionnelle }} :</span> {{ bdc.dateadd|date('d-m-Y')  }}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br><br><br>
+            <table>
+                <tr>
+                    <td width="400">
+                        <div id="seller">
+                            <p >{{ bdc.departements.nom }}</p>
+                            <p > {{ bdc.departements.adresse}} {{ bdc.departements.codepostal}}, {{ bdc.departements.ville}}</p>
+                            <p><span ><span>{{ bdc.departements.nifselect}}:</span> {{  bdc.departements.nif }}</span></p>
+                            <p><span>{{ bdc.departements.email}} </span> &nbsp;&nbsp; <span class="nowrap">{{ bdc.departements.siteweb}} </span></p>
+                            <p><span><span>Tél :</span> {{ bdc.departements.telephone}}</span> &nbsp;&nbsp; <span class="nowrap"><span>Fax :</span> {{ bdc.departements.fax}}</span></p>
+                        </div>
+                    </td>
+                    <td>
+                        <div id="buyer">
+                            <p>{{ bdc.acheteur.nom}}</p>
+                            <p class="buyer_address">{{ bdc.acheteur.adresse}}<br>{{ bdc.acheteur.codepostal}} {{ bdc.acheteur.pays}}, {{ bdc.acheteur.ville}}</p>
+                            <p class="buyer_taxno"><span>{{ bdc.acheteur.nifselect}} </span>{{ bdc.acheteur.nif}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br><br><br><br>
+            <table class="main_inv_table full_width" id="pos_table">
+                <thead>
+                <tr>
+                    <th class="width4 text_center name_col" id="name_col">Désignation</th>
+                    <th class="width2 text_center code_col" id="code_col">Réf.</th>
+                    <th class="width2 text_center no_wrap quantity_col" id="quantity_col">Qté</th>
+                    <th class="width3 text_center no_wrap price_net_col" id="price_net_col">PU HT</th>
+                    <th class="width3 text_center no_wrap  total_price_net_col" id="total_price_net_col">Total HT</th>
+                    <th class="width1 text_center no_wrap tax_col" id="tax_col">TVA</th>
+                    <th class="width3 text_center tax_value_col" id="tax_value_col">Montant TVA</th>
+                    <th class="width3 no_wrap text_center total_price_gross_col" id="total_price_gross_col">Total TTC</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set sumHT = 0 %}
+                {% set sumTTC = 0 %}
+                {% set sumTVA = 0 %}
+                {% for produit in bdc.ventes %}
+                    {% set TVA = produit.tva.valeur/100 * produit.totalHT %}
+                    {% set sumHT = sumHT + produit.totalHT %}
+                    {% set sumTTC = sumTTC + produit.totalTTC %}
+                    {% set sumTVA = sumTVA + TVA %}
+                    <tr>
+                        <td class="name_col">
+                            <strong>{{ produit.name }}</strong>
+                            <span id="product_description_1" class="item_description"></span>
+                        </td>
+                        <td class="code_col">{{ produit.reference }}</td>
+                        <td class="text_right quantity_col">{{ produit.qte }}</td>
+                        <td class="text_right no_wrap number price_net_col">{{ produit.puHT|number_format(2, ',', ' ') }}</td>
+                        <td class="text_right no_wrap number total_price_net_col">{{ produit.totalHT|number_format(2, ',', ' ') }}</td>
+                        <td class="text_right no_wrap number tax_col">{{ produit.tva }}%</td>
+                        <td class="text_right number no_wrap tax_value_col">{{ TVA|number_format(2, ',', ' ') }}</td>
+                        <td class="text_right no_wrap number total_price_gross_col">{{ produit.totalTTC|number_format(2, ',', ' ') }}</td>
+                    </tr>
+                {% endfor %}
+                <tr class="clean no_border summary_row" style="border: none;">
+                    <td class="empty nr_col footer total" style="border: none;"></td>
+                    <td class="empty name_col footer total" style="border: none;"></td>
+                    <td class="empty code_col footer total" style="border: none;"></td>
+                    <td class="text_right no_border total footer total" style="border: none;"><strong>Total:  </strong></td>
+                    <td class="text_right number total_price_net_col footer total"style="border: none;">{{ sumHT|number_format(2, ',', ' ') }}</td>
+                    <td class="tax_col footer total" style="border: none;">&nbsp;</td>
+                    <td class="text_right number tax_value_col footer total" style="border: none;">{{ sumTVA|number_format(2, ',', ' ') }}</td>
+                    <td class="width3 text_right number total_price_gross_col footer total" style="border: none;">{{ sumTTC|number_format(2, ',', ' ') }}</td>
+                </tr>
+
+                </tbody>
+            </table>
+            <table class="clean to_right totals_inv_table" width="100%" style="font-size: 13px;">
+                <tbody><tr>
+                    <th>
+                        Total HT
+                    </th>
+                    <td class="number">
+                        {{ sumHT|number_format(2, ',', ' ') }} DA
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Montant TVA
+                    </th>
+                    <td class="number">
+                        {{ sumTVA|number_format(2, ',', ' ') }} DA
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Total TTC
+                    </th>
+                    <td class="number">
+                        {{ sumTTC|number_format(2, ',', ' ') }} DA
+                    </td>
+                </tr>
+                </tbody></table>
+            <div class="no-page-break">
+                <div id="summary">
+                    <p id="to_pay">
+                        À payer :
+                        {% set apayer =  sumTTC  -  bdc.montantpaye  %}
+                        <span id="to_pay_amount"> {{ apayer }}  DA</span>
+                        <span class="hidden vosfactures3_visible">  TTC
+			</span></p>
+                    <p><strong>Montant payé :</strong> {{ bdc.montantpaye }} DA</p>
+                    <p><strong>Mode de règlement :</strong> {{ bdc.moderegle }}</p>
+                    <p><strong>Date limite de règlement :</strong> {{ bdc.dateregle }} </p>
+                </div>
+                <div id="invoice_signatures">
+                    <div id="seller_sign">
+                        <p><span>Nom du vendeur</span></p>
+                        <p>{{ bdc.nomvendeur }}</p>
+                    </div>
+                    <div id="buyer_sign"></div>
+                </div>
+            </div>
+
+        </page>
+        <htmlpagefooter name="myFooter1" style="display:none" class="newpage">
+
+            <table width="100%">
+                <tr>
+
+                    <td  align="left" style="text-align: left;font-size: 11px; font-weight: normal;">
+                        Bon de Commande <br>
+                        Page {PAGENO}/{nbpg}
+                    </td>
+                    <td align="center" style=" font-size: 11px; font-weight: normal;">
+                        {{ bdc.departements.nom }},
+                        {{ bdc.departements.adresse }}, {{ bdc.departements.ville }},
+
+                        {{ bdc.departements.codepostal }}
+                    </td>
+                </tr>
+            </table>
+
+        </htmlpagefooter>
+
+    </div>
+
+
+
+
+{% endfor %}
+</body>
+</html>

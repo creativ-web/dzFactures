@@ -1,0 +1,108 @@
+
+
+admin_depenses_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Depenses:index" }
+    methods:  [GET, POST]
+
+admin_depenses_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Depenses:show" }
+    methods:  GET
+
+admin_depenses_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Depenses:new" }
+    methods:  [GET, POST]
+
+
+
+admin_depenses_delete:
+    path:     /{depense}/delete
+    defaults: { _controller: "CommandesBundle:Depenses:delete" }
+    methods:  GET
+
+admin_depenses_getuser:
+    path:     /user/{user}
+    defaults: { _controller: CommandesBundle:Depenses:user }
+    options:
+                expose: true
+
+admin_depenses_getacheteur:
+    path:     /acheteur/{acheteur}
+    defaults: { _controller: CommandesBundle:Depenses:acheteur }
+    options:
+            expose: true
+
+admin_depenses_prod:
+    path:     /prod/{prod}/{qte}/{tva}/{tva2}/{reduction}
+    defaults: { _controller: CommandesBundle:Depenses:prod }
+    options:
+                expose: true
+
+admin_depenses_qte:
+    path:     /qte/{qte}/{pu}/{tva}/{totalht}/{reduction}
+    defaults: { _controller: CommandesBundle:Depenses:qte }
+    options:
+                expose: true
+
+admin_depenses_datalist:
+    path:     /datalist/
+    defaults: { _controller: CommandesBundle:Depenses:datalist }
+    options:
+                expose: true
+
+admin_depenses_etat:
+    path:     /factures/{id}/{etat}/{ttc}
+    defaults: { _controller: CommandesBundle:Depenses:etat }
+    options:
+                expose: true
+
+admin_depenses_pdf:
+    path:     /{id}/pdf
+    defaults: { _controller: "CommandesBundle:Depenses:pdf" }
+    methods:  [GET, POST]
+
+admin_depenses_allpdf:
+    path:     /allpdf/{type}/{periode}/{etat}/{zone}/{du}/{au}/{mot}
+    defaults: { _controller: "CommandesBundle:Depenses:allpdf" }
+    methods:  [GET, POST]
+
+admin_depenses_envois:
+    path:     /{id}/envois
+    defaults: { _controller: "CommandesBundle:Depenses:envois" }
+    methods:  [GET, POST]
+
+
+admin_depenses_getAllprods:
+    path:     /produit
+    defaults: { _controller: CommandesBundle:Depenses:autocomplete }
+    methods:  [GET, POST]
+    options:
+                expose: true
+
+
+admin_getAllprods2:
+    path:     /auto/produit
+    defaults: { _controller: CommandesBundle:Depenses:autocomplete2 }
+    methods:  [GET, POST]
+    options:
+        expose: true
+
+admin_depenses_getAcheteur:
+    path:     /Acheteur
+    defaults: { _controller: CommandesBundle:Depenses:acheteurcomplete }
+    methods:  [GET, POST]
+    options:
+                expose: true
+
+admin_depenses_getdep:
+    path:     /dep/{dep}
+    defaults: { _controller: CommandesBundle:Depenses:dep }
+    options:
+                expose: true
+admin_depenses_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Depenses:edit" }
+    methods:  [GET, POST]
+

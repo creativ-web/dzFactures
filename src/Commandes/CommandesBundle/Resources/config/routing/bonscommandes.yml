@@ -1,0 +1,96 @@
+admin_bdc_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Bonscommandes:index" }
+    methods:  [GET, POST]
+
+admin_bdc_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Bonscommandes:show" }
+    methods:  GET
+
+admin_bdc_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Bonscommandes:new" }
+    methods:  [GET, POST]
+
+admin_bdc_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Bonscommandes:edit" }
+    methods:  [GET, POST]
+
+admin_bdc_delete:
+    path:     /{bon}/delete
+    defaults: { _controller: "CommandesBundle:Bonscommandes:delete" }
+    methods:  GET
+
+admin_bdc_getuser:
+    path:     /user/{user}
+    defaults: { _controller: CommandesBundle:Bonscommandes:user }
+    options:
+                expose: true
+admin_bdc_getacheteur:
+    path:     /acheteur/{acheteur}
+    defaults: { _controller: CommandesBundle:Bonscommandes:acheteur }
+    options:
+                expose: true
+admin_bdc_prod:
+    path:     /prod/{prod}/{qte}/{tva}/{reduction}
+    defaults: { _controller: CommandesBundle:Bonscommandes:prod }
+    options:
+                expose: true
+admin_bdc_qte:
+    path:     /qte/{qte}/{pu}/{tva}/{totalht}/{reduction}
+    defaults: { _controller: CommandesBundle:Bonscommandes:qte }
+    options:
+                expose: true
+admin_bdc_datalist:
+    path:     /datalist/
+    defaults: { _controller: CommandesBundle:Bonscommandes:datalist }
+    options:
+                expose: true
+
+
+
+admin_bonscommandes_etat:
+    path:     /bonscommandes/{id}/{etat}/{ttc}
+    defaults: { _controller: CommandesBundle:Bonscommandes:etat }
+    options:
+                expose: true
+
+admin_bdc_pdf:
+    path:     /{id}/pdf
+    defaults: { _controller: "CommandesBundle:Bonscommandes:pdf" }
+    methods:  [GET, POST]
+
+admin_bdc_allpdf:
+    path:     /allpdf/{type}/{periode}/{etat}/{zone}/{du}/{au}/{mot}
+    defaults: { _controller: "CommandesBundle:Bonscommandes:allpdf" }
+    methods:  [GET, POST]
+
+admin_bdc_envois:
+    path:     /{id}/envois
+    defaults: { _controller: "CommandesBundle:Bonscommandes:envois" }
+    methods:  [GET, POST]
+
+
+
+admin_bdc_getAllprods:
+    path:     /produit
+    defaults: { _controller: CommandesBundle:Bonscommandes:autocomplete }
+    methods:  [GET, POST]
+    options:
+                expose: true
+
+
+admin_bdc_getAcheteur:
+    path:     /Acheteur
+    defaults: { _controller: CommandesBundle:Bonscommandes:acheteurcomplete }
+    methods:  [GET, POST]
+    options:
+                expose: true
+
+admin_bdc_getdep:
+    path:     /dep/{dep}
+    defaults: { _controller: CommandesBundle:Bonscommandes:dep }
+    options:
+                expose: true

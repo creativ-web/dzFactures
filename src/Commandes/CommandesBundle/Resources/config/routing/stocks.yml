@@ -1,0 +1,24 @@
+admin_stock_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Stocks:index" }
+    methods:  GET
+
+admin_stock_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Stocks:show" }
+    methods:  GET
+
+admin_stock_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Stocks:new" }
+    methods:  [GET, POST]
+
+admin_stock_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Stocks:edit" }
+    methods:  [GET, POST]
+
+admin_stock_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Stocks:delete" }
+    methods:  DELETE

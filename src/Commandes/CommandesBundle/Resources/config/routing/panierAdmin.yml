@@ -1,0 +1,21 @@
+
+panierAdmin:
+    pattern:  /
+    defaults: { _controller: CommandesBundle:PanierAdmin:panierAdmin }
+
+validationAdmin:
+    pattern:  /validation
+    defaults: { _controller: CommandesBundle:PanierAdmin:validation }
+
+validationCommande:
+    pattern:  /api/banque/{id}
+    defaults: { _controller: CommandesBundle:CommandesAdmin:validationCommande }
+
+
+supprimerAdmin:
+    pattern:  /supprimer/{id}
+    defaults: { _controller: CommandesBundle:PanierAdmin:supprimerAdmin }
+
+ajouterAdmin:
+    pattern:  /ajouter/{id}
+    defaults: { _controller: CommandesBundle:PanierAdmin:ajouterAdmin }

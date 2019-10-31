@@ -1,0 +1,24 @@
+admin_fournisseurs_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Fournisseurs:index" }
+    methods:  GET
+
+admin_fournisseurs_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Fournisseurs:show" }
+    methods:  GET
+
+admin_fournisseurs_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Fournisseurs:new" }
+    methods:  [GET, POST]
+
+admin_fournisseurs_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Fournisseurs:edit" }
+    methods:  [GET, POST]
+
+admin_fournisseurs_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Fournisseurs:delete" }
+    methods:  DELETE

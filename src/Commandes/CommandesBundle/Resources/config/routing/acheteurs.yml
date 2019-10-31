@@ -1,0 +1,33 @@
+admin_Acheteurs_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Acheteurs:index" }
+    methods:  [GET, POST]
+
+admin_Acheteurs_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Acheteurs:show" }
+    methods:  GET
+
+admin_Acheteurs_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Acheteurs:new" }
+    methods:  [GET, POST]
+
+admin_Acheteurs_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Acheteurs:edit" }
+    methods:  [GET, POST]
+
+admin_Acheteurs_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Acheteurs:delete" }
+    methods:  GET
+
+
+
+admin_Acheteurs_clients:
+    path:     /c/
+    defaults: { _controller: "CommandesBundle:Acheteurs:clients" }
+    methods:  [GET, POST]
+    options:
+                expose: true

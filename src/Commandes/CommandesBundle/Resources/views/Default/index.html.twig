@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+
+
+
+            {% for flashMessage in app.session.flashbag.get('success') %}
+
+                <div id="alert" class="alert alert-success alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-2 ht"></div>
+        <div class="col-md-2 ttc"></div>
+        <div class="col-md-2 tva"></div>
+    </div>
+    <br><br>
+
+    <table id="example" class="display" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th>#CODE</th>
+            <th>NOM</th>
+            <th>RÉFÉRENCE</th>
+            <th>FAMILLE</th>
+            <th>FOURNISSEUR</th>
+            <th>PRIX H.T</th>
+            <th>PRIX T.T.C</th>
+            <th>TVA</th>
+            <th>STOCK</th>
+            <th>DISPONIBILITÉ</th>
+            <th>ACTION</th>
+        </tr>
+        </thead>
+
+
+        <tbody>
+
+        {% set TTC = 0 %}
+        {% set Tva = 0 %}
+        {% for produit in produits %}
+            {% set Tva =  produit.Tva.valeur /100 * produit.prix %}
+            {% set TTC = produit.prix + Tva  %}
+
+            <tr>
+
+                <td>{{ produit.barcode }}</td>
+                <td>{{ produit.name }} </td>
+                <td>{{ produit.reference }}</td>
+                <td>{{ produit.familles.name }}</td>
+                <td>fournisseur</td>
+                <td>{{ produit.prix }}</td>
+                <td> {{ TTC }} </td>
+                <td>{{ Tva }}</td>
+                <td>{{ produit.zonnestocks }}</td>
+                <td>
+                    {% if produit.qte >= produit.qtealert  %}
+                        <button class="btn btn-success btn-xs" style="background-color: #1abb9c;">{{ produit.qte }} en stock</button>
+                    {% else %}
+                        <button class="btn btn-warning btn-xs">non disponible</button>
+                    {% endif %}
+
+
+                </td>
+                <td>
+                    {% if panier[produit.id] is not defined %}
+
+                        {% if produit.qte >= produit.qtealert %}
+                            <a  href="{{ path('ajouter', { 'id' : produit.id }) }}" class="btn btn-sm btn-primary" style="background-color: #5bc0de;border-color: #46b8da;">commander</a>
+                        {% endif %}
+
+                    {% else %}
+                        <a href="{{ path('panier') }}"><span class="glyphicon glyphicon-ok" aria-hidden="true" style="color:#1abb9c;"></span></a>
+                    {% endif %}
+                </td>
+
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    </div>
+
+
+
+
+{% endblock %}
+
+

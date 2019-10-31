@@ -1,0 +1,49 @@
+admin_cis_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Cis:index" }
+    methods:  GET
+
+admin_cis_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Cis:show" }
+    methods:  GET
+
+admin_cis_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Cis:new" }
+    methods:  [GET, POST]
+
+admin_cis_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Cis:edit" }
+    methods:  [GET, POST]
+
+admin_cis_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Cis:delete" }
+    methods:  DELETE
+
+admin_cis_prod:
+    path:     /prod/{prod}/{qte}/{tva}/{tva2}
+    defaults: { _controller: CommandesBundle:Cis:prod }
+    options:
+                expose: true
+
+admin_cis_qte:
+    path:     /qte/{qte}/{pu}/{pua}/{tva}/{tva2}
+    defaults: { _controller: CommandesBundle:Cis:qte }
+    options:
+                expose: true
+
+admin_cis_getacheteur:
+    path:     /acheteur/{acheteur}
+    defaults: { _controller: CommandesBundle:Cis:acheteur }
+    options:
+                expose: true
+
+
+admin_cis_getuser:
+    path:     /user/{user}
+    defaults: { _controller: CommandesBundle:Cis:user }
+    options:
+                expose: true

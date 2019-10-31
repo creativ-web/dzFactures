@@ -1,0 +1,49 @@
+admin_reservations_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Reservations:index" }
+    methods:  GET
+
+admin_reservations_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Reservations:show" }
+    methods:  GET
+
+admin_reservations_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Reservations:new" }
+    methods:  [GET, POST]
+
+admin_reservations_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Reservations:edit" }
+    methods:  [GET, POST]
+
+admin_reservations_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Reservations:delete" }
+    methods:  DELETE
+
+admin_reservations_prod:
+    path:     /prod/{prod}/{qte}/{tva}/{tva2}
+    defaults: { _controller: CommandesBundle:Reservations:prod }
+    options:
+                expose: true
+
+admin_reservations_qte:
+    path:     /qte/{qte}/{pu}/{pua}/{tva}/{tva2}
+    defaults: { _controller: CommandesBundle:Reservations:qte }
+    options:
+                expose: true
+
+admin_reservations_getacheteur:
+    path:     /acheteur/{acheteur}
+    defaults: { _controller: CommandesBundle:Reservations:acheteur }
+    options:
+                expose: true
+
+
+admin_reservations_getuser:
+    path:     /user/{user}
+    defaults: { _controller: CommandesBundle:Reservations:user }
+    options:
+                expose: true

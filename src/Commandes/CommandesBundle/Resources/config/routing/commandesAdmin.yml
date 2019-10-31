@@ -1,0 +1,24 @@
+admin_commandes_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:CommandesAdmin:index" }
+    methods:  GET
+
+admin_commandes_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:CommandesAdmin:show" }
+    methods:  GET
+
+admin_commandes_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:CommandesAdmin:new" }
+    methods:  [GET, POST]
+
+admin_commandes_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:CommandesAdmin:edit" }
+    methods:  [GET, POST]
+
+admin_commandes_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:CommandesAdmin:delete" }
+    methods:  DELETE

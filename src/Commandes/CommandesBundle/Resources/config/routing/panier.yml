@@ -1,0 +1,19 @@
+supprimer:
+    pattern:  /supprimer/{id}
+    defaults: { _controller: CommandesBundle:Panier:supprimer }
+
+ajouter:
+    pattern:  /ajouter/{id}
+    defaults: { _controller: CommandesBundle:Panier:ajouter }
+
+panier:
+    pattern:  /
+    defaults: { _controller: CommandesBundle:Panier:panier }
+
+validation:
+    pattern:  /validation
+    defaults: { _controller: CommandesBundle:Panier:validation }
+
+validationCommande:
+    pattern:  /api/banque/{id}
+    defaults: { _controller: CommandesBundle:Commandes:validationCommande }

@@ -1,0 +1,218 @@
+commandes_admin_users:
+    resource: "@CommandesBundle/Resources/config/routing/user.yml"
+    prefix:   /admin/userss
+    
+commandes_admin_configs:
+        resource: "@CommandesBundle/Resources/config/routing/configs.yml"
+        prefix:   /admin/configs
+
+commandes_admin_commandes:
+    resource: "@CommandesBundle/Resources/config/routing/commandesAdmin.yml"
+    prefix:   /admin/commandes
+
+commandes_admin_familles:
+    resource: "@CommandesBundle/Resources/config/routing/familles.yml"
+    prefix:   /admin/familles
+
+commandes_admin_categories:
+    resource: "@CommandesBundle/Resources/config/routing/categories.yml"
+    prefix:   /admin/categories
+
+
+commandes_admin_produits:
+    resource: "@CommandesBundle/Resources/config/routing/produits.yml"
+    prefix:   /admin/produits
+
+commandes_admin_stock:
+    resource: "@CommandesBundle/Resources/config/routing/stocks.yml"
+    prefix:   /admin/stock
+
+commandes_admin_achats:
+    resource: "@CommandesBundle/Resources/config/routing/achats.yml"
+    prefix:   /admin/achats
+
+commandes_admin_Acheteurs:
+    resource: "@CommandesBundle/Resources/config/routing/acheteurs.yml"
+    prefix:   /admin/contacts
+
+
+commandes_admin_departements:
+    resource: "@CommandesBundle/Resources/config/routing/departements.yml"
+    prefix:   /admin/departements
+
+
+commandes_admin_fournisseurs:
+    resource: "@CommandesBundle/Resources/config/routing/fournisseurs.yml"
+    prefix:   /admin/fournisseurs
+
+commandes_admin_documents:
+    resource: "@CommandesBundle/Resources/config/routing/documents.yml"
+    prefix:   /admin/documents
+
+
+commandes_admin_factures:
+    resource: "@CommandesBundle/Resources/config/routing/factures.yml"
+    prefix:   /admin/factures
+
+commandes_admin_proformas:
+    resource: "@CommandesBundle/Resources/config/routing/proformas.yml"
+    prefix:   /admin/proformas
+
+commandes_admin_recus:
+    resource: "@CommandesBundle/Resources/config/routing/recus.yml"
+    prefix:   /admin/recus
+
+commandes_admin_devis:
+    resource: "@CommandesBundle/Resources/config/routing/devis.yml"
+    prefix:   /admin/devis
+
+commandes_admin_bdc:
+    resource: "@CommandesBundle/Resources/config/routing/bonscommandes.yml"
+    prefix:   /admin/bdc
+
+
+commandes_admin_depenses:
+    resource: "@CommandesBundle/Resources/config/routing/depenses.yml"
+    prefix:   /admin/depenses
+
+commandes_admin_commandescafe:
+    resource: "@CommandesBundle/Resources/config/routing/commandescafes.yml"
+    prefix:   /admin/commandescafe
+
+commandes_admin_tables:
+        resource: "@CommandesBundle/Resources/config/routing/tables.yml"
+        prefix:   /admin/tables
+
+commandes_admin_parametres:
+  resource: "@CommandesBundle/Resources/config/routing/paramettres.yml"
+  prefix:   /admin/parametres
+
+
+routingPanierAdmin:
+  resource: "@CommandesBundle/Resources/config/routing/panierAdmin.yml"
+  prefix: /admin/panier
+
+commandes_admin_ventes:
+      resource: "@CommandesBundle/Resources/config/routing/ventes.yml"
+      prefix:   /admin/ventes
+
+commandes_admin_zones:
+      resource: "@CommandesBundle/Resources/config/routing/zonnestocks.yml"
+      prefix:   /admin/zones
+
+parametres_Admin:
+  resource: "@CommandesBundle/Resources/config/routing/parametres.yml"
+  prefix: /admin/parametres
+
+
+
+routingPanier:
+  resource: "@CommandesBundle/Resources/config/routing/panier.yml"
+  prefix: /panier
+
+commandes_admin_bes:
+      resource: "@CommandesBundle/Resources/config/routing/bes.yml"
+      prefix:   /admin/bes
+
+commandes_admin_reservations:
+      resource: "@CommandesBundle/Resources/config/routing/reservations.yml"
+      prefix:   /admin/reservations
+
+commandes_admin_bcs:
+      resource: "@CommandesBundle/Resources/config/routing/bcs.yml"
+      prefix:   /admin/bcs
+
+
+commandes_admin_bls:
+      resource: "@CommandesBundle/Resources/config/routing/bls.yml"
+      prefix:   /admin/bls
+
+commandes_admin_pis:
+      resource: "@CommandesBundle/Resources/config/routing/pis.yml"
+      prefix:   /admin/pis
+
+commandes_admin_cis:
+      resource: "@CommandesBundle/Resources/config/routing/cis.yml"
+      prefix:   /admin/cis
+
+commandes_admin_bts:
+      resource: "@CommandesBundle/Resources/config/routing/bts.yml"
+      prefix:   /admin/bts
+
+commandes_dashbords:
+    path:     /admin/dashbord
+    defaults: { _controller: CommandesBundle:Dashbords:index }
+
+commandes_rapports:
+    path:     /admin/rapports
+    defaults: { _controller: CommandesBundle:Rapports:index }
+
+commandes_graphes:
+    path:     /admin/rapports/graphes
+    defaults: { _controller: CommandesBundle:Graphes:index }
+    methods:  [GET, POST]
+
+commandes_homepage:
+    path:     /
+    defaults: { _controller: CommandesBundle:Default:index }
+
+
+admin_factures_view:
+    path:     /facture/{id}/view
+    defaults: { _controller: "CommandesBundle:Factures:showClient" }
+    methods:  GET
+
+
+admin_proformas_view:
+    path:     /proforma/{id}/view
+    defaults: { _controller: "CommandesBundle:Proformas:showClient" }
+    methods:  GET
+
+admin_recus_view:
+    path:     /recu/{id}/view
+    defaults: { _controller: "CommandesBundle:Recus:showClient" }
+    methods:  GET
+
+admin_devis_view:
+    path:     /devi/{id}/view
+    defaults: { _controller: "CommandesBundle:Devis:showClient" }
+    methods:  GET
+
+admin_boncommandes_view:
+    path:     /commande/{id}/view
+    defaults: { _controller: "CommandesBundle:Bonscommandes:showClient" }
+    methods:  GET
+
+
+facture_pdf:
+    path:     /facture/{id}/pdf
+    defaults: { _controller: "CommandesBundle:Factures:pdf" }
+    methods:  [GET, POST]
+
+proforma_pdf:
+    path:     /proforma/{id}/pdf
+    defaults: { _controller: "CommandesBundle:Proformas:pdf" }
+    methods:  [GET, POST]
+
+recu_pdf:
+    path:     /recu/{id}/pdf
+    defaults: { _controller: "CommandesBundle:Recus:pdf" }
+    methods:  [GET, POST]
+
+devi_pdf:
+    path:     /devi/{id}/pdf
+    defaults: { _controller: "CommandesBundle:Devis:pdf" }
+    methods:  [GET, POST]
+
+boncommande_pdf:
+    path:     /commande/{id}/pdf
+    defaults: { _controller: "CommandesBundle:Bonscommandes:pdf" }
+    methods:  [GET, POST]
+
+depense_pdf:
+    path:     /depense/{id}/pdf
+    defaults: { _controller: "CommandesBundle:Depenses:pdf" }
+    methods:  [GET, POST]
+
+
+

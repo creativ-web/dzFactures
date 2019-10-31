@@ -1,0 +1,59 @@
+admin_bls_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Bls:index" }
+    methods:  GET
+
+admin_bls_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Bls:show" }
+    methods:  GET
+
+admin_bls_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Bls:new" }
+    methods:  [GET, POST]
+
+admin_bls_newJointure:
+    path:     /new/{formid}
+    defaults: { _controller: "CommandesBundle:Bls:newJointure" }
+    methods:  [GET, POST]
+
+admin_bls_jointureSansLot:
+    path:     /new/{formid}
+    defaults: { _controller: "CommandesBundle:Bls:jointureSansLot" }
+    methods:  [GET, POST]
+
+admin_bls_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Bls:edit" }
+    methods:  [GET, POST]
+
+admin_bls_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Bls:delete" }
+    methods:  GET
+
+admin_bls_prod:
+    path:     /prod/{prod}/{qte}/{tva}/{tva2}
+    defaults: { _controller: CommandesBundle:Bls:prod }
+    options:
+                expose: true
+
+admin_bls_qte:
+    path:     /qte/{qte}/{pu}/{pua}/{tva}/{tva2}
+    defaults: { _controller: CommandesBundle:Bls:qte }
+    options:
+                expose: true
+
+admin_bls_getacheteur:
+    path:     /acheteur/{acheteur}
+    defaults: { _controller: CommandesBundle:Bls:acheteur }
+    options:
+                expose: true
+
+
+admin_bls_getuser:
+    path:     /user/{user}
+    defaults: { _controller: CommandesBundle:Bls:user }
+    options:
+                expose: true

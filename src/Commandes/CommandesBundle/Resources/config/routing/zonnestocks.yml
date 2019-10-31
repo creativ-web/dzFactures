@@ -1,0 +1,24 @@
+admin_zones_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Zonnestocks:index" }
+    methods:  GET
+
+admin_zones_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Zonnestocks:show" }
+    methods:  GET
+
+admin_zones_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Zonnestocks:new" }
+    methods:  [GET, POST]
+
+admin_zones_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Zonnestocks:edit" }
+    methods:  [GET, POST]
+
+admin_zones_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Zonnestocks:delete" }
+    methods:  DELETE

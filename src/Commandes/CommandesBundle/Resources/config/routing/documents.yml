@@ -1,0 +1,33 @@
+admin_documents_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Documents:index" }
+    methods:  [GET, POST]
+
+admin_documents_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Documents:show" }
+    methods:  [GET, POST]
+
+admin_documents_new:
+    path:     /new/{f}
+    defaults: { _controller: "CommandesBundle:Documents:new" }
+    methods:  [GET, POST]
+
+admin_documents_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Documents:edit" }
+    methods:  [GET, POST]
+
+admin_documents_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Documents:delete" }
+    methods:  DELETE
+
+
+admin_documents_prod:
+    path:     /prod/{prod}/{qte}/{tva}/{tva2}
+    defaults: { _controller: CommandesBundle:Documents:prod }
+
+admin_documents_qte:
+    path:     /qte/{qte}/{pu}/{tva}/{totalht}
+    defaults: { _controller: CommandesBundle:Documents:qte }

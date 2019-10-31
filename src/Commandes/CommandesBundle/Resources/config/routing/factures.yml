@@ -1,0 +1,123 @@
+admin_factures_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Factures:index" }
+    methods:  [GET, POST]
+
+admin_factures_tous:
+    path:     /tous
+    defaults: { _controller: "CommandesBundle:Factures:tous" }
+    methods:  [GET, POST]
+
+
+admin_factures_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Factures:show" }
+    methods:  GET
+
+admin_factures_showClient:
+    path:     /{id}/showClient
+    defaults: { _controller: "CommandesBundle:Factures:showClient" }
+    methods:  GET
+
+admin_factures_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Factures:new" }
+    methods:  [GET, POST]
+
+admin_factures_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Factures:edit" }
+    methods:  [GET, POST]
+
+admin_factures_delete:
+    path:     /{facture}/delete
+    defaults: { _controller: "CommandesBundle:Factures:delete" }
+    methods:  GET
+
+admin_factures_getuser:
+    path:     /user/{user}
+    defaults: { _controller: CommandesBundle:Factures:user }
+    options:
+                expose: true
+
+admin_factures_getacheteur:
+    path:     /acheteur/{acheteur}
+    defaults: { _controller: CommandesBundle:Factures:acheteur }
+    options:
+            expose: true
+
+admin_factures_prod:
+    path:     /prod/{prod}/{qte}/{tva}/{reduction}/prod
+    defaults: { _controller: CommandesBundle:Factures:prod }
+    options:
+                expose: true
+
+admin_factures_qte:
+    path:     /qte/{qte}/{pu}/{tva}/{totalht}/{reduction}
+    defaults: { _controller: CommandesBundle:Factures:qte }
+    options:
+                expose: true
+
+admin_factures_datalist:
+    path:     /datalist/
+    defaults: { _controller: CommandesBundle:Factures:datalist }
+    options:
+                expose: true
+
+admin_factures_etat:
+    path:     /factures/{id}/{etat}/{ttc}
+    defaults: { _controller: CommandesBundle:Factures:etat }
+    options:
+                expose: true
+
+admin_factures_pdf:
+    path:     /{id}/pdf
+    defaults: { _controller: "CommandesBundle:Factures:pdf" }
+    methods:  [GET, POST]
+
+admin_factures_allpdf:
+    path:     /allpdf/{type}/{periode}/{etat}/{zone}/{du}/{au}/{mot}
+    defaults: { _controller: "CommandesBundle:Factures:allpdf" }
+    methods:  [GET, POST]
+
+admin_factures_envois:
+    path:     /{id}/envois
+    defaults: { _controller: "CommandesBundle:Factures:envois" }
+    methods:  [GET, POST]
+
+
+admin_factures_getAllprods:
+    path:     /produit/all
+    defaults: { _controller: "CommandesBundle:Factures:autocomplete" }
+    methods:  [GET, POST]
+    options:
+                expose: true
+
+
+admin_factures_getAcheteur:
+    path:     /Acheteur
+    defaults: { _controller: "CommandesBundle:Factures:acheteurcomplete" }
+    methods:  [GET, POST]
+    options:
+                expose: true
+
+admin_factures_getdep:
+    path:     /dep/{dep}
+    defaults: { _controller: "CommandesBundle:Factures:dep" }
+    options:
+                expose: true
+
+
+admin_factures_lotsfactures:
+    path:     /lotfactures/{id}
+    defaults: { _controller: "CommandesBundle:Factures:lotsfactures" }
+    methods:  [GET, POST]
+    options:
+
+
+admin_editaprofact:
+    path:     /editaprofact/{prod}/{qte}/{facture}
+    defaults: { _controller: "CommandesBundle:Factures:editaprofact" }
+    methods:  [GET, POST]
+    options:
+        expose: true

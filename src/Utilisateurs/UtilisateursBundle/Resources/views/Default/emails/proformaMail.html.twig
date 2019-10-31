@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+</head>
+
+<body>
+<table style="border:1px solid rgb(221,221,221);background-color:rgb(255,255,255);margin-left: auto; margin-right: auto;" border="0" cellpadding="0" cellspacing="0" width="550">
+    <tbody style="background-color:#fff">
+    <tr>
+        <td style="border-collapse:collapse;background-color:#fff" align="center" valign="top">
+            <table border="0" cellpadding="0" cellspacing="0" width="550" style="background-color:#fff;" >
+                <tbody>
+                <tr>
+                    <td style="border-collapse:collapse;background-color:rgb(255,255,255)" valign="top">
+                        <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                            <tbody>
+                            <tr>
+                                <td style="background-color:#fff;border-collapse:collapse" valign="top">
+                                    <div style="color:rgb(80,80,80);font-family:helvetica,serif,Arial;font-size:12px;line-height:150%;text-align:left">
+
+                                        {{ texte|nl2br }}
+
+                                        <br>
+
+
+                                        <table>
+                                            <tbody><tr>
+
+                                                <td bgcolor="#246298" align="center" style="border-radius:4px;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-weight:normal;font-size:12px;background:none repeat scroll 0px 0px rgb(247,247,247);color:rgb(0,0,0);border:1px solid rgb(221,221,221);padding:8px 18px 7px 27px">
+                                                    <a href="https://creativ-dz.com" style="color:#000;text-decoration:none" target="_blank" data-saferedirecturl="">Importer / ajouter aux dépenses&nbsp;&nbsp;<strong style="font-size:14px;font-weight: bold;">+</strong></a>
+                                                </td>
+
+                                                <td>&nbsp;</td>
+
+
+                                                <td bgcolor="#246298" align="center" style="border-radius:4px;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-weight:normal;font-size:12px;background:none repeat scroll 0px 0px rgb(247,247,247);color:rgb(0,0,0);border:1px solid rgb(221,221,221);padding:8px 18px 7px 27px">
+                                                    <a style="color:#000;text-decoration:none" href="{{ url('proforma_pdf',{ 'id': facture.id }) }}" target="_blank" data-saferedirecturl="">Télécharger en PDF&nbsp;&nbsp;<img style="vertical-align:bottom" src="https://ci6.googleusercontent.com/proxy/RahRrlivKR9F3y9bsW63jsJA3XJatK1V62cUWtYrtXvrnTcqnXQ-yu-8t1_wyjScw91ExCSQLlNUVSQIxcTeIGZNLkpEAsEPdXIIMM0uL3ekDjrTlZUFfjiHR8Uuf2x8sc8eM3beIhrBlsyOfNt4Lok=s0-d-e1-ft#https://s3-eu-west-1.amazonaws.com/fs.siteor.com/radgost/files/mail/pdf-icon.png?1393323322" alt="" class="CToWUd"></a>
+                                                </td>
+
+
+                                                <td>&nbsp;</td>
+
+                                                <td bgcolor="#246298" align="center" style="border-radius:4px;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-weight:normal;font-size:12px;background:none repeat scroll 0px 0px rgb(247,247,247);color:rgb(0,0,0);border:1px solid rgb(221,221,221);padding:8px 18px 7px 27px">
+                                                    <a href="{{ url('admin_proformas_view',{ 'id': facture.id }) }}" style="color:#000;text-decoration:none" target="_blank" data-saferedirecturl="">Aperçu&nbsp;&nbsp;<strong style="font-size:18px;vertical-align:text-top">‣</strong></a>
+                                                </td>
+
+                                            </tr>
+                                            </tbody></table>
+
+
+                                        <p style="margin:13px 5px 0 5px;font-size:10px;color:#999">
+                                            La fonction 'Ajouter aux dépenses' vous permet d’importer automatiquement le document reçu vers un registre de dépenses sécurisé qui vous est dédié, en tant que client d’un utilisateur de Creativ-dz. Cette fonction est totalement gratuite.
+
+
+                                        </p></div>
+
+
+
+                                    <table style="width:550px;margin-top:11px;background-color:#f7f7f7;border-top:1px solid #ddd;padding:14px 10px 13px 10px" border="0" cellpadding="0" cellspacing="0" width="550">
+                                        <tbody><tr>
+
+                                            <td style="text-align:left;padding-left:8px;font-size:11px;line-height:19px;color:#888888">
+
+                                                Envoyé depuis l'application
+                                                <br>
+
+                                                <a style="text-decoration:none;color:#888888" href="http://creativ-dz.com" target="_blank" data-saferedirecturl="">Creativ-dz.com</a>
+
+                                            </td>
+
+                                            <td style="text-align:right;color:#707070;font-size:11px">
+
+                                                <a style="border:0" href="https://creativ-dz.com" target="_blank" data-saferedirecturl="">
+                                                    {% for logo in logo %}
+                                                        <img  alt="creativ-dz.com" style="height:30px;padding-top:4px;vertical-align:bottom;margin-right:5px" src="{{ asset('imgProduit/',absolute=true) }}{{ logo.path }}" class="CToWUd" >
+                                                    {% endfor %}
+
+                                                </a>
+
+                                            </td>
+
+                                        </tr>
+                                        </tbody></table>
+
+
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+
+
+
+
+</body>
+
+
+</html>

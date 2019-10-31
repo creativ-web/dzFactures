@@ -1,0 +1,49 @@
+admin_bcs_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Bcs:index" }
+    methods:  GET
+
+admin_bcs_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Bcs:show" }
+    methods:  GET
+
+admin_bcs_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Bcs:new" }
+    methods:  [GET, POST]
+
+admin_bcs_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Bcs:edit" }
+    methods:  [GET, POST]
+
+admin_bcs_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Bcs:delete" }
+    methods:  DELETE
+
+admin_bcs_prod:
+    path:     /prod/{prod}/{qte}/{tva}/{tva2}
+    defaults: { _controller: CommandesBundle:Bcs:prod }
+    options:
+                expose: true
+
+admin_bcs_qte:
+    path:     /qte/{qte}/{pu}/{pua}/{tva}/{tva2}
+    defaults: { _controller: CommandesBundle:Bcs:qte }
+    options:
+                expose: true
+
+admin_bcs_getacheteur:
+    path:     /acheteur/{acheteur}
+    defaults: { _controller: CommandesBundle:Bcs:acheteur }
+    options:
+                expose: true
+
+
+admin_bcs_getuser:
+    path:     /user/{user}
+    defaults: { _controller: CommandesBundle:Bcs:user }
+    options:
+                expose: true

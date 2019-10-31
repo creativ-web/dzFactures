@@ -1,0 +1,59 @@
+admin_bes_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Bes:index" }
+    methods:  GET
+
+
+
+
+
+admin_bes_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Bes:show" }
+    methods:  GET
+
+admin_bes_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Bes:new" }
+    methods:  [GET, POST]
+
+
+bes_newJointure:
+    path:     /new/{formid}
+    defaults: { _controller: "CommandesBundle:Bes:besJointure" }
+    methods:  [GET, POST]
+
+admin_bes_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Bes:edit" }
+    methods:  [GET, POST]
+
+admin_bes_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Bes:delete" }
+    methods:  GET
+
+admin_bes_prod:
+    path:     /prod/{prod}/{qte}/{tva}/{reduction}
+    defaults: { _controller: CommandesBundle:Bes:prod }
+    options:
+                expose: true
+
+admin_bes_qte:
+    path:     /qte/{qte}/{pu}/{pua}/{tva}/{tva2}
+    defaults: { _controller: CommandesBundle:Bes:qte }
+    options:
+                expose: true
+
+admin_bes_getacheteur:
+    path:     /acheteur/{acheteur}
+    defaults: { _controller: CommandesBundle:Bes:acheteur }
+    options:
+                expose: true
+
+
+admin_bes_getuser:
+    path:     /user/{user}
+    defaults: { _controller: CommandesBundle:Bes:user }
+    options:
+                expose: true

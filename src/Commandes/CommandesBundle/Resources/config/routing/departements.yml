@@ -1,0 +1,24 @@
+admin_departements_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Departements:index" }
+    methods:  GET
+
+admin_departements_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Departements:show" }
+    methods:  GET
+
+admin_departements_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Departements:new" }
+    methods:  [GET, POST]
+
+admin_departements_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Departements:edit" }
+    methods:  [GET, POST]
+
+admin_departements_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Departements:delete" }
+    methods:  DELETE

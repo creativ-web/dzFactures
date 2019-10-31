@@ -1,0 +1,26 @@
+admin_ventes_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Ventes:index" }
+    methods:  GET
+
+admin_ventes_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Ventes:show" }
+    methods:  GET
+
+admin_ventes_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Ventes:new" }
+    methods:  [GET, POST]
+
+
+
+admin_ventes_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Ventes:edit" }
+    methods:  [GET, POST]
+
+admin_ventes_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Ventes:delete" }
+    methods:  DELETE

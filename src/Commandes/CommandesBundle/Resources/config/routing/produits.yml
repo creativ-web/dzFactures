@@ -1,0 +1,32 @@
+admin_produits_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Produits:index" }
+    methods:  [GET, POST]
+
+admin_produits_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Produits:show" }
+    methods:  GET
+
+admin_produits_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Produits:new" }
+    methods:  [GET, POST]
+
+admin_produits_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Produits:edit" }
+    methods:  [GET, POST]
+
+admin_produits_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CommandesBundle:Produits:delete" }
+    methods:  [GET, POST]
+
+
+
+admin_produits_cttc:
+    path:     /cttc/{ht}/{tvaid}
+    defaults: { _controller: CommandesBundle:Produits:cttc }
+    options:
+                expose: true

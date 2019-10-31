@@ -1,0 +1,101 @@
+admin_proformas_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Proformas:index" }
+    methods:  [GET, POST]
+
+admin_proformas_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Proformas:show" }
+    methods:  GET
+
+admin_proformas_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Proformas:new" }
+    methods:  [GET, POST]
+
+admin_proformas_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Proformas:edit" }
+    methods:  [GET, POST]
+
+admin_proformas_delete:
+    path:     /{proforma}/delete
+    defaults: { _controller: "CommandesBundle:Proformas:delete" }
+    methods:  GET
+
+
+admin_proformas_getuser:
+    path:     /user/{user}
+    defaults: { _controller: CommandesBundle:Proformas:user }
+    options:
+                expose: true
+
+admin_proformas_getacheteur:
+    path:     /acheteur/{acheteur}
+    defaults: { _controller: CommandesBundle:Proformas:acheteur }
+    options:
+                expose: true
+
+admin_proformas_prod:
+    path:     /prod/{prod}/{qte}/{tva}/{reduction}
+    defaults: { _controller: CommandesBundle:Factures:prod }
+    options:
+                expose: true
+
+admin_proformas_qte:
+    path:     /qte/{qte}/{pu}/{tva}/{totalht}/{reduction}
+    defaults: { _controller: CommandesBundle:Proformas:qte }
+    options:
+                expose: true
+
+admin_proformas_datalist:
+    path:     /datalist/
+    defaults: { _controller: CommandesBundle:Proformas:datalist }
+    options:
+                expose: true
+
+admin_proformas_etat:
+    path:     /proformas/{id}/{etat}/{ttc}
+    defaults: { _controller: CommandesBundle:Proformas:etat }
+    options:
+                expose: true
+
+admin_proformas_pdf:
+    path:     /{id}/pdf
+    defaults: { _controller: "CommandesBundle:Proformas:pdf" }
+    methods:  [GET, POST]
+
+admin_proformas_allpdf:
+    path:     /allpdf/{type}/{periode}/{etat}/{zone}/{du}/{au}/{mot}
+    defaults: { _controller: "CommandesBundle:Proformas:allpdf" }
+    methods:  [GET, POST]
+
+admin_proformas_envois:
+    path:     /{id}/envois
+    defaults: { _controller: "CommandesBundle:Proformas:envois" }
+    methods:  [GET, POST]
+
+
+
+admin_proformas_getAllprods:
+    path:     /produit
+    defaults: { _controller: CommandesBundle:Proformas:autocomplete }
+    methods:  [GET, POST]
+    options:
+                expose: true
+
+
+admin_proformas_getAcheteur:
+    path:     /Acheteur
+    defaults: { _controller: CommandesBundle:Proformas:acheteurcomplete }
+    methods:  [GET, POST]
+    options:
+                expose: true
+
+admin_proformas_getdep:
+    path:     /dep/{dep}
+    defaults: { _controller: CommandesBundle:Proformas:dep }
+    options:
+                expose: true
+
+

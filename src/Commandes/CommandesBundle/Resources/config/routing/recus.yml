@@ -1,0 +1,98 @@
+admin_recus_index:
+    path:     /
+    defaults: { _controller: "CommandesBundle:Recus:index" }
+    methods:  [GET, POST]
+
+admin_recus_show:
+    path:     /{id}/show
+    defaults: { _controller: "CommandesBundle:Recus:show" }
+    methods:  GET
+
+admin_recus_new:
+    path:     /new
+    defaults: { _controller: "CommandesBundle:Recus:new" }
+    methods:  [GET, POST]
+
+admin_recus_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CommandesBundle:Recus:edit" }
+    methods:  [GET, POST]
+
+admin_recus_delete:
+    path:     /{recu}/delete
+    defaults: { _controller: "CommandesBundle:Recus:delete" }
+    methods:  GET
+
+admin_recus_getuser:
+    path:     /user/{user}
+    defaults: { _controller: CommandesBundle:Recus:user }
+    options:
+                expose: true
+
+admin_recus_getacheteur:
+    path:     /acheteur/{acheteur}
+    defaults: { _controller: CommandesBundle:Recus:acheteur }
+    options:
+                expose: true
+
+admin_recus_prod:
+    path:     /prod/{prod}/{qte}/{tva}/{reduction}
+    defaults: { _controller: CommandesBundle:Recus:prod }
+    options:
+                expose: true
+
+admin_recus_qte:
+    path:     /qte/{qte}/{pu}/{tva}/{totalht}/{reduction}
+    defaults: { _controller: CommandesBundle:Recus:qte }
+    options:
+                expose: true
+
+admin_recus_datalist:
+    path:     /datalist/
+    defaults: { _controller: CommandesBundle:Recus:datalist }
+    options:
+                expose: true
+
+admin_recus_etat:
+    path:     /recus/{id}/{etat}/{ttc}
+    defaults: { _controller: CommandesBundle:Recus:etat }
+    options:
+                expose: true
+
+
+admin_recus_pdf:
+    path:     /{id}/pdf
+    defaults: { _controller: "CommandesBundle:Recus:pdf" }
+    methods:  [GET, POST]
+
+admin_recus_allpdf:
+    path:     /allpdf/{type}/{periode}/{etat}/{zone}/{du}/{au}/{mot}
+    defaults: { _controller: "CommandesBundle:Recus:allpdf" }
+    methods:  [GET, POST]
+
+admin_recus_envois:
+    path:     /{id}/envois
+    defaults: { _controller: "CommandesBundle:Recus:envois" }
+    methods:  [GET, POST]
+
+
+admin_recus_getAllprods:
+    path:     /produit
+    defaults: { _controller: CommandesBundle:Recus:autocomplete }
+    methods:  [GET, POST]
+    options:
+                expose: true
+
+
+admin_recus_getAcheteur:
+    path:     /Acheteur
+    defaults: { _controller: CommandesBundle:Recus:acheteurcomplete }
+    methods:  [GET, POST]
+    options:
+                expose: true
+
+admin_recus_getdep:
+    path:     /dep/{dep}
+    defaults: { _controller: CommandesBundle:Recus:dep }
+    options:
+                expose: true
